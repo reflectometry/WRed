@@ -12,8 +12,8 @@ catalog_sender = Sender()
 
 # Define a message receiver
 class Receiver(wx.Button):
-  def onHello(self,who=None): 
-    print 'hi to',self.GetLabel(),'from',who
+    def onHello(self,who=None):
+        print 'hi to',self.GetLabel(),'from',who
 
 # Create the app with buttons for sending and slots for receiving
 app = wx.App(redirect=False)
@@ -35,8 +35,8 @@ connect(f3.onHello,signal='special',sender=catalog_sender)
 # Define a parameterized event handler which can produce the
 # appropriate signal type given a button press event.
 def signaller(signal,who,sender=Anonymous):
-  def sendsignal(event): send(signal,sender=sender,who=who)
-  return sendsignal
+    def sendsignal(event): send(signal,sender=sender,who=who)
+    return sendsignal
 
 f2 = wx.Button(root,-1,'Sender 1')
 f2.Bind(wx.EVT_BUTTON,signaller('special','Sender 1',plottable_sender))

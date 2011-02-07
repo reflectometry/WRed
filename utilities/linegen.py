@@ -20,14 +20,14 @@ class locator:
 class linegen:
     def __init__(self,point1,point2):
         self.point1=point1
-        self.point2=point2 
+        self.point2=point2
         self.x1=N.float(self.point1[0])
         self.y1=N.float(self.point1[1])
         self.x2=N.float(self.point2[0])
         self.y2=N.float(self.point2[1])
         self.calc_slope()
         return
-    
+
     def calc_slope(self):
         if self.x2==self.x1:
             self.slope=N.inf
@@ -41,7 +41,7 @@ class linegen:
         y=N.arange(min(self.y2,self.y1),max(self.y1,self.y2)+step,step)
         x=self.x1*N.ones(y.shape)
         return x,y
-    
+
     def gen_line(self,divisions=10):
         if self.slope==N.inf:
             step=N.absolute(self.y2-self.y1)/divisions
@@ -92,9 +92,8 @@ if __name__=="__main__":
     pylab.pcolormesh(xi,yi,zi,shading='interp',cmap=pylab.cm.jet)
     myline=line_interp(point1,point2,divisions=50)
     xout,yout,zout=myline.interp(x,y,z)
-    line_x=myline.line_x; line_y=myline.line_y 
-    pylab.plot(line_x,line_y,'red',linewidth=3.0)  
+    line_x=myline.line_x; line_y=myline.line_y
+    pylab.plot(line_x,line_y,'red',linewidth=3.0)
     fig2=pylab.figure(figsize=(8,8))
     pylab.plot(xout,zout,'s')
     pylab.show()
-    

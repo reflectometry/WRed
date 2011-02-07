@@ -43,7 +43,7 @@ def copy_data(proposalid, filename):
     path = "/usr/local/ice/usr/%s/data/%s"%(proposalid,filename)
     print "grabbing", path
     #return instrument_command('cat '+path)
-    # Fetch a new copy of the file from the server 
+    # Fetch a new copy of the file from the server
     os.system("scp -i %s %s:%s %s"%(INSTRUMENT_KEY, INSTRUMENT_COMPUTER,
                                     path, "/tmp/newdata"))
     print "copied"
@@ -69,13 +69,13 @@ def monitor(instrument):
         def newdata(self, lineid):
             #print lineid,"starting",self.data[lineid].filename
             self.proposalid = current_proposal()
-            #notify(event='newdata', 
-            #       proposalid=self.proposalid, 
+            #notify(event='newdata',
+            #       proposalid=self.proposalid,
             #       filename=self.data[lineid].filename)
         def enddata(self, lineid):
             pass
             #notify(event='enddata',
-            #       proposalid=self.proposalid, 
+            #       proposalid=self.proposalid,
             #       filename=self.data[lineid].filename)
         def newpoint(self, lineid):
             if self.data[lineid].columns['TIMESTAMP'][-1] < START_TIME:
@@ -83,7 +83,7 @@ def monitor(instrument):
                 return
             data = copy_data(self.proposalid,self.data[lineid].filename)
             notify(
-                   proposalid=self.proposalid, 
+                   proposalid=self.proposalid,
                    filename=self.data[lineid].filename,
                    file=data)
     xpeek = XPeekFilename(instrument)
@@ -93,4 +93,3 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.ERROR)
     #debug_eta(sys.argv[1] if len(sys.argv)>1 else 'NG1')
     monitor(INSTRUMENT)
-

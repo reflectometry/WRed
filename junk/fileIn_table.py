@@ -20,7 +20,7 @@ def addfile(filestr):
     for i in range(len(baselayer)):
         for j in range(len(sublayer[i])):
             attr = getattr(getattr(data, baselayer[i]), sublayer[i][j])
-            try: 
+            try:
                 it = iter(attr)
                 count = 0
                 for val in it:
@@ -30,5 +30,3 @@ def addfile(filestr):
             except TypeError:
                 t = Table(fileid = f, value = str(attr), field = sublayer[i][j], pointid = 0)
                 t.save()
-    
-

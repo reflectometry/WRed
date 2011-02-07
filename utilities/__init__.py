@@ -4,10 +4,10 @@
 ## \mainpage Analytical Modeling for SANS
 #
 # \section intro_sec Introduction
-# This module provides theoretical models for the scattering 
-# intensity for SANS. 
+# This module provides theoretical models for the scattering
+# intensity for SANS.
 #
-# Documentation can be found here: 
+# Documentation can be found here:
 #    http://danse.us/trac/sans/wiki/8_2_2_1DModelFitting
 #    http://danse.us/trac/sans/wiki/8_2_3_2DModeling
 #
@@ -31,10 +31,10 @@
 # \endverbatim
 #
 # \section overview_sec Package Overview
-# 
+#
 # \subsection class Class Diagram:
 # \image html class_diag.png
-# Note that the CCylinderModel is written as C code. 
+# Note that the CCylinderModel is written as C code.
 # CylinderModel acts as an adaptor class for the C extension.
 # Most model classes will be written that way.
 #

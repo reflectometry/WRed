@@ -17,7 +17,7 @@ def readheader(myfile):
     header['monitor']=header['monitor_base']*header['monitor_prefactor']
     header['count_type']=tokenized[8]
     header['npts']=float(tokenized[9])
-#skip over names of fields 
+#skip over names of fields
     lineStr=myfile.readline()
 #comment and filename
     lineStr=myfile.readline()
@@ -44,7 +44,7 @@ def readheader(myfile):
     motor2['step']=float(tokenized[2])
     motor2['end']=float(tokenized[3])
     header['motor2']=motor2
-    
+
 #motor3
     lineStr=myfile.readline()
     strippedLine=lineStr.rstrip()
@@ -103,7 +103,7 @@ def readibuff(myfilestr):
     scan2=tokenized[1]
 #    print scan1
 #    print scan2
-#   prepare to read the data    
+#   prepare to read the data
     count =  0
     scan1arr=[]
     scan2arr=[]
@@ -129,7 +129,7 @@ def readibuff(myfilestr):
     data[scan2]=N.array(scan2arr,'d')
     data['intensity']=N.array(intensity,'d')
     data['intensity_err']=N.array(intensityerr,'d')
-              
+
     return header,data
 
 def modelfunction(p,x):
@@ -139,7 +139,7 @@ def modelfunction(p,x):
     amp=p[0]/N.sqrt(2*N.pi)/sigma
     background=p[3]
     slope=p[4]
-    model=background+slope*x+N.absolute(amp)*N.exp(-0.5*((x-center)/sigma)**2)    
+    model=background+slope*x+N.absolute(amp)*N.exp(-0.5*((x-center)/sigma)**2)
     return model
 
 
@@ -174,7 +174,7 @@ def fitdata(a4,I,Ierr):
     parinfo[4]['fixed']=1
     m = mpfit.mpfit(chisqrcalc, pfit, parinfo=parinfo,functkw=fa,quiet=1)
     print 'status = ', m.status
-    if (m.status <= 0): print 'error message = ', m.errmsg    
+    if (m.status <= 0): print 'error message = ', m.errmsg
     p=N.array(m.params,'d')
 #    print 'p ', p
     dof=a4.size -p.size
@@ -207,9 +207,9 @@ def readfiles(mydirectory,myend,myfilehead,myfiles,reflections,ploton):
         hklstr=str(hkl[0])+str(hkl[1])+str(hkl[2])
         myfilestr=mydirectory+myfilehead+myfiles[i]+myend
         print myfilestr,i
-        header,data=readibuff(myfilestr)        
+        header,data=readibuff(myfilestr)
         a4,I,Ierr=readfile(header,data)
-        p,std=fitdata(a4,I,Ierr)        
+        p,std=fitdata(a4,I,Ierr)
         pylab.subplot(rows,cols,i+1)
         plotdata(a4,I,Ierr,p)
         datadict={'p':p,'std':std,'hkl':hkl}
@@ -218,7 +218,7 @@ def readfiles(mydirectory,myend,myfilehead,myfiles,reflections,ploton):
     pylab.hold(False)
     if ploton:
         pylab.show()
-    return summarylist    
+    return summarylist
 
 def outputresult(summarylist):
     for i in range(len(summarylist)):
@@ -271,14 +271,14 @@ def addarrays(d,outputarray,Iarray,monitorarray):
         monval=0
         for j in range(len(Iarray)):
 #           print 'ind', ind
-           if (len(ind) != 0):
-               currI=Iarray[j]
+            if (len(ind) != 0):
+                currI=Iarray[j]
 #               print 'CurrI ', currI
-               selectI=currI[ind[j]]
-               # sum over the values of a4
-               monval=monval+monitorarray[j]*len(selectI)
-               Isum=N.sum(selectI)
-               Ival=Ival+Isum
+                selectI=currI[ind[j]]
+                # sum over the values of a4
+                monval=monval+monitorarray[j]*len(selectI)
+                Isum=N.sum(selectI)
+                Ival=Ival+Isum
         I.append(float(Ival)/monval)
         Ierr.append(N.sqrt(float(Ival))/monval)
     return N.array(I),N.array(Ierr)
@@ -317,7 +317,7 @@ def addfiles(headers,data,hkl):
 #    pylab.errorbar(a4arr[1],Iarr[1],N.sqrt(Iarr[1]),mfc='green',marker='o',linestyle=None)
 #    pylab.show()
 
-    p,std=fitdata(a4out,Iout,Ierrout)        
+    p,std=fitdata(a4out,Iout,Ierrout)
     plotdata(a4out,Iout,Ierrout,p)
 #    pylab.show()
     hklstr=str(hkl[0])+str(hkl[1])+str(hkl[2])
@@ -326,7 +326,7 @@ def addfiles(headers,data,hkl):
 
 
     return summarylist
-        
+
 
 
 if __name__=="__main__":
@@ -339,7 +339,7 @@ if __name__=="__main__":
     if 1:
 #        myfiles006=['006001','006003']
         mydirectory=r'c:\bifeo3\data\bifeo3xtal\\'
-        
+
         myfiles116=['116001','116002']
         myend='.bt9'
         myfilehead='nu'
@@ -360,7 +360,7 @@ if __name__=="__main__":
 #        print a4out
 #        print Iout
 #        print Ierrout
-    
+
 
 #nuclear
     if 1:
@@ -379,7 +379,7 @@ if __name__=="__main__":
 
         outputresult(summarylist)
         saveresult(summarylist,mydirectory+'nuclear.dat')
-        
+
 
     if 0:
         myfiles116=['116001','116002']
@@ -391,10 +391,6 @@ if __name__=="__main__":
                  ,'101l001','101c001','101r001']
 
         ploton=1
-        summarylist=readfiles(mydirectory,myend,myfilehead,myfiles,reflections,ploton) 
+        summarylist=readfiles(mydirectory,myend,myfilehead,myfiles,reflections,ploton)
         outputresult(summarylist)
         #saveresult(summarylist,mydirectory+'mag.dat')
-     
-
-
-

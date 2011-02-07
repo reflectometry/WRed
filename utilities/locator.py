@@ -27,7 +27,7 @@ if __name__=="__main__":
     data=N.zeros((x.shape[0],2))
     data[:,0]=x
     data[:,1]=y
-    
+
     print data
     mylocator=locator(x,y)
     xt=N.array([11,3])

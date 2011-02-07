@@ -33,7 +33,7 @@ def plot_data(xa,ya,za,fig,nfig,colorflag=False,convolveflag=False):
     ax=fig.add_subplot(2,2,nfig)
     pc=ax.pcolormesh(xa,ya,zima,shading='interp',cmap=cmap)  # working good!
 #    pc=ax.imshow(zima,interpolation='bilinear',cmap=cmap)
-    
+
     pmin=zima.min()
     pmax=zima.max()
     pmin=0
@@ -142,7 +142,7 @@ def readmeshfiles(mydirectory,myfilebase,myend,eflag='hhl'):
     Qx=N.array([])
     Qy=N.array([])
     Qz=N.array([])
-    
+
     Counts=N.array([])
     mon0=240000.0
     for currfile in flist:
@@ -244,7 +244,7 @@ if __name__ == '__main__':
         #xlabel=r'Q$ \ \ (\AA^{-1}$)'
         fig.subplots_adjust(wspace=0.5)
         fig.subplots_adjust(hspace=0.3)
-        
+
 
 
     if 1:
@@ -259,7 +259,7 @@ if __name__ == '__main__':
         ax.xaxis.set_major_locator(MaxNLocator(4))
         ax.text(.96,.90,'(a)',fontsize=18,horizontalalignment='right',verticalalignment='top',transform=ax.transAxes,color='white')
         #g.ax.ticks=N.arange(0,100,20)
-        
+
     if 1:
         ylabel='(1 0 0)'
         xlabel='(0 1 1)'
@@ -272,7 +272,7 @@ if __name__ == '__main__':
         ax.xaxis.set_major_locator(MaxNLocator(4))
         ax.text(.96,.90,'(b)',fontsize=18,horizontalalignment='right',verticalalignment='top',transform=ax.transAxes,color='white')
         #g.ax.ticks=N.arange(0,100,20)
-        
+
     if 1:
         ylabel='(0 1 0)'
         xlabel='(1 0 1)'
@@ -285,10 +285,10 @@ if __name__ == '__main__':
         ax.xaxis.set_major_locator(MaxNLocator(4))
         ax.text(.96,.90,'(c)',fontsize=18,horizontalalignment='right',verticalalignment='top',transform=ax.transAxes,color='white')
         #g.ax.ticks=N.arange(0,100,20)
-        
+
     if 0:
         plotcartoon(fig)
-    
+
 
     if 0:
         ax,g=plot_data(xe,ye,ze,fig,2,colorflag=True)

@@ -183,7 +183,7 @@ class ICP(object):
         self.date=self.timestamp.strptime(tokens[1],'%b %d %Y %H:%M')
         self.scantype = tokens[2]
         self.prefactor = float(tokens[4]) #fixed order
-        self.monitor=float(tokens[3]) #fixed order 
+        self.monitor=float(tokens[3]) #fixed order
         self.count_type=tokens[5]
         self.points=int(tokens[6])
         self.data_type=tokens[7]
@@ -443,14 +443,14 @@ class ICP(object):
         self.file.close()
         filename=os.path.split(self.path)[-1]
         print 'filename'
-        self.filename=filename 
+        self.filename=filename
         #decide do we want this for the file as on the file system
         #or as in the datafile....
         self.filebase,self.fileseq_number, self.file_end=self.splitfile(self.filename)
-        
+
     def __contains__(self, column):
         return hasattr(self.column,column)
-    
+
     def splitfile(self,filename):
         pattern = re.compile('^(?P<base>[^.]*?)(?P<seq>[0-9]*)(?P<ext>[.].*)?$')
         match = pattern.match(filename)
@@ -533,8 +533,8 @@ def demo2(myfilestr):
     keys = fields.__dict__.keys()
     keys.sort()
     for k in keys: print k,getattr(fields,k)
-        
-        
+
+
 def plot(filename):
     """
     Read and print all command line arguments
@@ -567,7 +567,7 @@ def plot_demo():
 if __name__=='__main__':
     myfilestr=r'C:\Ce2RhIn8\Mar10_2009\nucsc001.bt9'
     demo2(myfilestr)
-    
+
     print
     #plot_demo()
     #demo()

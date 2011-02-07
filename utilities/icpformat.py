@@ -51,7 +51,7 @@ except:
         if shape != None and N.any(z.shape != shape):
             raise IOError,"Inconsistent dims at line %d"%linenum
         return z
-           
+
 
 def readdata(fh):
     """

@@ -56,7 +56,7 @@ def findpeak(x,y,npeaks,order=4,kernel=11):
     diff_sign=N.hstack(([0],N.diff(value_sign)))
 
 #    wh_cross = find(((diff_sign==2) | (diff_sign==-2)) & yd2<0);
-    wh_cross_table=N.abs(diff_sign)==2 
+    wh_cross_table=N.abs(diff_sign)==2
     yd_table=yd2<0
 
     #print wh_cross_table
@@ -68,15 +68,15 @@ def findpeak(x,y,npeaks,order=4,kernel=11):
     n_crossings=len(wh_cross);
 
 
-#    
-#    
-#    
+#
+#
+#
     indices = 0.5*(2*wh_cross-1);
     indices=wh_cross
 #    print 'indices',indices
-#    
+#
     no_width = 0;
-#    
+#
     if n_crossings > 0:
 #    #% Ok, now which ones of these are peaks?
 
@@ -93,7 +93,7 @@ def findpeak(x,y,npeaks,order=4,kernel=11):
         #print 'npeaks',npeaks
         #print 'yd2',yd2
         xsupport=range(len(x))
-        xinterpolater=interpolate.interp1d(xsupport,x,fill_value=0.0,kind='linear',copy=True,bounds_error=False)        
+        xinterpolater=interpolate.interp1d(xsupport,x,fill_value=0.0,kind='linear',copy=True,bounds_error=False)
         xpeaks=xinterpolater(indices)
         #print 'xpeaks',xpeaks
         #return xpeaks
@@ -104,14 +104,14 @@ def findpeak(x,y,npeaks,order=4,kernel=11):
             #max_index = find(ymax==this_max);
             if i ==0:
                 best_index = indices[max_index]
-            else:    
+            else:
                 best_index =N.hstack((best_index, indices[max_index]));
             ymax[max_index] = ymin;
         indices = best_index;
 
         #print 'indices',indices
         xsupport=range(len(x))
-        xinterpolater=interpolate.interp1d(xsupport,x,fill_value=0.0,kind='linear',copy=True,bounds_error=False)        
+        xinterpolater=interpolate.interp1d(xsupport,x,fill_value=0.0,kind='linear',copy=True,bounds_error=False)
         xpeaks=xinterpolater(indices)
         #print 'xpeaks',xpeaks
         results={}
@@ -123,13 +123,13 @@ def findpeak(x,y,npeaks,order=4,kernel=11):
         #xsupport=1:length(x);
         #xpeaks = interp1(xsupport,x,indices);
 #        xpeaks=xpeaks(1:npeaks);
-#    
-#    
-#   
+#
+#
+#
 
 def findwidths(x,y,npeaks,xpeaks,indices):
     ny=len(y)
-    for i in range(npeaks):   
+    for i in range(npeaks):
         full_height = y[N.floor(indices[i])]
         half_height = 0.5*full_height;
 #          % Descend down the peak until you get lower than the half height
@@ -179,14 +179,14 @@ def findwidths(x,y,npeaks,xpeaks,indices):
         #print 'delta',x[N.floor(indices[i])+increment]
         #print 'increment', increment
         #print 'no_width', no_width
-#            
-#    
+#
+#
 #     #%     no_width_found:
         if no_width==1:
             #print 'no width found'
             width = 2.0*(x[ny]-xpeaks[i]);
         else:
-            width = 2.0*(x[N.floor(indices[i])+increment]-xpeaks[i]);             
+            width = 2.0*(x[N.floor(indices[i])+increment]-xpeaks[i]);
         if i == 0:
             fwhm = [width]
         else:
@@ -195,7 +195,7 @@ def findwidths(x,y,npeaks,xpeaks,indices):
 #      #     %plot([(xpeaks(i)-fwhm(i)/2) (xpeaks(i)+fwhm(i)/2)],[half_height half_height]); hold on;
 #      end
 #      #%hold off;
-#    
+#
 #      #%b=length(fwhm);
 #      #%fwhm=fwhm(b);
 
@@ -215,7 +215,7 @@ def calc_DW(y,kernel=11,order=4):
     DW=0
     for i in range(1,n):
         DW=((y[i]-ysmd[i])-(y[i-1]-ysmd[i-1]))**2+DW
-    DW=DW*n/(n-1)    
+    DW=DW*n/(n-1)
     DW=DW/((y-ysmd)**2).sum()
     return DW
 
@@ -232,15 +232,15 @@ def optimize_DW(y,order=4):
         minkerny=1
     else:
         minkerny=0
-    odd_len=make_odd(len(y))    
+    odd_len=make_odd(len(y))
     kernel_range=range(order+2,min(len(y)/11,odd_len),2)
     print kernel_range
     for kernel in kernel_range:
         print 'kernel',kernel
         DW.append(calc_DW(y,kernel=kernel,order=order))
-        
+
     return kernel_range,DW
-        
+
 
 def calc_prob(npeaks,amax,covariance,chimin,rangex):
     prob=scipy.factorial(npeaks)*(4*pi)**npeaks
@@ -294,7 +294,7 @@ def myfunctlin(p, fjac=None, x=None, y=None, err=None):
     # stop the calculation.
     status = 0
     return [status, cost_func(p,x,y,err)]
-    
+
 
 def driver(x,y):
     kernel=31
@@ -303,23 +303,23 @@ def driver(x,y):
         #pylab.plot(kern,DW,'s')
         #pylab.show()
         kernel=min(N.abs(kern-2))
-    
-    
-    
 
-    
-    npeaks=2   
+
+
+
+
+    npeaks=2
     nlist=[]
     plist=[]
-    for npeaks in range(1,10): 
+    for npeaks in range(1,10):
         print 'npeaks',npeaks
         results=findpeak(x,y,npeaks,kernel=31)
         fwhm=findwidths(x,y,npeaks,results['xpeaks'],results['indices'])
         print 'res',results['xpeaks']
         print 'fwhm',fwhm
-        print 'heights',results['heights']       
+        print 'heights',results['heights']
         p0=[0,0]
-        
+
         #results['heights']=[1000,500,1000]
         #fwhm=[.1,.2,.4]
         sigma=fwhm/2.354
@@ -333,27 +333,27 @@ def driver(x,y):
             p1=results[0]
             covariance=results[1]
             print 'p1',p1
-            
-    
+
+
         if 0:
             parbase={'value':0., 'fixed':0, 'limited':[0,0], 'limits':[0.,0.]}
             parinfo=[]
             for i in range(len(p0)):
                 parinfo.append(copy.deepcopy(parbase))
-            for i in range(len(p0)): 
+            for i in range(len(p0)):
                 parinfo[i]['value']=p0[i]
             fa = {'x':x, 'y':y, 'err':yerr}
-            m = mpfit(myfunctlin, p0, parinfo=parinfo,functkw=fa) 
+            m = mpfit(myfunctlin, p0, parinfo=parinfo,functkw=fa)
             print 'status = ', m.status
             print 'params = ', m.params
             p1=m.params
             covariance=m.covar
-         
+
         if 1:
             area=max(N.abs(p1[-3::]))
             sigma=p1[-6:-3]/2.354
             amax=max(area/N.sqrt(2*pi*sigma**2))
-            
+
             chimin=(cost_func(p1,x,y,yerr)**2).sum()
             rangex=max(x)-min(x)
             prob=calc_prob(npeaks,amax,covariance,chimin,rangex)
@@ -361,13 +361,13 @@ def driver(x,y):
             nlist.append(npeaks)
             plist.append(prob)
             #sys.exit()
-    
-    pylab.semilogy(nlist,plist,'s')    
+
+    pylab.semilogy(nlist,plist,'s')
     pylab.show()
     if 0:
         pylab.plot(x,y,'s')
         pylab.axis([0,2,0,1.4e4])
-            
+
         for i in range(npeaks):
             pylab.axvline(x=results['xpeaks'][i])
             xcen=results['xpeaks'][i]
@@ -375,7 +375,7 @@ def driver(x,y):
             pylab.plot([(xcen-fwhm[i]/2),(xcen+fwhm[i]/2)],[half_height,half_height])
             ycalc=gen_function(p1,x)
             pylab.plot(x,ycalc)
-        
+
         pylab.axis([0,2,0,1.4e4])
         pylab.show()
 
@@ -397,28 +397,28 @@ if __name__=="__main__":
     #axes = fig.add_subplot(111)
     driver(x,y)
     sys.exit()
-    
+
     if 0:
         kern,DW=optimize_DW(y) #choose the right window size
         pylab.plot(kern,DW,'s')
         pylab.show()
-    
-    
-    
 
-    
-    npeaks=2   
+
+
+
+
+    npeaks=2
     nlist=[]
     plist=[]
-    for npeaks in range(1,10): 
+    for npeaks in range(1,10):
         print 'npeaks',npeaks
         results=findpeak(x,y,npeaks,kernel=31)
         fwhm=findwidths(x,y,npeaks,results['xpeaks'],results['indices'])
         print 'res',results['xpeaks']
         print 'fwhm',fwhm
-        print 'heights',results['heights']       
+        print 'heights',results['heights']
         p0=[0,0]
-        
+
         #results['heights']=[1000,500,1000]
         #fwhm=[.1,.2,.4]
         sigma=fwhm/2.354
@@ -432,27 +432,27 @@ if __name__=="__main__":
             p1=results[0]
             covariance=results[1]
             print 'p1',p1
-            
-    
+
+
         if 0:
             parbase={'value':0., 'fixed':0, 'limited':[0,0], 'limits':[0.,0.]}
             parinfo=[]
             for i in range(len(p0)):
                 parinfo.append(copy.deepcopy(parbase))
-            for i in range(len(p0)): 
+            for i in range(len(p0)):
                 parinfo[i]['value']=p0[i]
             fa = {'x':x, 'y':y, 'err':yerr}
-            m = mpfit(myfunctlin, p0, parinfo=parinfo,functkw=fa) 
+            m = mpfit(myfunctlin, p0, parinfo=parinfo,functkw=fa)
             print 'status = ', m.status
             print 'params = ', m.params
             p1=m.params
             covariance=m.covar
-         
+
         if 1:
             area=max(N.abs(p1[-3::]))
             sigma=p1[-6:-3]/2.354
             amax=max(area/N.sqrt(2*pi*sigma**2))
-            
+
             chimin=(cost_func(p1,x,y,yerr)**2).sum()
             rangex=max(x)-min(x)
             prob=calc_prob(npeaks,amax,covariance,chimin,rangex)
@@ -460,13 +460,13 @@ if __name__=="__main__":
             nlist.append(npeaks)
             plist.append(prob)
             #sys.exit()
-    
-    pylab.semilogy(nlist,plist,'s')    
+
+    pylab.semilogy(nlist,plist,'s')
     pylab.show()
     if 0:
         pylab.plot(x,y,'s')
         pylab.axis([0,2,0,1.4e4])
-            
+
         for i in range(npeaks):
             pylab.axvline(x=results['xpeaks'][i])
             xcen=results['xpeaks'][i]
@@ -474,7 +474,6 @@ if __name__=="__main__":
             pylab.plot([(xcen-fwhm[i]/2),(xcen+fwhm[i]/2)],[half_height,half_height])
             ycalc=gen_function(p1,x)
             pylab.plot(x,ycalc)
-        
+
         pylab.axis([0,2,0,1.4e4])
         pylab.show()
-    

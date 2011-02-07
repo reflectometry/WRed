@@ -49,20 +49,20 @@ def readmeshfiles(mydirectory,myfilebase,myend):
             Counts1=N.concatenate((Counts1,curr_counts))
             temp1=N.concatenate((temp1,curr_temp))
             errors1=N.concatenate((errors1,curr_error))
-            
+
         elif hc==1.036:
-            Counts2=N.concatenate((Counts2,curr_counts)) 
-            temp2=N.concatenate((temp2,curr_temp))      
-            errors2=N.concatenate((errors2,curr_error)) 
+            Counts2=N.concatenate((Counts2,curr_counts))
+            temp2=N.concatenate((temp2,curr_temp))
+            errors2=N.concatenate((errors2,curr_error))
         elif hc==2.0:
             Counts3=N.concatenate((Counts3,curr_counts))
             temp3=N.concatenate((temp3,curr_temp))
             errors3=N.concatenate((errors3,curr_error))
-        #print 
+        #print
         #Qx=N.concatenate((Qx,N.array(mydata.data['qx'])))
         #Qy=N.concatenate((Qy,N.array(mydata.data['qy'])))
         #Qz=N.concatenate((Qz,N.array(mydata.data['qz'])))
-        
+
         #Counts=N.concatenate((Counts,N.array(mydata.data['counts'])))
     #print Qx
     #print Qy
@@ -77,7 +77,7 @@ def readmeshfiles(mydirectory,myfilebase,myend):
     dataset['errors1']=errors1
     dataset['errors2']=errors2
     dataset['errors3']=errors3
-    
+
     return dataset
 
 if __name__ == '__main__':
@@ -90,7 +90,7 @@ if __name__ == '__main__':
     if 1:
         ax1=pylab.errorbar(dataset['temp1'],dataset['Counts1'],dataset['errors1'],
                    marker='s',linestyle='None',mfc='black',mec='black',ecolor='black')
-    if 1:    
+    if 1:
         ax2=pylab.errorbar(dataset['temp3'],dataset['Counts3'],dataset['errors3'],
                    marker='s',linestyle='None',mfc='blue',mec='blue',ecolor='blue')
 
@@ -98,9 +98,9 @@ if __name__ == '__main__':
     if 1:
         pylab.errorbar(dataset['temp2'],dataset['Counts2'],dataset['errors2'],
                    marker='s',linestyle='None',mfc='red',mec='red',ecolor='black')
-    
+
     #print ax2
-    
+
     #ax2[0].get_axes().set_yscale('log')
     if 0:
         pylab.savefig(r'c:\nimn2o4_order2.pdf')

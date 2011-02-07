@@ -167,10 +167,10 @@ class scanparser:
             return self.varying
 
 class BadScanError(Exception):
-     def __init__(self, value):
-         self.value = value
-     def __str__(self):
-         return repr(self.value)
+    def __init__(self, value):
+        self.value = value
+    def __str__(self):
+        return repr(self.value)
 
 if  __name__=='__main__':
 #find peak, A3-A4

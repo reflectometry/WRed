@@ -10,12 +10,12 @@ import re
 months={'jan':1,'feb':2,'mar':3,'apr':4,'may':5,'jun':6,'jul':7,'aug':8,'sep':9,'oct':10,'nov':11,'dec':12}
 
 def get_tokenized_line(myfile,returnline=['']):
-        lineStr=myfile.readline()
-        returnline[0]=lineStr.rstrip()
-        strippedLine=lineStr.lower().rstrip()
-        tokenized=strippedLine.split()
+    lineStr=myfile.readline()
+    returnline[0]=lineStr.rstrip()
+    strippedLine=lineStr.lower().rstrip()
+    tokenized=strippedLine.split()
 
-        return tokenized
+    return tokenized
 
 
 class datareader:
@@ -834,5 +834,3 @@ if __name__=='__main__':
     if 0:
         print 'additional metadata'
         print mydata.additional_metadata
-
-

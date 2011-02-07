@@ -34,7 +34,7 @@ def addfile(filestr, filename, proposal_id, dirty):
     print 1
     if dirty:
         f, created = DataFile.objects.get_or_create(
-            name = filename, 
+            name = filename,
             dirty = True,
             proposal_id = proposal_id,
             defaults = {'md5': m.hexdigest()}

@@ -134,7 +134,7 @@ class scanparser:
                         prange['qz']['start']=start[2]
                         prange['qx']['step']=step[0]
                         prange['qy']['step']=step[1]
-                        prange['qz']['step']=step[2]                        
+                        prange['qz']['step']=step[2]
                         prange['qx']['stop']=stop[0]
                         prange['qy']['stop']=stop[1]
                         prange['qz']['stop']=stop[2]
@@ -149,18 +149,18 @@ class scanparser:
                     step=N.array(step).astype('Float64')
                     start=center-(npts-1)/2*step
                     stop=center+(npts-1)/2*step
-                    
+
                     prange['qx']['center']=start[0]
                     prange['qy']['center']=start[1]
                     prange['qz']['center']=start[2]
                     prange['qx']['step']=step[0]
                     prange['qy']['step']=step[1]
                     prange['qz']['step']=step[2]
-                    
-                    
-                    
-                    
-                    
+
+
+
+
+
                     prange['qx']['start']=start[0]
                     prange['qy']['start']=start[1]
                     prange['qz']['start']=start[2]
@@ -233,8 +233,8 @@ class scanparser:
                 for key,value in oranges.iteritems():
                     self.oranges[key]=value
             return self.varying
-  
-        
+
+
     def add_parameter(self,key,value):
         if key in simple_scans_parameter:
             if not (value==None):
@@ -243,7 +243,7 @@ class scanparser:
             if key in w_alias and not (value==None):
                 rangetype='e'
                 if not (self.oranges.has_key('e')):
-                        self.oranges['e']={}   
+                    self.oranges['e']={}
                 if key=='w_i' and not (value==None):
                     self.oranges['e']['start']=value
                 if key=='w_f' and not (value==None):
@@ -255,7 +255,7 @@ class scanparser:
             if (key in h_alias) or (key in k_alias) or (key in l_alias):
                 rangetype='Q'
                 if not (self.oranges.has_key('qx')) and not (value==None):
-                    self.oranges['qx']={} 
+                    self.oranges['qx']={}
                 if key=='h_i'and not (value==None):
                     self.oranges['qx']['start']=value
                 if key=='h_f' and not (value==None):
@@ -263,10 +263,10 @@ class scanparser:
                 if key=='h_s' and not (value==None):
                     self.oranges['qx']['step']=value
                 if key=='h_c' and not (value==None):
-                    self.oranges['qx']['center']=value 
-                    
+                    self.oranges['qx']['center']=value
+
                 if not (self.oranges.has_key('qy')) and not (value==None):
-                    self.oranges['qy']={} 
+                    self.oranges['qy']={}
                 if key=='k_i' and not (value==None):
                     self.oranges['qy']['start']=value
                 if key=='k_f' and not (value==None):
@@ -275,9 +275,9 @@ class scanparser:
                     self.oranges['qy']['step']=value
                 if key=='k_c' and not (value==None):
                     self.oranges['qy']['center']=value
-                    
+
                 if not (self.oranges.has_key('qz')) and not (value==None):
-                    self.oranges['qz']={} 
+                    self.oranges['qz']={}
                 if key=='l_i' and not (value==None):
                     self.oranges['qz']['start']=value
                 if key=='l_f' and not (value==None):
@@ -285,22 +285,22 @@ class scanparser:
                 if key=='l_s' and not (value==None):
                     self.oranges['qz']['step']=value
                 if key=='l_c' and not (value==None):
-                    self.oranges['qz']['center']=value 
-        else: 
+                    self.oranges['qz']['center']=value
+        else:
             #a nonaliased range
             if not (self.oranges.has_key(key)) and not (value==None):
-                            self.oranges[key]={}
+                self.oranges[key]={}
             keyparts=key.split('_')
             devname=keyparts[0]
             component=keyparts[1]
             if  component=='i' and not (value==None):
-                    self.oranges[devname]['start']=value
+                self.oranges[devname]['start']=value
             if component=='f' and not (value==None):
-                    self.oranges[devname]['stop']=value
+                self.oranges[devname]['stop']=value
             if component=='s' and not (value==None):
-                    self.oranges[devname]['step']=value
+                self.oranges[devname]['step']=value
             if component=='c' and not (value==None):
-                    self.oranges[devname]['center']=value      
+                self.oranges[devname]['center']=value
 
     def delete_parameter(self,key,value):
         deletekeys=value.split()  #we should delete tags first to be safe
@@ -311,7 +311,7 @@ class scanparser:
                 if deletekey in w_alias:
                     rangetype='e'
                     if not (self.oranges.has_key('e')):
-                            raise BadScanError,'Trying to delete a parameter that doesn not exist in original scan!' #  If this isn't here, then there is no parameter to delete!!!! self.oranges['e']={}   
+                        raise BadScanError,'Trying to delete a parameter that doesn not exist in original scan!' #  If this isn't here, then there is no parameter to delete!!!! self.oranges['e']={}
                     if deletekey=='w_i':
                         del(self.oranges['e']['start'])
                     if deletekey=='w_f':
@@ -323,7 +323,7 @@ class scanparser:
                 if (deletekey in h_alias) or (deletekey in k_alias) or (deletekey in l_alias):
                     rangetype='Q'
                     if not (self.oranges.has_key('qx')):
-                        raise BadScanError,'Trying to delete a parameter that doesn not exist in original scan!' #  If this isn't here, then there is no parameter to delete!!!! self.oranges['e']={}   
+                        raise BadScanError,'Trying to delete a parameter that doesn not exist in original scan!' #  If this isn't here, then there is no parameter to delete!!!! self.oranges['e']={}
                     if deletekey=='h_i':
                         del(self.oranges['qx']['start'])
                     if deletekey=='h_f':
@@ -331,10 +331,10 @@ class scanparser:
                     if deletekey=='h_s':
                         del(self.oranges['qx']['step'])
                     if deletekey=='h_c':
-                        del(self.oranges['qx']['center']) 
-                        
+                        del(self.oranges['qx']['center'])
+
                     if not (self.oranges.has_key('qy')):
-                        raise BadScanError,'Trying to delete a parameter that doesn not exist in original scan!' #  If this isn't here, then there is no parameter to delete!!!! self.oranges['e']={}   
+                        raise BadScanError,'Trying to delete a parameter that doesn not exist in original scan!' #  If this isn't here, then there is no parameter to delete!!!! self.oranges['e']={}
                     if deletekey=='k_i':
                         del(self.oranges['qy']['start'])
                     if deletekey=='k_f':
@@ -343,9 +343,9 @@ class scanparser:
                         del(self.oranges['qy']['step'])
                     if deletekey=='k_c':
                         del(self.oranges['qy']['center'])
-                        
+
                     if not (self.oranges.has_key('qz')):
-                        raise BadScanError,'Trying to delete a parameter that doesn not exist in original scan!' #  If this isn't here, then there is no parameter to delete!!!! self.oranges['e']={}   
+                        raise BadScanError,'Trying to delete a parameter that doesn not exist in original scan!' #  If this isn't here, then there is no parameter to delete!!!! self.oranges['e']={}
                     if deletekey=='l_i':
                         del(self.oranges['qz']['start'])
                     if deletekey=='l_f':
@@ -353,25 +353,25 @@ class scanparser:
                     if deletekey=='l_s':
                         del(self.oranges['qz']['step'])
                     if deletekey=='l_c':
-                        del(self.oranges['qz']['center']) 
-            else: 
+                        del(self.oranges['qz']['center'])
+            else:
                 #a nonaliased range
                 if not (self.oranges.has_key(deletekey)):
-                                raise BadScanError,'Trying to delete a parameter that doesn not exist in original scan!' #  If this isn't here, then there is no parameter to delete!!!! self.oranges['e']={}   
+                    raise BadScanError,'Trying to delete a parameter that doesn not exist in original scan!' #  If this isn't here, then there is no parameter to delete!!!! self.oranges['e']={}
                 keyparts=deletekey.split('_')
                 devname=keyparts[0]
                 component=keyparts[1]
                 if  component=='i':
-                        del(self.oranges[devname]['start'])
+                    del(self.oranges[devname]['start'])
                 if component=='f':
-                        del(self.oranges[devname]['stop'])
+                    del(self.oranges[devname]['stop'])
                 if component=='s':
-                        del(self.oranges[devname]['step'])
+                    del(self.oranges[devname]['step'])
                 if component=='c':
-                        del(self.oranges[devname]['center'])      
+                    del(self.oranges[devname]['center'])
 
-                    
-        
+
+
     def scanop(self,newobj):
         for key,value in newobj.__dict__.iteritems():
             if key=='scans':
@@ -380,16 +380,16 @@ class scanparser:
                 self.delete_parameter(key,value)
             else:
                 self.add_parameter(key,value)
-    
+
     def verify(self):
         """"
-        verify that the resulting scan is valid--nominally.  We will do an additional check in the code by sending it to 
+        verify that the resulting scan is valid--nominally.  We will do an additional check in the code by sending it to
         the server and trying to run it as a dry run.  If the dryrun succeeds, then we will replace the original scan, otherwise,
         we will fail...
         """
         for key,value in self.oranges.iteritems():
-            if len(value.keys())==4:                
-                raise BadScanError,'%s range has too many parameters.  Scan is ill defined'%(key,) 
+            if len(value.keys())==4:
+                raise BadScanError,'%s range has too many parameters.  Scan is ill defined'%(key,)
             elif len(value.keys())==2 and not self.scan_description.has_key('npts'):
                 raise BadScanError,'%s range is missing the npts parameter.  Scan is ill defined' %(key,)
             else:
@@ -403,7 +403,7 @@ class scanparser:
                     else:
                         raise BadScanError,'%s range is bad (note:  There is no center final scan).  Scan is ill defined' %(key,)
                 elif len(value.keys())==3:
-                    raise BadScanError,'%s range has too many parameters.  Scan is ill defined'%(key,) 
+                    raise BadScanError,'%s range has too many parameters.  Scan is ill defined'%(key,)
         if self.oranges.has_key('qx'):
             if self.oranges['qx'].has_key('type') and self.oranges['qy'].has_key('type') and self.oranges['qz'].has_key('type'):
                 if not (self.oranges['qx']['type']==self.oranges['qy']['type'] and
@@ -412,8 +412,8 @@ class scanparser:
                     raise BadScanError,'qx,qy,and qz are different types of scans!  Scan is ill defined'
             else:
                 raise BadScanError,'qx,qy,and qz are different types of scans!  Scan is ill defined'
-                
-                    
+
+
     def generate_new_description(self):
         s='Scan:'
         for key,value in self.scan_description.iteritems():
@@ -434,13 +434,13 @@ class scanparser:
                                                                    float(self.oranges['qx']['stop']),float(self.oranges['qy']['stop']),float(self.oranges['qz']['stop']))
             elif self.oranges['qx']['type']=='i':
                 s='%s:RANGE=Q=%3.5g~%3.5g~%3.5g %3.5g~%3.5g~%3.5g i'%(s,float(self.oranges['qx']['start']),float(self.oranges['qy']['start']),float(self.oranges['qz']['start']),
-                                                                   float(self.oranges['qx']['step']),float(self.oranges['qy']['step']),float(self.oranges['qz']['step']))   
+                                                                   float(self.oranges['qx']['step']),float(self.oranges['qy']['step']),float(self.oranges['qz']['step']))
             elif self.oranges['qx']['type']=='':
                 s='%s:RANGE=Q=%3.5g~%3.5g~%3.5g %3.5g~%3.5g~%3.5g'%(s,float(self.oranges['qx']['center']),float(self.oranges['qy']['center']),float(self.oranges['qz']['center']),
-                                                                   float(self.oranges['qx']['step']),float(self.oranges['qy']['step']),float(self.oranges['qz']['step']))            
+                                                                   float(self.oranges['qx']['step']),float(self.oranges['qy']['step']),float(self.oranges['qz']['step']))
         return s
-    
-    
+
+
 
 class Parseobj(object):
     def __init__(self):
@@ -452,7 +452,7 @@ class Parseobj(object):
         #self.h_s=0.1
         #self.k_s=0.2
         #self.l_s=0.3
-        
+
         #self.delete='h_f k_f l_f h_i k_i l_i'
 
 def driver(original_scan,parseobj):
@@ -462,9 +462,9 @@ def driver(original_scan,parseobj):
     myparser.scanop(parseobj)
     myparser.verify()
     s=myparser.generate_new_description()
-    return s 
-    
-    
+    return s
+
+
 class BadScanError(Exception):
     def __init__(self, value):
         self.value = value

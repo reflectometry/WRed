@@ -40,7 +40,7 @@ def plot_data(xa,ya,za,fig,nfig,colorflag=False,convolveflag=False):
     ax=fig.add_subplot(2,2,nfig)
     pc=ax.pcolormesh(xa,ya,zima,shading='interp',cmap=cmap)  # working good!
 #    pc=ax.imshow(zima,interpolation='bilinear',cmap=cmap)
-    
+
     pmin=zima.min()
     pmax=zima.max()
     #pmin=0
@@ -149,7 +149,7 @@ def readmeshfiles(mydirectory,myfilebase,myend,eflag='hhl'):
     Qx=N.array([])
     Qy=N.array([])
     Qz=N.array([])
-    
+
     Counts=N.array([])
     mon0=80000.0
     for currfile in flist:
@@ -173,7 +173,7 @@ def readmeshfiles(mydirectory,myfilebase,myend,eflag='hhl'):
 def quadform(pmat,x):
     matprod=N.dot(N.dot(x.T,pmat),x)
     return matprod
-    
+
 
 def calc_struct2(p,qx,qy):
     #pfirst=p[0:4]
@@ -189,7 +189,7 @@ def calc_struct2(p,qx,qy):
     deltay2=qy-y2_center
     delta2=N.array([deltax2,deltay2])
     matprod1=quadform(pmat,delta1)
-    matprod2=quadform(pmat,delta2)  
+    matprod2=quadform(pmat,delta2)
     #print matprod1
     Icalc=I1*N.exp(-matprod1/2)+I2*N.exp(-matprod2/2)
     eigs=N.linalg.eigvals(pmat)
@@ -205,7 +205,7 @@ def calc_struct(p,qx,qy):
     pmat=N.reshape(pfirst,(2,2))
     Iout=[]
     #pmat=pmat/N.linalg.det(pmat)
-    for i in range(len(qx)): 
+    for i in range(len(qx)):
         deltax1=qx[i]-x1_center
         deltay1=qy[i]-y1_center
         delta1=N.array([deltax1,deltay1])
@@ -213,7 +213,7 @@ def calc_struct(p,qx,qy):
         deltay2=qy[i]-y2_center
         delta2=N.array([deltax2,deltay2])
         matprod1=quadform(pmat,delta1)
-        matprod2=quadform(pmat,delta2)  
+        matprod2=quadform(pmat,delta2)
         Icalc=I1*N.exp(-matprod1/2)+I2*N.exp(-matprod2/2)
         eigs=N.linalg.eigvals(pmat)
         area=N.pi*N.sqrt(N.absolute(1/eigs[0]/eigs[1]))
@@ -223,7 +223,7 @@ def calc_struct(p,qx,qy):
         Iout.append(Icalc)
     #print len(Icalc)
     return N.array(Iout)
-    
+
 
 def cost_func(p,qx,qy,I,Ierr):
     #ycalc=gen_function(p,x)
@@ -278,16 +278,16 @@ if __name__ == '__main__':
         ax,g=plot_data(xc,yc,zc,fig,2,colorflag=True)
         pylab.show()
         sys.exit()
-    
+
     y=Z
     yerr=N.sqrt(Z)
-    
-    
+
+
     parbase={'value':0., 'fixed':0, 'limited':[0,0], 'limits':[0.,0.]}
     parinfo=[]
     for i in range(len(p0)):
         parinfo.append(copy.deepcopy(parbase))
-    for i in range(len(p0)): 
+    for i in range(len(p0)):
         parinfo[i]['value']=p0[i]
     #parinfo[1]['fixed']=0 #fix slope
     if 0:
@@ -315,9 +315,9 @@ if __name__ == '__main__':
     fa = {'y':y, 'err':yerr,
           'qx':X,
           'qy':Y}
-    
 
-    
+
+
     if 1:
         print 'annealing'
         myschedule='fast'
@@ -328,33 +328,33 @@ if __name__ == '__main__':
         p1,jmin=anneal(max_wrap,p0,args=h_args,\
                       schedule=myschedule,lower=lowerm,upper=upperm,\
                       maxeval=1000, maxaccept=None,dwell=200,maxiter=200,feps=1e-2,full_output = 0)
-    
+
     dof=len(y)-len(p1)
     fake_dof=len(y)
     chimin=(cost_func(p1,X,Y,y,yerr)**2).sum()
     chimin=chimin/dof if dof>0 else chimin/fake_dof
     ycalc=calc_struct(p1,X,Y)
     print 'chimin',chimin
-    print 'p1',p1    
-    
+    print 'p1',p1
+
     if 1:
         print 'linearizing'
-        m = mpfit(myfunctlin, p1, parinfo=parinfo,functkw=fa) 
+        m = mpfit(myfunctlin, p1, parinfo=parinfo,functkw=fa)
         print 'status = ', m.status
         print 'params = ', m.params
         p1=m.params
         covariance=m.covar
     if 0:
-        covariance=covariance*chimin #assume our model is good    
+        covariance=covariance*chimin #assume our model is good
         scale=N.abs(p1[0])
         scale_sig=N.sqrt(covariance.diagonal()[0])
         angle=p1[1]
         angle_sig=N.sqrt(covariance.diagonal()[1])
         print 'scale',scale,'scale_sig',scale_sig
         print 'angle',N.degrees(angle),'angle_sig',angle_sig,N.degrees(angle_sig)%360
-        
-    
-    
+
+
+
     #sys.exit()
     if 1:
 
@@ -365,7 +365,7 @@ if __name__ == '__main__':
         #xlabel=r'Q$ \ \ (\AA^{-1}$)'
         fig.subplots_adjust(wspace=0.5)
         fig.subplots_adjust(hspace=0.3)
-        
+
 
 
     if 1:

@@ -17,7 +17,7 @@ def calcstar():
     alphar=2*N.arcsin(3/2/N.sqrt(3+(C/A)**2))
     a=N.array([ar],'Float64')
     b=N.array([ar],'Float64')
-    c=N.array([ar],'Float64')  
+    c=N.array([ar],'Float64')
     alpha=N.array([alphar],'Float64')
     beta=N.array([alphar],'Float64')
     gamma=N.array([alphar],'Float64')
@@ -29,15 +29,15 @@ def calcstar():
     astar=lattice.astar
     alphastar=lattice.alphastar
     return astar[0],alphastar[0],lattice
-    
-    
+
+
 
 def calcd(H,K,L):
     a=N.array([A],'Float64')
     b=N.array([B],'Float64')
     c=N.array([C],'Float64')
-    
-    
+
+
     alpha=N.radians(N.array([90],'Float64'))
     beta=N.radians(N.array([90],'Float64'))
     gamma=N.radians(N.array([120],'Float64'))
@@ -75,15 +75,15 @@ def calcd(H,K,L):
     d=2*pi/Q
     print 'd',d
     return d
-    
- 
+
+
 def calc_cos2n(phi,h,k,l,d,alphastar,astar):
     """These H,K,L,should be in rhombohedral"""
     n=h**2+k**2+l**2
     r=h*k+k*l+l*h
     cosn=(n-r)*(1-N.cos(alphastar))*N.sin(phi)**2+\
         (n+2*r)*(1+2*N.cos(alphastar))*N.cos(phi)**2
-    
+
     cosn=cosn*astar**2*d**2/4/pi**2/3
     return cosn
 
@@ -98,10 +98,10 @@ def pseudocubic2hex(h,k,l):
         hh.append(vech[0])
         kh.append(vech[1])
         lh.append(vech[2])
-        
+
     return N.array(hh),N.array(kh),N.array(lh)
-    
-    
+
+
 def hex2rhomb(h,k,l):
     g=N.array([[2,1,1],[-1,1,1],[-1,-2,1]],'Float64')/3
     hr=[]
@@ -113,7 +113,7 @@ def hex2rhomb(h,k,l):
         hr.append(vecr[0])
         kr.append(vecr[1])
         lr.append(vecr[2])
-        
+
     return N.array(hr),N.array(kr),N.array(lr)
 
 def setup(Hpc,Kpc,Lpc):
@@ -122,7 +122,7 @@ def setup(Hpc,Kpc,Lpc):
         print 'hex'
         for i in range(len(Hh)):
             print Hh[i],Kh[i],Lh[i]
-    Hr,Kr,Lr=hex2rhomb(Hh,Kh,Lh)    
+    Hr,Kr,Lr=hex2rhomb(Hh,Kh,Lh)
     if 0:
         print 'rhomb'
         for i in range(len(Hr)):
@@ -166,35 +166,35 @@ def calc_struct(p,h,k,l,d,q,alphastar,astar,lattice,hh,kh,lh):
         dotp2=N.dot(vec,Fe2r)*2*pi
         sp1=s1-N.dot(s1,vec)*N.array(vec)/q[i]
         sp2=s2-N.dot(s2,vec)*N.array(vec)/q[i]
-        f=sp1*N.exp(-1.0j*dotp1)+sp2*N.exp(-1.0j*dotp2)        
+        f=sp1*N.exp(-1.0j*dotp1)+sp2*N.exp(-1.0j*dotp2)
         f2=N.abs(N.dot(f,N.conjugate(f)))
         #print 'f1',f,f2
-        
+
         vec=[kh[i],hh[i],lh[i]]
         dotp1=N.dot(vec,Fe1r)*2*pi
         dotp2=N.dot(vec,Fe2r)*2*pi
-        f=sp1*N.exp(-1.0j*dotp1)+sp2*N.exp(-1.0j*dotp2)    
+        f=sp1*N.exp(-1.0j*dotp1)+sp2*N.exp(-1.0j*dotp2)
         f2=f2+N.abs(N.dot(f,N.conjugate(f)))
         #print 'f2',f,f2
-        
+
         vec=[kh[i],-hh[i],lh[i]]
         dotp1=N.dot(vec,Fe1r)*2*pi
         dotp2=N.dot(vec,Fe2r)*2*pi
-        f=sp1*N.exp(-1.0j*dotp1)+sp2*N.exp(-1.0j*dotp2)    
+        f=sp1*N.exp(-1.0j*dotp1)+sp2*N.exp(-1.0j*dotp2)
         f2=f2+N.abs(N.dot(f,N.conjugate(f)))
         #print 'f3',f,f2
-        
+
         #f2=f2/3
         #print 'f2inal',f2
         flist.append(f2)
     flist=N.array(flist)*scale**2
-    
+
     ff=mgnfacFe3psquared(q/4/pi)
     #print 'ff',ff
     Bf=.005
     flist=flist*ff*N.exp(-Bf*q**2/4/pi**2)
-        
-        
+
+
     return flist
 
 
@@ -225,7 +225,7 @@ def myfunctlin(p, fjac=None,Hr=None,Kr=None,Lr=None\
     return [status, cost_func(p,Hr,Kr,Lr,d,q,alphastar,astar,lattice,Hh,Kh,Lh,y,err)]
 
 
-    
+
 if __name__=="__main__":
     p0=N.array([100,N.radians(30),N.radians(30),N.radians(-30),N.radians(30)],'Float64')
     if 0:
@@ -272,38 +272,38 @@ if __name__=="__main__":
         print 'data'
         for i in range(len(Hpc)):
             print Hpc[i],Kpc[i],Lpc[i],q[i],y[i],yerr[i]
-        
+
         #Hpc=N.array([.5,.5,.5,.5,.5],'float64')
         #Kpc=N.array([.5,-1.5,2.5,-1.5,1.5],'float64')
         #Lpc=N.array([2.5,.5,1.5,-1.5,-.5],'float64')
         #y=N.array([18.4,55,30,13,63],'float64')
         #yerr=N.array([2.0,5.0,1.0,1,4],'float64')
-        
-    
-    
-    
-    
+
+
+
+
+
     if 0:
         y=calc_struct(p0,Hr,Kr,Lr,d,q,alphastar,astar,lattice,Hh,Kh,Lh)
         yerr=N.ones(y.shape,'Float64')
-        
-    
+
+
     parbase={'value':0., 'fixed':0, 'limited':[0,0], 'limits':[0.,0.]}
     parinfo=[]
     for i in range(len(p0)):
         parinfo.append(copy.deepcopy(parbase))
-    for i in range(len(p0)): 
+    for i in range(len(p0)):
         parinfo[i]['value']=p0[i]
     parinfo[1]['fixed']=0 #fix slope
     parinfo[1]['limited']=[1,1]
     parinfo[1]['limits']=[0,pi]
-    
+
     parinfo[2]['limited']=[1,1]
     parinfo[2]['limits']=[0,pi/2]
-    
+
     parinfo[3]['limited']=[1,1]
     parinfo[3]['limits']=[0,2*pi]
-    
+
     parinfo[4]['limited']=[1,1]
     parinfo[4]['limits']=[0,pi]
     fa = {'y':y, 'err':yerr,
@@ -318,7 +318,7 @@ if __name__=="__main__":
           'Hh':Hh,
           'Kh':Kh,
           'Lh':Lh}
-    
+
     lowerm=[0,0,0,0,0]
     upperm=[100,pi,pi/2,2*pi,pi]
     p0,jmin=anneal(chisq_an,p0,args=(Hr,Kr,Lr,d,q,alphastar,astar,lattice,Hh,Kh,Lh,y,yerr),\
@@ -327,19 +327,19 @@ if __name__=="__main__":
     dof=len(y)-len(p0)
     fake_dof=len(y)
     chimin=(cost_func(p0,Hr,Kr,Lr,d,q,alphastar,astar,lattice,Hh,Kh,Lh,y,yerr)**2).sum()
-    chimin=chimin/dof if dof>0 else chimin/fake_dof 
+    chimin=chimin/dof if dof>0 else chimin/fake_dof
     print 'p0_anneal',p0[0],N.degrees(p0[1:])
     print 'chi_anneal', chimin
-    
-    
-    
-    
-    m = mpfit(myfunctlin, p0, parinfo=parinfo,functkw=fa) 
+
+
+
+
+    m = mpfit(myfunctlin, p0, parinfo=parinfo,functkw=fa)
     print 'status = ', m.status
     print 'params = ', m.params
     p1=m.params
     covariance=m.covar
-    
+
     dof=len(y)-len(p1)
     fake_dof=len(y)
     chimin=(cost_func(p1,Hr,Kr,Lr,d,q,alphastar,astar,lattice,Hh,Kh,Lh,y,yerr)**2).sum()
@@ -347,7 +347,7 @@ if __name__=="__main__":
     ycalc=calc_struct(p1,Hr,Kr,Lr,d,q,alphastar,astar,lattice,Hh,Kh,Lh)
     print 'chimin',chimin
     print 'p1',p1
-    covariance=covariance*chimin #assume our model is good       
+    covariance=covariance*chimin #assume our model is good
     scale=N.abs(p1[0])
     scale_sig=N.sqrt(covariance.diagonal()[0])
     angle=p1[1]
@@ -377,8 +377,8 @@ if __name__=="__main__":
     print 's1',s1
     print 's2',s2
     pylab.errorbar(q,y,yerr,marker='s',linestyle='None',mfc='black',mec='black',ecolor='black')
-    pylab.plot(q,ycalc,marker='s',linestyle='None',mfc='red')       
-    pylab.show()    
+    pylab.plot(q,ycalc,marker='s',linestyle='None',mfc='red')
+    pylab.show()
 
 
     #f=calc_struct(p0,Hr,Kr,Lr,d,q,alphastar,astar,lattice,Hh,Kh,Lh)
@@ -386,8 +386,3 @@ if __name__=="__main__":
     #Hh=N.array([0,1,1,2],'float64')
     #Kh=N.array([1,1,1,-1],'float64')
     #Lh=N.array([2,1,-2,-1],'float64')
-
-    
-    
-    
-    

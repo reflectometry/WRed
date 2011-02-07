@@ -6,13 +6,13 @@ eps=1e-3
 pi=N.pi
 
 def autovectorized(f):
-     """Function decorator to do vectorization only as necessary.
-     vectorized functions fail for scalar inputs."""
-     def wrapper(input):
-         if N.isscalar(input)==False:
-             return N.vectorize(f)(input)
-         return f(input)
-     return wrapper
+    """Function decorator to do vectorization only as necessary.
+    vectorized functions fail for scalar inputs."""
+    def wrapper(input):
+        if N.isscalar(input)==False:
+            return N.vectorize(f)(input)
+        return f(input)
+    return wrapper
 
 
 
@@ -20,11 +20,11 @@ def autovectorized(f):
 def myradians(x):
     return math.radians(x)
 
-#vecradians = N.vectorize(myradians, otypes=[double]) 
+#vecradians = N.vectorize(myradians, otypes=[double])
 
 def sign(x):
     if x>0:
-         ret=1
+        ret=1
     if x<0:
         ret=-1
     if x==0:
@@ -51,7 +51,7 @@ def blkdiag(g):
         for x in range(lenx):
             for y in range(leny):
                 gout[x+offset,y+offset]=currblock[x,y]
-     #           print gout
+    #           print gout
         offset=offset+lenx
     return gout
 
@@ -63,15 +63,15 @@ def similarity_transform(A,B):
 
 class instrument:
     def __init__(self):
-            self.tau_list={'pg(002)':1.87325, \
-                            'pg(004)':3.74650, \
-                            'ge(111)':1.92366, \
-                            'ge(220)':3.14131, \
-                            'ge(311)':3.68351, \
-                            'be(002)':3.50702, \
-                            'pg(110)':5.49806}
-            #self.tau=self.tau_list[tau]
-            return
+        self.tau_list={'pg(002)':1.87325, \
+                        'pg(004)':3.74650, \
+                        'ge(111)':1.92366, \
+                        'ge(220)':3.14131, \
+                        'ge(311)':3.68351, \
+                        'be(002)':3.50702, \
+                        'pg(110)':5.49806}
+        #self.tau=self.tau_list[tau]
+        return
     def get_tau(self,tau):
         return self.tau_list[tau]
 
@@ -118,7 +118,7 @@ class lattice:
             alpha=self.alphastar
             beta=self.betastar
             gamma=self.gammastar
-        
+
         s=x1*x2*a**2+y1*y2*b**2+z1*z2*c**2+\
            (x1*y2+x2*y1)*a*b*N.cos(gamma)+\
            (x1*z2+x2*z1)*a*c*N.cos(beta)+\
@@ -159,9 +159,9 @@ class lattice:
     def angle(self, x1, y1, z1, x2, y2, z2, lattice):
         "Calculate the angle between vectors in real and reciprocal space"
         "xi,yi,zi are the fractional cell coordinates of the vectors"
-        phi=N.arccos(self.scalar(x1, y1, z1, x2, y2, z2, lattice)/self.modvec(x1, y1, z1, lattice)/self.modvec(x1, y1, z1, lattice))    
+        phi=N.arccos(self.scalar(x1, y1, z1, x2, y2, z2, lattice)/self.modvec(x1, y1, z1, lattice)/self.modvec(x1, y1, z1, lattice))
         return phi
-    
+
     def modvec(self, x, y, z, lattice):
         "Calculates modulus of a vector defined by its fraction cell coordinates"
         "or Miller indexes"
@@ -245,18 +245,18 @@ class lattice:
 #        print 'orient1'
 #        print orient1
 #        print 'orient2 '
-#        print orient2        
+#        print orient2
         modx=self.modvec(orient1[0, :], orient1[1, :], orient1[2, :], 'latticestar')
         x=N.copy(orient1)
         x[0, :]=x[0, :]/modx; # First unit basis vector
         x[1, :]=x[1, :]/modx;
         x[2, :]=x[2, :]/modx;
-        
+
         proj=self.scalar(orient2[0, :], orient2[1, :], orient2[2, :], \
                     x[0, :], x[1, :], x[2, :], 'latticestar')
-        
+
         y=N.copy(orient2)
-        y[0, :]=y[0, :]-x[0, :]*proj; 
+        y[0, :]=y[0, :]-x[0, :]*proj;
         y[1, :]=y[1, :]-x[1, :]*proj;
         y[2, :]=y[2, :]-x[2, :]*proj;
 
@@ -277,38 +277,38 @@ class lattice:
             y[0, :]=y[0, :]/mody; # Second unit basis vector
             y[1, :]=y[1, :]/mody;
             y[2, :]=y[2, :]/mody;
-    
+
             z=N.copy(y);
-    
+
             z[0, :]=x[1, :]*y[2, :]-y[1, :]*x[2, :];
             z[1, :]=x[2, :]*y[0, :]-y[2, :]*x[0, :];
             z[2, :]=-x[1, :]*y[0, :]+y[1, :]*x[0, :];
-    
+
             proj=self.scalar(z[0, :], z[1, :], z[2, :], x[0, :], x[1, :], x[2, :], 'latticestar');
-    
-            z[0, :]=z[0, :]-x[0, :]*proj; 
+
+            z[0, :]=z[0, :]-x[0, :]*proj;
             z[1, :]=z[1, :]-x[1, :]*proj;
             z[2, :]=z[2, :]-x[2, :]*proj;
-    
+
             proj=self.scalar(z[0, :], z[1, :], z[2, :], y[0, :], y[1, :], y[2, :], 'latticestar');
-    
-            z[0, :]=z[0, :]-y[0, :]*proj; 
+
+            z[0, :]=z[0, :]-y[0, :]*proj;
             z[1, :]=z[1, :]-y[1, :]*proj;
             z[2, :]=z[2, :]-y[2, :]*proj;
-    
+
             modz=self.modvec(z[0, :], z[1, :], z[2, :], 'latticestar');
-    
+
             z[0, :]=z[0, :]/modz; #% Third unit basis vector
             z[1, :]=z[1, :]/modz;
-            z[2, :]=z[2, :]/modz;     
-            
+            z[2, :]=z[2, :]/modz;
+
             self.x=x
             self.y=y
-            self.z=z    
+            self.z=z
         except ValueError:
-            print 'ORIENTATION VECTORS ARE COLLINEAR x,y,z not set'    
+            print 'ORIENTATION VECTORS ARE COLLINEAR x,y,z not set'
         return
-    
+
     def S2R(self, qx, qy, qz):
         "Given cartesian coordinates of a vector in the S System, calculate its Miller indexes."
         x=self.x
@@ -319,7 +319,7 @@ class lattice:
         L=qx*x[2, :]+qy*y[2, :]+qz*z[2, :];
         q=N.sqrt(qx**2+qy**2+qz**2);
         return H, K, L, q
-    
+
     def R2S(self, H, K, L):
         "Given reciprocal-space coordinates of a vecotre, calculate its coordinates in the Cartesian space."
         x=self.x
@@ -330,7 +330,7 @@ class lattice:
         qz=self.scalar(H, K, L, z[0, :], z[1, :], z[2, :], 'latticestar');
         q=self.modvec(H, K, L, 'latticestar');
         return qx, qy, qz, q
-    
+
     def ResMat(self, Q, W,EXP):
         CONVERT1=0.4246609*N.pi/60/180;
         CONVERT2=2.072;
@@ -391,7 +391,7 @@ class lattice:
             L1=1;
             L1mon=1;
             L2=1;
-            L3=1;        
+            L3=1;
             monorv=1e6;
             monorh=1e6;
             anarv=1e6;
@@ -425,7 +425,7 @@ class lattice:
             if 'depth' in mono:
                 monod=mono.depth**2;
             mshape=N.diag([monod,monow,monoh]);
-            if 'width' in ana: 
+            if 'width' in ana:
                 anaw=ana['width']**2;
             if 'height' in ana:
                 anah=ana['height']**2;
@@ -457,12 +457,12 @@ class lattice:
             myinstrument=instrument()
             taum=myinstrument.get_tau(mono['tau']);
             taua=myinstrument.get_tau(ana['tau']);
-        
+
             horifoc=-1;
             if 'horifoc' in EXP[ind]:
                 horifoc=EXP[ind]['horifoc'];
-            if horifoc==1: 
-                alpha[2]=alpha[2]*N.sqrt(8*N.log(2)/12); 
+            if horifoc==1:
+                alpha[2]=alpha[2]*N.sqrt(8*N.log(2)/12);
 #            %---------------------------------------------------------------------------------------------
 #            %Calculate angles and energies
             w=W[ind];
@@ -470,38 +470,38 @@ class lattice:
             ei=efixed;
             ef=efixed;
             if infin>0:
-                 ef=efixed-w
+                ef=efixed-w
             else:
-                 ei=efixed+w; 
+                ei=efixed+w;
             ki = N.sqrt(ei/CONVERT2);
             kf = N.sqrt(ef/CONVERT2);
-            thetam=N.arcsin(taum/(2*ki))*sign(epm); 
-            thetaa=N.arcsin(taua/(2*kf))*sign(ep); 
+            thetam=N.arcsin(taum/(2*ki))*sign(epm);
+            thetaa=N.arcsin(taua/(2*kf))*sign(ep);
             s2theta=-N.arccos( (ki**2+kf**2-q**2)/(2*ki*kf));# %2theta sample
             thetas=s2theta/2;
             phi=N.arctan2(-kf*N.sin(s2theta), ki-kf*N.cos(s2theta)); #%Angle from ki to Q
-        
+
  #           %---------------------------------------------------------------------------------------------
 #            %Calculate beam divergences defined by neutron guides
             pi=N.pi
             if alpha[0]<0:
-                  alpha[0]=-alpha[0]*2*0.427/ki*pi/180; 
+                alpha[0]=-alpha[0]*2*0.427/ki*pi/180;
             if alpha[1]<0:
-                  alpha[1]=-alpha[1]*2*0.427/ki*pi/180; 
+                alpha[1]=-alpha[1]*2*0.427/ki*pi/180;
             if alpha[2]<0:
-                  alpha[2]=-alpha[2]*2*0.427/ki*pi/180; 
+                alpha[2]=-alpha[2]*2*0.427/ki*pi/180;
             if alpha[3]<0:
-                  alpha[3]=-alpha[3]*2*0.427/ki*pi/180; 
-            
+                alpha[3]=-alpha[3]*2*0.427/ki*pi/180;
+
             if beta[0]<0:
-                  beta[0]=-beta[0]*2*0.427/ki*pi/180; 
+                beta[0]=-beta[0]*2*0.427/ki*pi/180;
             if beta[1]<0:
-                  beta[1]=-beta[1]*2*0.427/ki*pi/180; 
+                beta[1]=-beta[1]*2*0.427/ki*pi/180;
             if beta[2]<0:
-                  beta[2]=-beta[2]*2*0.427/ki*pi/180; 
+                beta[2]=-beta[2]*2*0.427/ki*pi/180;
             if beta[3]<0:
-                  beta[3]=-beta[3]*2*0.427/ki*pi/180; 
-            
+                beta[3]=-beta[3]*2*0.427/ki*pi/180;
+
 #            %---------------------------------------------------------------------------------------------
 #            %Rededine sample geometry
             psi=thetas-phi;# %Angle from sample geometry X axis to Q
@@ -511,13 +511,13 @@ class lattice:
             rot[0,1]=N.sin(psi);
             rot[1,0]=-N.sin(psi);
             rot[2,2]=1;
-            sshape=N.dot(rot.transpose(),N.dot(sshape,rot)); #matrix multiplication?   
+            sshape=N.dot(rot.transpose(),N.dot(sshape,rot)); #matrix multiplication?
 #            %---------------------------------------------------------------------------------------------
-#            %Definition of matrix G    
+#            %Definition of matrix G
             G=1.0/N.array([alpha[0],alpha[1],beta[0],beta[1],alpha[2],alpha[3],beta[2],beta[3]])**2;
             G=N.diag(G);
 #            %---------------------------------------------------------------------------------------------
-#            %Definition of matrix F    
+#            %Definition of matrix F
             F=1.0/N.array([etam,etamv,etaa,etaav])**2;
             F=N.diag(F);
 #            %---------------------------------------------------------------------------------------------
@@ -556,7 +556,7 @@ class lattice:
             B[3,3]=-2*CONVERT2*kf;
 #            %---------------------------------------------------------------------------------------------
 #            %Definition of matrix S
-            Sinv=blkdiag([bshape,mshape,sshape,ashape,dshape]);# %S-1 matrix        
+            Sinv=blkdiag([bshape,mshape,sshape,ashape,dshape]);# %S-1 matrix
             S=N.linalg.inv(Sinv);
 #            %---------------------------------------------------------------------------------------------
 #            %Definition of matrix T
@@ -619,9 +619,9 @@ class lattice:
                 #print HF
                 if horifoc>0:
                     HF=N.linalg.inv(HF);
-                    HF[4,4]=(1.0/(kf*alpha[2]))**2; 
-                    HF[4,3]=0; 
-                    HF[3,4]=0; 
+                    HF[4,4]=(1.0/(kf*alpha[2]))**2;
+                    HF[4,3]=0;
+                    HF[3,4]=0;
                     HF[3,3]=(N.tan(thetaa)/(etaa*kf))**2;
                     HF=N.linalg.inv(HF);
                 Minv=similarity_transform(B,HF)#; %Cooper-Nathans
@@ -648,13 +648,13 @@ class lattice:
             RM_[1,0]=M[1,0];
             RM_[0,1]=M[0,1];
             RM_[1,1]=M[1,1];
-            
+
             RM_[0,2]=M[0,3];
             RM_[2,0]=M[3,0];
             RM_[2,2]=M[3,3];
             RM_[2,1]=M[3,1];
             RM_[1,2]=M[1,3];
-            
+
             RM_[0,3]=M[0,2];
             RM_[3,0]=M[2,0];
             RM_[3,3]=M[2,2];
@@ -664,7 +664,7 @@ class lattice:
  #           %Calculation of prefactor, normalized to source
             #print 'RM_'
             #print RM_
-            Rm=ki**3/N.tan(thetam); 
+            Rm=ki**3/N.tan(thetam);
             Ra=kf**3/N.tan(thetaa);
             #print 'Rm'
             #print Rm
@@ -695,7 +695,7 @@ class lattice:
                 t[0,6]=1./(2*L1mon);
                 t[1,1]=-1./(2*L0*N.sin(thetam));
                 t[1,4]=(1./L0+1./L1mon-2*N.sin(thetam)/monorv)/(2*N.sin(thetam));
-                sinv=blkdiag([bshape,mshape,monitorshape]);# %S-1 matrix        
+                sinv=blkdiag([bshape,mshape,monitorshape]);# %S-1 matrix
                 s=N.linalg.inv(sinv);
                 d[0,0]=-1./L0;
                 d[0,2]=-N.cos(thetam)/L0;
@@ -716,7 +716,7 @@ class lattice:
                 R0_=R0_*ki; #%1/ki monitor efficiency
                 #print 'R01', R0_
                 #print 'Rmon', Rmon
-                
+
 #            %---------------------------------------------------------------------------------------------
 #            %Transform prefactor to Chesser-Axe normalization
             R0_=R0_/(2*pi)**2*N.sqrt(N.linalg.det(RM_));
@@ -743,7 +743,7 @@ class lattice:
                 toa=(taua/2)/N.sqrt(kf**2-(taua/2)**2);
                 smallest=alpha[3];
                 if alpha[3]>alpha[2]:
-                     smallest=alpha[2]
+                    smallest=alpha[2]
                 Qdsint=KQ*toa;
                 dth=(N.arange(201)/200)*N.sqrt(2*N.log(2))*smallest;
                 wdth=N.exp(-dth**2/2./etaa**2);
@@ -755,7 +755,7 @@ class lattice:
             R0[ind]=R0_;
             RM[:,:,ind]=RM_[:,:];
         return R0, RM
-    
+
     def ResMatS(self,H,K,L,W,EXP):
 # [len,H,K,L,W,EXP]=CleanArgs(H,K,L,W,EXP);
         x=self.x
@@ -765,10 +765,10 @@ class lattice:
         uq=N.zeros((3,self.npts),'d')
         uq[0,:]=H/Q;  #% Unit vector along Q
         uq[1,:]=K/Q;
-        uq[2,:]=L/Q;        
+        uq[2,:]=L/Q;
         xq=self.scalar(x[0,:],x[1,:],x[2,:],uq[0,:],uq[1,:],uq[2,:],'latticestar');
         yq=self.scalar(y[0,:],y[1,:],y[2,:],uq[0,:],uq[1,:],uq[2,:],'latticestar');
-        zq=0; # %scattering vector assumed to be in (self.orient1,self.orient2) plane;        
+        zq=0; # %scattering vector assumed to be in (self.orient1,self.orient2) plane;
         tmat=N.zeros((4,4,self.npts)); #%Coordinate transformation matrix
         tmat[3,3,:]=1;
         tmat[2,2,:]=1;
@@ -776,11 +776,11 @@ class lattice:
         tmat[0,1,:]=yq;
         tmat[1,1,:]=xq;
         tmat[1,0,:]=-yq;
-        
+
         RMS=N.zeros((4,4,self.npts));
         rot=N.zeros((3,3));
         EXProt=EXP;
-        
+
 #        %Sample shape matrix in coordinate system defined by scattering vector
         for i in range(self.npts):
             sample=EXP[i]['sample'];
@@ -791,12 +791,12 @@ class lattice:
                 rot[1,1]=tmat[1,1,i];
                 rot[2,2]=tmat[2,2,i];
                 EXProt[i]['sample']['shape']=N.dot(rot,N.dot(sample['shape'],rot.T));
-        
+
         R0,RM= self.ResMat(Q,W,EXProt)
-        
+
         for i in range(self.npts):
-           RMS[:,:,i]=N.dot((tmat[:,:,i]).transpose(),N.dot(RM[:,:,i],tmat[:,:,i]));
-        
+            RMS[:,:,i]=N.dot((tmat[:,:,i]).transpose(),N.dot(RM[:,:,i],tmat[:,:,i]));
+
         mul=N.zeros((4,4));
         e=N.eye(4,4);
         for i in range(self.npts):
@@ -809,7 +809,7 @@ class lattice:
                     R0[i]=R0[i]/N.sqrt(N.linalg.det(e/RMS[:,:,i]))*N.sqrt(N.linalg.det(e/mul+e/RMS[:,:,i]));
                     RMS[:,:,i]=e/(e/mul+e/RMS[:,:,i]);
         return R0, RMS
-       
+
 class TestLattice(unittest.TestCase):
 
     def setUp(self):
@@ -823,7 +823,7 @@ class TestLattice(unittest.TestCase):
         orient2=N.array([[0,1,1]],'d')
         self.fixture = lattice(a=a,b=b,c=c,alpha=alpha,beta=beta,gamma=gamma,\
                                orient1=orient1,orient2=orient2)
-    
+
     def test_astar(self):
         self.assertAlmostEqual(self.fixture.astar[0],1.0,2,'astar Not equal to '+str(1.0))
     def test_bstar(self):
@@ -846,14 +846,14 @@ class TestLattice(unittest.TestCase):
     def test_gstar(self):
         #print self.fixture.gstar
         self.assertAlmostEqual(self.fixture.gstar[:,:,0][0,0],1.0*N.eye(3)[0,0] ,2,'gstar Not equal to '+str(1.0 ))
- 
+
     def test_StandardSystem_x(self):
  #       #print self.fixture.gstar
         self.assertAlmostEqual(self.fixture.x[0],1.0 ,2,'Standard System x Not equal to '+str(1.0 ))
- 
-    
-      
-                               
+
+
+
+
 #    def test_zeroes(self):
 #        self.assertEqual(0 + 0, 0)
 #        self.assertEqual(5 + 0, 5)
@@ -867,7 +867,7 @@ class TestLattice(unittest.TestCase):
 #        self.assertEqual(-19 + 20, 1)
 #        self.assertEqual(999 + -1, 998)
 #        self.assertEqual(-300.1 + -400.2, -700.3)
-#        
+#
 
 #if __name__=="__main__":
     if 1:
@@ -898,7 +898,7 @@ class TestLattice(unittest.TestCase):
         EXP['infix']=-1 #positive for fixed incident energy
         EXP['efixed']=14.7
         EXP['method']=0
-        setup=[EXP]  
+        setup=[EXP]
         R0,RMS=mylattice.ResMatS(H,K,L,W,setup)
         print 'RMS'
         print RMS.transpose()[0]

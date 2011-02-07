@@ -19,7 +19,7 @@ def f(x,a):
 
 def integrand2(phi,th,L,th_hk):
     return N.exp(-4*pi*L**2/wavelength**2*(sin(th)*cos(phi)-sin(th_hk))**2)
- 
+
 
 
 
@@ -78,7 +78,7 @@ def readfiles(flist,mon0=None):
         #tth=N.concatenate((tth,N.array(mydata.data['a4'])))
         #Counts=N.concatenate((Counts,N.array(mydata.data['counts'])*mon0/mon))
         #T=N.concatenate((T,N.array(mydata.data['temp'])))
-        
+
         i=i+1
     #xa,ya,za=prep_data2(Qx,Qy,Counts);
     #print 'xa',xa.min(),xa.max()
@@ -89,7 +89,7 @@ def readfiles(flist,mon0=None):
 if __name__=="__main__":
     C=100
     #h=.526; k=1.0
-    h=0.5; k=0.5; 
+    h=0.5; k=0.5;
     L=50.0
     p=N.array([C,L,h,k],'Float64')
     th=N.arange(22,32,.2)/2

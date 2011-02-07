@@ -18,7 +18,7 @@ def findpeaktest():
     y = np.dot(np.abs(p[0]), np.exp(np.dot(-0.5, matdiv(x-p[1], p[2])**2.)))
     findpeak(x, y, 1.)
     return []
-    return 
+    return
 def findpeak(x, y, npeaks):
 
     # Local Variables: best_index, no_width, this_max, increment, ymin, yd2, half_height, ymax, width, wh_cross, fwhm, ysupport, n_crossings, ny, npeaks, elevation, F, full_height, yd, xsupport, y, value_sign, max_index, b, incrementr, g, i, no_widthl, n, p, no_widthr, indices, x, diff_sign, incrementl, xpeaks
@@ -47,7 +47,7 @@ def findpeak(x, y, npeaks):
     for n in np.arange((F+1.)/2., (length(x)-(F+1.)/2.)+1):
         yd[int(n)-1] = np.dot(g[:,1].conj().T, y[int(n-(F+1.)/2.+1.)-1:n+(F+1.)/1.0.].conj().T)
         yd2[int(n)-1] = np.dot(g[:,2].conj().T, y[int(n-(F+1.)/2.+1.)-1:n+(F+1.)/1.0.].conj().T)
-        
+
     n_crossings = 0.
     #%npeaks=3;
     ny = length(yd)
@@ -68,7 +68,7 @@ def findpeak(x, y, npeaks):
     ymin = matcompat.max(ymax)
     for i in np.arange(0., (npeaks-1.)+1):
         #%this_max = max(ymax,max_index)
-        
+
     indices = best_index
     xsupport = np.arange(1., (length(x))+1)
     xpeaks = interp1(xsupport, x, indices)
@@ -81,14 +81,14 @@ def findpeak(x, y, npeaks):
         incrementr = 0.
         while elevation > half_height:
             #% go down the right side of the peak
-            
+
         #%now go to the left side of the peak
         #% Descend down the peak until you get lower than the half height
         elevation = full_height
         incrementl = 0.
         while elevation > half_height:
             #% go down the right side of the peak
-            
+
         no_width = matcompat.max(no_widthl, no_widthr)
         increment = matcompat.max(np.abs(incrementl), incrementr)
         #%     no_width_found:
@@ -96,22 +96,22 @@ def findpeak(x, y, npeaks):
             width = np.dot(2.0, x[int(ny)-1]-xpeaks[int(i)-1])
         else:
             width = np.dot(2.0, x[int((np.floor(indices[int(i)-1])+increment))-1]-xpeaks[int(i)-1])
-            
-        
+
+
         if i == 1.:
             fwhm = width
         else:
             fwhm = np.array(np.hstack((fwhm, width)))
-            
-        
+
+
         #%plot([(xpeaks(i)-fwhm(i)/2) (xpeaks(i)+fwhm(i)/2)],[half_height half_height]); hold on;
-        
+
     #%hold off;
     #%b=length(fwhm);
     #%fwhm=fwhm(b);
     p = np.array(np.hstack((xpeaks, np.abs(fwhm))))
     return []
-    
+
     return [p]
 def fp_gaussian(x, area, center, fwhm):
 

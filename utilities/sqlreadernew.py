@@ -93,7 +93,7 @@ class sqlreader:
                 print 'inserted values into table %s'%(tablename,)
             except sqlite3.OperationalError:
                 print 'could not insert value into table %s'%(tablename,)
-                
+
         return
     def create_tables(self):
         s='create table catalog(file_id integer primary key, file_name varchar(12),sample_id integer,filetype integer)'
@@ -118,8 +118,8 @@ class sqlreader:
         sqlexecute(self.conn,s)
         print 'metadata table created'
         return
- 
-    
+
+
     def insert_file(self,myfilestr=r'c:\sqltest\\mnl1p004.ng5'):
         mydatareader=readncnr.datareader()
         mydata=mydatareader.readbuffer(myfilestr)
@@ -129,14 +129,14 @@ class sqlreader:
         splacevalues=(mydata.metadata['file_info']['filename'],)
         file_id=sqlexecute(self.conn,s,splacevalues)
         print 'catalog instantiated'
-        
+
         for tablename, tablevalues in mydata.data.iteritems():
             s='insert into fields VALUES(NULL,?,?)'
             sparams=(file_id, tablename)
             field_id=sqlexecute(self.conn,s,sparams)
             print 'inserted %s into field table'%(tablename,)
             if isinstance(tablevalues,list):
-                for point_num in N.arange(len(tablevalues)):   
+                for point_num in N.arange(len(tablevalues)):
                     if tablename=='detector':
                         s='insert into measurement VALUES (NULL,?,?,?,?,?)'
                         sparams=(file_id,field_id,point_num,tablevalues[point_num],N.sqrt(tablevalues[point_num]))
@@ -163,16 +163,16 @@ class sqlreader:
         sparam=field_id[0]
         #print s
         mypoints=sqlselect(self.conn,s,sparam)
-        #print 'selected'    
+        #print 'selected'
         #print mypoints
         #print "done"
         return mypoints
-    
+
 if __name__=="__main__":
     mysqlreader=sqlreader(mydatbstr)
     mysqlreader.insert_file(testq1)
     #mysqlreader.insert_file(testq2)
-    
+
 
     if 1:
         mypoints=mysqlreader.select('qx')

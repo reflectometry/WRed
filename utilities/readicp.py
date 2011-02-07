@@ -2,16 +2,16 @@ import numpy as N
 import  pylab
 
 def get_tokenized_line(myfile):
-        lineStr=myfile.readline()
-        strippedLine=lineStr.rstrip()
-        tokenized=strippedLine.split()
-        return tokenized
+    lineStr=myfile.readline()
+    strippedLine=lineStr.rstrip()
+    tokenized=strippedLine.split()
+    return tokenized
 
 
 class datareader:
     def __init__(self,myfilestr=None):
         self.myfilestr=myfilestr
-        
+
     def readimotors(self,myfile):
     #motor1
         tokenized=get_tokenized_line(myfile)
@@ -28,7 +28,7 @@ class datareader:
         motor2['step']=float(tokenized[2])
         motor2['end']=float(tokenized[3])
         self.header['motor2']=motor2
-        
+
     #motor3
         tokenized=get_tokenized_line(myfile)
     #    print tokenized
@@ -63,7 +63,7 @@ class datareader:
         #skip line describing Motor Start Step End
         lineStr = myfile.readline()
         return
-    
+
     def readiheader(self,myfile):
     #experiment info
         tokenized=get_tokenized_line(myfile)
@@ -81,14 +81,14 @@ class datareader:
         self.header['mosaic']['mosaic_monochromator']=float(tokenized[4])
         self.header['mosaic']['mosaic_sample']=float(tokenized[5])
         self.header['mosaic']['mosaic_analyzer']=float(tokenized[6])
-        
+
         self.header['energy_info']={}
         self.header['energy_info']['wavelength']=float(tokenized[7])
-        
+
         self.header['temperature_info']={}
         self.header['temperature_info']['Tstart']=float(tokenized[8])
         self.header['temperature_info']['Tstep']=float(tokenized[9])
-        
+
         self.header['magnetic_field']={}
         self.header['magnetic_field']['Hfield']=float(tokenized[10])
         #print tokenized
@@ -113,19 +113,19 @@ class datareader:
 ##        mosaic.append(float(tokenized[6]))
 ##        self.header['mosaic']=mosaic
 
-        
+
         self.header['collimations']={}
         self.header['collimations']['coll1']=float(tokenized[0])
         self.header['collimations']['coll2']=float(tokenized[1])
         self.header['collimations']['coll3']=float(tokenized[2])
         self.header['collimations']['coll4']=float(tokenized[3])
-        
+
         self.header['mosaic']={}
         self.header['mosaic']['mosaic_monochromator']=float(tokenized[4])
         self.header['mosaic']['mosaic_sample']=float(tokenized[5])
         self.header['mosaic']['mosaic_analyzer']=float(tokenized[6])
 
-        
+
         self.header['orient1']={}
         self.header['orient1']['h']=float(tokenized[7])
         self.header['orient1']['k']=float(tokenized[8])
@@ -135,7 +135,7 @@ class datareader:
         self.header['orient2']['h']=float(tokenized[11])
         self.header['orient2']['k']=float(tokenized[12])
         self.header['orient2']['l']=float(tokenized[13])
-        
+
 ##        orient1.append(float(tokenized[7]))
 ##        orient1.append(float(tokenized[8]))
 ##        orient1.append(float(tokenized[9]))
@@ -215,7 +215,7 @@ class datareader:
             self.columndict[field]=[]
             #self.columndict['columnlist'].append(field)
             self.columnlist.append(field)
-        return 
+        return
 
     def determinefiletype(self,myfile):
     #get first line
@@ -227,25 +227,25 @@ class datareader:
         self.header['count_info']['monitor_prefactor']=float(tokenized[7])
         self.header['count_info']['monitor']=self.header['count_info']['monitor_base']*self.header['count_info']['monitor_prefactor']
         self.header['count_info']['count_type']=tokenized[8].strip("'")
-                
+
         self.header['file_info']={}
         self.header['file_info']['filename']=tokenized[0].strip("'")
         self.header['file_info']['filebase']=self.header['file_info']['filename'][0:5]
         self.header['file_info']['scantype']=tokenized[5].strip("'")
         self.header['file_info']['instrument']=self.header['file_info']['filename'].split('.')[1]
-        
+
         self.header['timestamp']={}
         self.header['timestamp']['month']=tokenized[1].strip("\'")
         self.header['timestamp']['day']=tokenized[2].strip("\'")
         self.header['timestamp']['year']=tokenized[3].strip("\'")
         self.header['timestamp']['time']=tokenized[4].strip("\'")
-        
+
         #I put this away for now, because it is not reliable about the actual number of points in the file, just the desired number
         #self.header['npts']=int(tokenized[9])
-        
-        
-        
-        #skip over names of fields 
+
+
+
+        #skip over names of fields
         lineStr=myfile.readline()
         #comment and filename
         self.header['file_info']['comment']=myfile.readline().rstrip()
@@ -254,7 +254,7 @@ class datareader:
     def readcolumns(self,myfile):
         self.get_columnheaders(myfile)
         # get the names of the fields
-    #   prepare to read the data    
+    #   prepare to read the data
         count =  0
         while 1:
             lineStr = myfile.readline()
@@ -283,13 +283,13 @@ class datareader:
         if self.header['file_info']['scantype']=='Q':
             print "calling readqbuffer"
             self.readqheader(myfile)
-        
+
         #read columns
         self.readcolumns(myfile)
         myfile.close()
         mydata=Data(self.header,self.columndict)
         print self.header
-        print self.columnlist        
+        print self.columnlist
         return mydata
 
 
@@ -297,8 +297,8 @@ class Data:
     def __init__(self,header,data):
         self.header=header
         self.data=data
-        
-    
+
+
     def get_monitor(self):
         return self.header['monitor']
     #@property
@@ -368,7 +368,7 @@ class Data:
             res=start*N.ones((1,self.npts),'d')
         else:
             res=N.arange(start,motor['end'],step)
-        return res        
+        return res
     def gen_motor6_arr(self):
         motor=self.get_motor6()
         step=motor['step']
@@ -378,10 +378,10 @@ class Data:
         else:
             res=N.arange(start,motor['end'],step)
         return res
-    
+
 
 #   self.columndict[field]
-    
+
     #count_type=property(get_count_type)
     #filetype=property(get_filetype)
     #npts=property(get_npts)
@@ -390,10 +390,10 @@ class Data:
     motor3=property(get_motor3)
     motor4=property(get_motor4)
     motor5=property(get_motor5)
-    motor6=property(get_motor6)    
+    motor6=property(get_motor6)
     #data_fields=property(get_data_fields)
     #monitor=property(get_monitor)
-    
+
 class DataCollection:
     def __init__(self):
         self.data=[]
@@ -418,7 +418,7 @@ class DataCollection:
             a3.append(self.data[i].get_field('A3'))
             counts.append(self.data[i].get_field('COUNTS'))
         return N.ravel(N.array(a3,'d')),N.ravel(N.array(a4,'d')),N.ravel(N.array(counts,'d'))
-    
+
     data=property(get_data,add_datum)
 
 def num2string(num):
@@ -443,7 +443,7 @@ if __name__=='__main__':
         #qbuff
         myfilestr=r'c:\sqltest\\mnl1p004.ng5'
 
-    mydirectory=r'c:\summerschool2007\\' 
+    mydirectory=r'c:\summerschool2007\\'
     myfilenumbers=range(4,33,1)
     myend='.ng5'
     myfilehead='qCdCr'
@@ -468,7 +468,3 @@ if __name__=='__main__':
         print a3.shape
         print a4.shape
         print counts.shape
-
-
-
-

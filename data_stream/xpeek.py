@@ -191,7 +191,7 @@ class Data1D(object):
 
         Used by the xpeek stream processor to add another data point.
 
-        You will likely need to specialize this function and the plot 
+        You will likely need to specialize this function and the plot
         function for the particulars of the instruments as new capabilities
         are added for the instruments.
         """
@@ -338,22 +338,22 @@ class Data1D(object):
             bics.append(BIC_p)
 
         # Power model
-	if False and self.instrument in ['NG7']:
-            pars,BIC_p = robust_fit(power, [0,1,2], pt, dt, 
+        if False and self.instrument in ['NG7']:
+            pars,BIC_p = robust_fit(power, [0,1,2], pt, dt,
                                     dy=weight, drop=drop)
             models.append(lambda x,p=pars: power(p,x))
             bics.append(BIC_p)
 
         # Toss model and associated bic if the model predicts negative measurement time
-        models,bics = zip(*[(m,b) for m,b in zip(models,bics) 
+        models,bics = zip(*[(m,b) for m,b in zip(models,bics)
                             if (m(all_points)>0).all()])
         best = numpy.argmin(bics) # Choose lowest BIC
         # BIC is too accepting - be selective in its use
         if self.instrument == 'BT4':
-            if self.points>20 and bics[best] < 2*bics[-1]: 
-                 idx = -1
+            if self.points>20 and bics[best] < 2*bics[-1]:
+                idx = -1
             else:
-                 idx = best
+                idx = best
             idx = -1
         elif self.instrument == 'NG7' and 'QZ' in self.columns:
             idx = best
@@ -390,13 +390,13 @@ class Data1D(object):
         Returns the empty string if there is no estimated time remaining.
         """
         dt = self.time_remaining()
-        if dt <= 0: 
+        if dt <= 0:
             return ""
 
         t = self.columns['TIMESTAMP'][-1] + dt
         return time.strftime(format, time.localtime(t))
 
-def power(p,x): 
+def power(p,x):
     """
     Powerlaw model used by NG7 for monitor counts
     """
@@ -424,7 +424,7 @@ def fit_exp(x,y,dy=None,drop=2):
     return robust_fit(exponential, (p0,p1,p2), x, y, dy=dy, drop=drop)
     #return (p0,p1,p2),0
 
-def chisq(fx,y,dy=1): 
+def chisq(fx,y,dy=1):
     """
     sum squared weighted residuals (unnormalized)
     """
@@ -451,7 +451,7 @@ def robust_fit(curve,p0,x,y,dy=1,drop=2):
     """
     if 1:
         from scipy.optimize import fmin_bfgs
-        def fmin(f,x0,fprime): 
+        def fmin(f,x0,fprime):
             try:
                 return fmin_bfgs(f=f,x0=x0,fprime=fprime,disp=0)
             except:
@@ -502,7 +502,7 @@ def BIC(k,fx,y,dy=1):
     """
     n = len(y)
     chi = chisq(fx,y,dy)
-    if n==0 or n==k or chi==0: 
+    if n==0 or n==k or chi==0:
         return numpy.inf
     else:
         return math.log(chi/(n-k)) + k*math.log(n)/n
@@ -809,7 +809,7 @@ def debug_eta(instrument):
             else:
                 pylab.plot(t[1:]/3600,eta[1:],'-x')
                 pylab.xlabel('measurement time (hours)')
-            pylab.ylabel('estimated run time (min)') 
+            pylab.ylabel('estimated run time (min)')
             lo,hi=min(eta[1:]),max(eta[1:])
             pylab.ylim(lo-(hi-lo)*0.5,hi+(hi-lo)*0.5)
             pylab.subplot(212)

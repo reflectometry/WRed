@@ -13,27 +13,27 @@
         Version 1.01 (11/11/06) - Revised function code
         Version 1.02 (11/16/06) - Rewrote PointRotate3D function
 
-    Reference 'Rotate A Point About An Arbitrary Axis (3D)' - Paul Bourke        
+    Reference 'Rotate A Point About An Arbitrary Axis (3D)' - Paul Bourke
 """
 
 import numpy as np
 from numpy import cos,sin, sqrt
-    
+
 
 def PointRotate3D(p1, p2, p0, theta):
 
 
-    # Translate so axis is at origin    
+    # Translate so axis is at origin
     p = p0 - p1
     # Initialize point q
     q = np.array([0.0,0.0,0.0],'Float64')
     N = (p2-p1)
     Nm = sqrt(N[0]**2 + N[1]**2 + N[2]**2)
-    
+
     # Rotation axis unit vector
     n = np.array([N[0]/Nm, N[1]/Nm, N[2]/Nm],'Float64')
 
-    # Matrix common factors     
+    # Matrix common factors
     c = cos(theta)
     t = (1 - cos(theta))
     s = sin(theta)
@@ -59,9 +59,9 @@ def PointRotate3D(p1, p2, p0, theta):
     q[1] = d21*p[0] + d22*p[1] + d23*p[2]
     q[2] = d31*p[0] + d32*p[1] + d33*p[2]
 
-    # Translate axis and rotated point back to original location    
+    # Translate axis and rotated point back to original location
     return q + p1
-    
+
 ## END PointRotate3D() ##########################
 
 if __name__ == '__main__':

@@ -56,7 +56,7 @@ def findpeak(x,y,npeaks,order=4,kernel=11):
     diff_sign=N.hstack(([0],N.diff(value_sign)))
 
 #    wh_cross = find(((diff_sign==2) | (diff_sign==-2)) & yd2<0);
-    wh_cross_table=N.abs(diff_sign)==2 
+    wh_cross_table=N.abs(diff_sign)==2
     yd_table=yd2<0
 
     #print wh_cross_table
@@ -68,19 +68,19 @@ def findpeak(x,y,npeaks,order=4,kernel=11):
     n_crossings=len(wh_cross);
 
 
-#    
-#    
-#    
+#
+#
+#
     indices = 0.5*(2*wh_cross-1);
     indices=wh_cross
     print 'indices inside',indices
     if len(indices)< npeaks:
-       results={}
-       results['stop']=True
-       return results
-#    
+        results={}
+        results['stop']=True
+        return results
+#
     no_width = 0;
-#    
+#
     if n_crossings > 0:
 #    #% Ok, now which ones of these are peaks?
 
@@ -97,29 +97,29 @@ def findpeak(x,y,npeaks,order=4,kernel=11):
         #print 'npeaks',npeaks
         #print 'yd2',yd2
         xsupport=range(len(x))
-        xinterpolater=interpolate.interp1d(xsupport,x,fill_value=0.0,kind='linear',copy=True,bounds_error=False)        
+        xinterpolater=interpolate.interp1d(xsupport,x,fill_value=0.0,kind='linear',copy=True,bounds_error=False)
         xpeaks=xinterpolater(indices)
         #print 'xpeaks',xpeaks
         #return xpeaks
-        
+
         best_indices=N.argsort(ymax)
         indices=indices[best_indices[:npeaks]]
         if 0:
-          for i in range(npeaks):
-              this_max=N.max(ymax)
-              max_index=N.nonzero(ymax==this_max)[0]
-              print 'max_index',max_index
-              #max_index = find(ymax==this_max);
-              if i ==0:
-                  best_index = indices[max_index]
-              else:    
-                  best_index =N.hstack((best_index, indices[max_index]));
-              ymax[max_index] = ymin;
-          indices = best_index;
+            for i in range(npeaks):
+                this_max=N.max(ymax)
+                max_index=N.nonzero(ymax==this_max)[0]
+                print 'max_index',max_index
+                #max_index = find(ymax==this_max);
+                if i ==0:
+                    best_index = indices[max_index]
+                else:
+                    best_index =N.hstack((best_index, indices[max_index]));
+                ymax[max_index] = ymin;
+            indices = best_index;
 
         #print 'indices',indices
         xsupport=range(len(x))
-        xinterpolater=interpolate.interp1d(xsupport,x,fill_value=0.0,kind='linear',copy=True,bounds_error=False)        
+        xinterpolater=interpolate.interp1d(xsupport,x,fill_value=0.0,kind='linear',copy=True,bounds_error=False)
         xpeaks=xinterpolater(indices)
         #print 'xpeaks',xpeaks
         results={}
@@ -127,20 +127,20 @@ def findpeak(x,y,npeaks,order=4,kernel=11):
         results['indices']=indices
         results['heights']=y[indices]
         results['stop']=False
-        
-        
+
+
         return results
 
         #xsupport=1:length(x);
         #xpeaks = interp1(xsupport,x,indices);
 #        xpeaks=xpeaks(1:npeaks);
-#    
-#    
-#   
+#
+#
+#
 
 def findwidths(x,y,npeaks,xpeaks,indices):
     ny=len(y)
-    for i in range(npeaks):   
+    for i in range(npeaks):
         full_height = y[N.floor(indices[i])]
         half_height = 0.5*full_height;
 #          % Descend down the peak until you get lower than the half height
@@ -191,14 +191,14 @@ def findwidths(x,y,npeaks,xpeaks,indices):
         #print 'delta',x[N.floor(indices[i])+increment]
         #print 'increment', increment
         #print 'no_width', no_width
-#            
-#    
+#
+#
 #     #%     no_width_found:
         if no_width==1:
             #print 'no width found'
             width = 2.0*(x[ny-1]-xpeaks[i]);
         else:
-            width = 2.0*(x[N.floor(indices[i])+increment]-xpeaks[i]);             
+            width = 2.0*(x[N.floor(indices[i])+increment]-xpeaks[i]);
         if i == 0:
             fwhm = [width]
         else:
@@ -207,7 +207,7 @@ def findwidths(x,y,npeaks,xpeaks,indices):
 #      #     %plot([(xpeaks(i)-fwhm(i)/2) (xpeaks(i)+fwhm(i)/2)],[half_height half_height]); hold on;
 #      end
 #      #%hold off;
-#    
+#
 #      #%b=length(fwhm);
 #      #%fwhm=fwhm(b);
 
@@ -228,7 +228,7 @@ def calc_DW(y,kernel=11,order=4):
     #for i in range(1,n):
     #    DW=((y[i]-ysmd[i])-(y[i-1]-ysmd[i-1]))**2+DW
     DW=((N.diff(y)-N.diff(ysmd))**2).sum()
-    DW=DW*n/(n-1)    
+    DW=DW*n/(n-1)
     DW=DW/((y-ysmd)**2).sum()
     return DW
 
@@ -245,15 +245,15 @@ def optimize_DW(y,order=4):
         minkern=1
     else:
         minkern=0
-    odd_len=make_odd(len(y))    
+    odd_len=make_odd(len(y))
     kernel_range=range(order+2+minkern,min(len(y)/1,odd_len),2) #The 3 here is arbitrary and this line needs to be more robust!
     print kernel_range
     for kernel in kernel_range:
         print 'kernel',kernel
         DW.append(calc_DW(y,kernel=kernel,order=order))
-        
+
     return kernel_range,DW
-        
+
 
 def calc_prob(npeaks,amax,covariance,chimin,rangex):
     prob=N.log(scipy.factorial(npeaks))+npeaks*N.log(4*pi)-npeaks*N.log(N.abs(amax)*N.abs(rangex))
@@ -329,17 +329,17 @@ def find_npeaks(x,y,yerr,kernel,nmax=6):
     nlist=[]
     plist=[]
     #if 1:
-    for npeaks in range(1,nmax): 
+    for npeaks in range(1,nmax):
         print 'npeaks',npeaks
         results=findpeak(x,y,npeaks,kernel=kernel)
         if results['stop']==True:
-           break
+            break
         fwhm=findwidths(x,y,npeaks,results['xpeaks'],results['indices'])
         print 'res',results['xpeaks']
         print 'fwhm',fwhm
-        print 'heights',results['heights']       
+        print 'heights',results['heights']
         p0=[0,0]
-        
+
         #results['heights']=[1000,500,1000]
         #fwhm=[.1,.2,.4]
         sigma=fwhm/2.354
@@ -354,23 +354,23 @@ def find_npeaks(x,y,yerr,kernel,nmax=6):
             p1=fresults[0]
             covariance=fresults[1]
             print 'p1',p1
-            
-            
-    
+
+
+
         if 0:
             parbase={'value':0., 'fixed':0, 'limited':[0,0], 'limits':[0.,0.]}
             parinfo=[]
             for i in range(len(p0)):
                 parinfo.append(copy.deepcopy(parbase))
-            for i in range(len(p0)): 
+            for i in range(len(p0)):
                 parinfo[i]['value']=p0[i]
             fa = {'x':x, 'y':y, 'err':yerr}
-            m = mpfit(myfunctlin, p0, parinfo=parinfo,functkw=fa) 
+            m = mpfit(myfunctlin, p0, parinfo=parinfo,functkw=fa)
             print 'status = ', m.status
             print 'params = ', m.params
             p1=m.params
             covariance=m.covar
-         
+
         if 1:
             #area=max(N.abs(p1[-3::]))
             #area=N.array((N.abs(p1[-3::])))
@@ -383,17 +383,17 @@ def find_npeaks(x,y,yerr,kernel,nmax=6):
             fake_dof=len(y)
             chimin=(cost_func(p1,x,y,yerr)**2).sum()
             chimin=chimin#/fake_dof
-            
+
             rangex=max(x)-min(x)
             #prob=calc_prob(npeaks,amax,covariance,chimin,rangex)
             #print 'det_covariance',N.linalg.det(covariance)
-            
+
             prob=len(y)*N.log(chimin/len(y)) +len(p1)*N.log(len(y))
             print 'prob',prob,'chimin',chimin,'amax',amax
             nlist.append(npeaks)
             plist.append(prob)
             #sys.exit()
-    nmin=nlist[N.where(N.array(plist)==min(plist))[0]]        
+    nmin=nlist[N.where(N.array(plist)==min(plist))[0]]
     print 'nmin', nmin
     return nmin,nlist,plist
 
@@ -409,14 +409,14 @@ if __name__=="__main__":
     yerr=N.sqrt(y)+2
     y += randn(len(y)) * yerr
     y=N.abs(y)
-    
-    
+
+
     yerr = N.array([ 5.19615242, 3.60555128, 3.87298335, 5.47722558, 6.40312424, 4.69041576, 5.19615242, 6.08276253, 6.55743852, 7.34846923, 8.1240384 , 8.94427191, 9.32737905, 9.11043358, 8.54400375, 8.77496439, 9.53939201, 11.13552873, 12.52996409, 14.03566885, 15.77973384, 16.73320053, 13.96424004, 10.04987562, 7.68114575, 6.4807407 , 5.29150262, 6.244998 , 5.83095189, 4.89897949, 4.69041576])
     y = N.array([ 27, 13, 15, 30, 41, 22, 27, 37, 43, 54, 66, 80, 87, 83, 73, 77, 91, 124, 157, 197, 249, 280, 195, 101, 59, 42, 28, 39, 34, 24, 22])
     x = N.array([ 0.485, 0.486, 0.487, 0.488, 0.489, 0.49 , 0.491, 0.492, 0.493, 0.494, 0.495, 0.496, 0.497, 0.498, 0.499, 0.5 , 0.501, 0.502, 0.503, 0.504, 0.505, 0.506, 0.507, 0.508, 0.509, 0.51 , 0.511, 0.512, 0.513, 0.514, 0.515])
-    
-    
-    
+
+
+
     if 0:
         pylab.plot(x,y,'s')
         pylab.show()
@@ -426,22 +426,22 @@ if __name__=="__main__":
     #fig=pylab.Figure()
     #canvas = FigureCanvas(fig)
     #axes = fig.add_subplot(111)
-    
+
 
     kernel=31
-    npeaks=2 
+    npeaks=2
     nmin,nlist,plist=find_npeaks(x,y,yerr,kernel)
     if 0:
         pylab.semilogy(nlist,plist,'s')
-        
+
     if 1:
-        pylab.plot(nlist,plist,'s') 
+        pylab.plot(nlist,plist,'s')
     if 1:
         pylab.show()
     if 0:
         pylab.plot(x,y,'s')
         pylab.axis([0,2,0,1.4e4])
-            
+
         for i in range(npeaks):
             pylab.axvline(x=results['xpeaks'][i])
             xcen=results['xpeaks'][i]
@@ -449,7 +449,6 @@ if __name__=="__main__":
             pylab.plot([(xcen-fwhm[i]/2),(xcen+fwhm[i]/2)],[half_height,half_height])
             ycalc=gen_function(p1,x)
             pylab.plot(x,ycalc)
-        
+
         pylab.axis([0,2,0,1.4e4])
         pylab.show()
-    

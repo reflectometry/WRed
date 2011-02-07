@@ -3,13 +3,13 @@ import math
 import readncnr
 
 def autovectorized(f):
-     """Function decorator to do vectorization only as necessary.
-     vectorized functions fail for scalar inputs."""
-     def wrapper(input):
-         if N.isscalar(input)==False:
-             return N.vectorize(f)(input)
-         return f(input)
-     return wrapper
+    """Function decorator to do vectorization only as necessary.
+    vectorized functions fail for scalar inputs."""
+    def wrapper(input):
+        if N.isscalar(input)==False:
+            return N.vectorize(f)(input)
+        return f(input)
+    return wrapper
 
 
 
@@ -31,7 +31,7 @@ class polarization_correct:
         self.ei={}
         self.ef={}
         self.timestamp={}
-        
+
         for key,myfilestr in files.iteritems():
             mydatareader=readncnr.datareader()
             mydata[key]=mydatareader.readbuffer(myfilestr)
@@ -74,7 +74,7 @@ class polarization_correct:
             f.close()
         return
 
-  
+
 
 
 if __name__=="__main__":
@@ -84,9 +84,7 @@ if __name__=="__main__":
     #files['on_on']=myfilestr_on_on
     files['on_off']=myfilestr_on_off
     files['off_on']=myfilestr_off_on
-    #files['off_off']=myfilestr_off_off    
+    #files['off_off']=myfilestr_off_off
     mypolcor=polarization_correct(files)
     outstr=r'c:\sqltest\pol.txt'
     mypolcor.output(outstr)
-
-    

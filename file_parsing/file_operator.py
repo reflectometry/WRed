@@ -13,7 +13,7 @@ def split_det(s):
             return s
     except ValueError:
         pass
-    
+
     for i in range(len(s)):
         if ord(s[i]) in range(48,58):
             return [s[:i], int(s[i:])-1]
@@ -38,7 +38,7 @@ class Data:
         template = {}
         for s in self.standards:
             template[s] = [None]
-            
+
         s = f.read()
         f.close()
         f = file(filename, 'r')
@@ -88,8 +88,8 @@ class Data:
                         self.standards['_' + d] = Standard().__dict__
                         for p in self.data:
                             p['_' + d] = p[d]
-                            
-                            
+
+
         elif 'fpx' in filename or 'fpt' in filename and s[0] != '#':
             fields = []
             date = []
@@ -114,8 +114,8 @@ class Data:
                     newdata = {}
                     spl = lines.split()
                     for i in range(len(spl)):
-                        
-                        try:    
+
+                        try:
                             newdata[fields[i]] = [float(spl[i])]
                         except:
                             pass
@@ -133,7 +133,7 @@ class Data:
                 template['Lattice'] = [mydata.metadata['lattice']['a'],mydata.metadata['lattice']['b'],mydata.metadata['lattice']['c'],mydata.metadata['lattice']['alpha'],mydata.metadata['lattice']['beta'],mydata.metadata['lattice']['gamma']]
             except:
                 pass
-            
+
             try:
                 for sl in mydata.metadata['count_info']:
                     inStandards = False
@@ -158,8 +158,8 @@ class Data:
             try:
                 template['FixedE'] = [mydata.metadata['energy_info']['efixed'], mydata.metadata['energy_info']['ef']]
             except:
-                pass 
-                        
+                pass
+
             try:
 
                 for sl in mydata.metadata['file_info']:
@@ -240,12 +240,12 @@ class Data:
                         count+=1
                     except:
                         break
-                        
-                            
+
+
             except:
                 pass
     def correct_scan(self):
-        try:        
+        try:
             if 'ScanDescr' in self.standards and self.standards['ScanDescr']['metadata']:
                 scanstr = '' + self.data[0]['ScanDescr'][0]
                 for s in self.data[0]['ScanDescr'][1:]:
@@ -263,9 +263,9 @@ class Data:
                     p['Scan'] = scan
         except:
             for p in self.data:
-                    p['ScanRanges'] = ['QY']
-                    p['Scan'] = ['QY']
-            
+                p['ScanRanges'] = ['QY']
+                p['Scan'] = ['QY']
+
     def write(self, filename):
         f = file(filename, 'w')
         f.write(self.__str__())
@@ -456,8 +456,7 @@ class Data:
                 out.data.remove(out.data[i+1])
                 i -= 1
         return out
-    
+
 if __name__=="__main__":
     a = Data('../db/117eb3afc127e22e0d3fc74eb8efa3ea.file')
     a.sub(a, 'A3')
-    

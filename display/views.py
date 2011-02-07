@@ -34,10 +34,10 @@ def updated_callback(sender, **kwargs):
     proxy = xmlrpclib.ServerProxy("http://localhost:8045")
     print("transmitting...")
     try:
-      proxy.transmit('/updates/files/all', 'Update!!')
-      proxy.transmit('/updates/files/' + str(kwargs['instance'].id), 'Update to that file!!')
+        proxy.transmit('/updates/files/all', 'Update!!')
+        proxy.transmit('/updates/files/' + str(kwargs['instance'].id), 'Update to that file!!')
     except:
-      print "transmission failed, error: ",sys.exc_info()[0]
+        print "transmission failed, error: ",sys.exc_info()[0]
     print "...end of transmission"
 
 #Important! These are the signals connectors so that every time a DataFile is saved
@@ -134,7 +134,7 @@ def json_pipelines(request):
     for p in pipelines:
         json.append({'name': p.name, 'pipeline' :p.pipeline})
     return HttpResponse(simplejson.dumps(json))
-    
+
 @login_required
 def save_pipeline(request):
     json = {
@@ -150,8 +150,8 @@ def save_pipeline(request):
             p.save()
             json['success'] = True
     return HttpResponse(simplejson.dumps(json))
-    
-#Handles POST requests to upload an input file for angleCalculator.js   
+
+#Handles POST requests to upload an input file for angleCalculator.js
 def upload_file_angleCalc(request):
     json = {
         'errors': {},
@@ -165,11 +165,11 @@ def upload_file_angleCalc(request):
             print request.FILES['file'].name
             filename = request.FILES['file'].name
             fid = request.FILES['file'].open()
-            #content = request.FILES['file'].read()            
+            #content = request.FILES['file'].read()
             #fid = open('/tmp/upload', 'w')
             #fid.write(content)
             #fid.close()
-            
+
             #uploadarray = uploadInputFile ('/tmp/upload')
             uploadarray = uploadInputFile (request.FILES['file'])
             json['success'] = True
@@ -178,22 +178,22 @@ def upload_file_angleCalc(request):
             return HttpResponse('not valid. Form:', form)
     else:
         return HttpResponse('method != POST')
-        
+
     #returns a dictionary with 'data' = dictionary with 'array' = array of dictionaries created from uploadInputFile method.
     return HttpResponse(simplejson.dumps(json))
-    
+
 #Handles GET requests to download a save file for angleCalculator.js
 def download_file_angleCalc(request):
     if request.method == 'GET':
-        
+
         data = file('/tmp/angleCalculatorData.txt')
         response = HttpResponse(data, mimetype='application/force-download')
         response['Content-Disposition'] = 'attachment; filename= angleCalculatorData.txt'
         return response
     else:
         return HttpResponse('method != GET')
-    
-    
+
+
 #Handles POST requests to upload static files (cannot be update or changed later)
 @login_required
 def upload_file(request):
@@ -216,7 +216,7 @@ def upload_file(request):
 
         return HttpResponse('Get Outta Here!')
     return HttpResponse(simplejson.dumps(json))
-    
+
 #Handles POST requests to upload live files (files that may be updated or changed later)
 def upload_file_live(request):
     print "Live Data Request"
@@ -306,7 +306,7 @@ def evaluate(request):
                                 float(eq[i][12:-1])
                             except:
                                 return HttpResponse('Stop haxing me!')
-                            
+
                         else:
                             return HttpResponse('Stop haxing me!')
             print '...................evaling..................'
@@ -349,7 +349,7 @@ def evaluate_and_save(request):
 @login_required
 def view_file(request, idNum):
     return render_to_response('view_file.html', {'id': idNum})
-    
+
 @login_required
 def download(request):
     if request.method == 'GET':
@@ -387,7 +387,7 @@ def batch_download(request):
             response = HttpResponse(data, mimetype='application/force-download')
             response['Content-Disposition'] = 'attachment; filename=temp.zip'
             return response
-            
+
 
 def login_view(request):
     if request.method == 'POST':

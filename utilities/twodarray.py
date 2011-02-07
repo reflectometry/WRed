@@ -15,7 +15,7 @@ c_double_p=ctypes.POINTER(c_double)
 class fiduc(ctypes.Structure):
     _fields_=[("Y",c_void_pp),
             ("Z",c_void_pp)]
-#slab_offset.ctypes.data_as(c_int_p) 
+#slab_offset.ctypes.data_as(c_int_p)
 pt=fiduc()
 zdata=N.zeros((4,4),dtype='float64')
 ydata=N.ones((4,4),dtype='float64')

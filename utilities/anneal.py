@@ -122,7 +122,7 @@ class simple_sa(base_schedule):
 #                print indl, indu
 #                print 'size ', indl[0].size, indu[0].size
 #                print xt, self.lower, self.upper
-                myFlag=False                
+                myFlag=False
 
 #       stick to wall
 #        indu=xt>self.upper

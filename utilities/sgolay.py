@@ -13,8 +13,8 @@ def savitzky_golay(data, kernel = 11, order = 4,deriv=0):
         smoothed = savitzky_golay(<rough>, [kernel = value], [order = value]
     """
     try:
-            kernel = abs(int(kernel))
-            order = abs(int(order))
+        kernel = abs(int(kernel))
+        order = abs(int(order))
     except ValueError, msg:
         raise ValueError("kernel and order have to be of type int (floats will be converted).")
     if kernel % 2 != 1 or kernel < 1:
@@ -62,10 +62,10 @@ def savitzky_golay(data, kernel = 11, order = 4,deriv=0):
     data = numpy.concatenate((leftpad, data))
     data = numpy.concatenate((data, rightpad))
     for i in range(half_window, len(data) - half_window):
-            value = 0.0
-            for offset, weight in offset_data:
-                value += weight * data[i + offset]
-            smooth_data.append(value)
+        value = 0.0
+        for offset, weight in offset_data:
+            value += weight * data[i + offset]
+        smooth_data.append(value)
     return numpy.array(smooth_data)
 
 if __name__=='__main__':

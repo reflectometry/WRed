@@ -49,7 +49,7 @@ def writefile(filename,linetoexecute,mark):
         i=i+1
     myfile.close()
     return i
-    
+
 def driver(myfilestr,overwrite=True):
     linetoexecute,mark=readfile(myfilestr)
     #print linetoexecute, mark
@@ -59,7 +59,7 @@ def driver(myfilestr,overwrite=True):
     #if i==mark:
     #    raise SequenceEndError,'sequence ended'
     return linetoexecute, i,mark
-    
+
 
 class SequenceEndError(Exception):
     def __init__(self, value):
@@ -67,13 +67,8 @@ class SequenceEndError(Exception):
     def __str__(self):
         return repr(self.value)
 
-    
-    
+
+
 if __name__=="__main__":
     myfilestr=r'c:\dum'
     print driver(myfilestr)
-    
-    
-            
-        
-        

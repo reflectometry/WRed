@@ -5,7 +5,7 @@ import re
 import readncnr2 as readncnr
 import simple_combine
 #import scipy
-from scipy.optimize import leastsq  
+from scipy.optimize import leastsq
 import copy
 import scipy.odr
 
@@ -73,7 +73,7 @@ if __name__=='__main__':
 ##    print 'read '
 ##    print 'temp ',temp
 ##    print 'I',I
-##    print Ierr 
+##    print Ierr
 ##    print 'monlist ' ,monlist
 ##    print len(I),len(monlist)
     T,I,Ierr=simple_combine.simple_combine(temp,I,Ierr,monlist)
@@ -89,7 +89,7 @@ if __name__=='__main__':
     myoutput=myodr.run()
     myoutput.pprint()
     pfit=myoutput.beta
-    #pfit = leastsq(residuals, p0, args=(T[Trange],I[Trange],Ierr[Trange]))  
+    #pfit = leastsq(residuals, p0, args=(T[Trange],I[Trange],Ierr[Trange]))
     print 'pfit=',pfit
     print 'chisq=',chisq_calc(pfit,T[Trange],I[Trange],Ierr[Trange]).sum()
     Icalc=orderparameter(pfit,T)

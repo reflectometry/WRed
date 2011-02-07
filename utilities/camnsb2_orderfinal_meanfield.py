@@ -5,7 +5,7 @@ import re
 import readncnr2 as readncnr
 import simple_combine
 #import scipy
-from scipy.optimize import leastsq  
+from scipy.optimize import leastsq
 import copy
 import scipy.odr
 import meanfield
@@ -78,7 +78,7 @@ if __name__=='__main__':
 ##    print 'read '
 ##    print 'temp ',temp
 ##    print 'I',I
-##    print Ierr 
+##    print Ierr
 ##    print 'monlist ' ,monlist
 ##    print len(I),len(monlist)
     T,I,Ierr=simple_combine.simple_combine(temp,I,Ierr,monlist)
@@ -93,7 +93,7 @@ if __name__=='__main__':
         Icalc1=meanfield.orderparameter(p0,T)
         pylab.plot(T,Icalc1,marker='s',linestyle='None')
         pylab.show()
-    
+
     Trange=N.intersect1d(N.where(T>tmin)[0],N.where(T<tmax)[0])
     oparam=scipy.odr.Model(meanfield.orderparameter)
     mydata=scipy.odr.RealData(T[Trange],I[Trange],sx=None,sy=Ierr)
@@ -101,8 +101,8 @@ if __name__=='__main__':
     myoutput=myodr.run()
     myoutput.pprint()
     pfit=myoutput.beta
-    #pfit = leastsq(residuals, p0, args=(T[Trange],I[Trange],Ierr[Trange]))  
-    
+    #pfit = leastsq(residuals, p0, args=(T[Trange],I[Trange],Ierr[Trange]))
+
     mychi=chisq_calc(pfit,T[Trange],I[Trange],Ierr[Trange]).sum()
     print 'pfit=',pfit
     print 'chisq=',mychi

@@ -33,7 +33,7 @@ def plot_data(xa,ya,za,fig,nfig,colorflag=False,convolveflag=False):
     ax=fig.add_subplot(1,1,nfig)
     pc=ax.pcolormesh(xa,ya,zima,shading='interp',cmap=cmap)  # working good!
 #    pc=ax.imshow(zima,interpolation='bilinear',cmap=cmap)
-    
+
     pmin=zima.min()
     pmax=zima.max()
     #pmin=0
@@ -106,7 +106,7 @@ def readmeshfiles(mydirectory,myfilebase,myend,eflag='hhl'):
     Qx=N.array([])
     Qy=N.array([])
     Qz=N.array([])
-    
+
     Counts=N.array([])
     #mon0=240000.0
     mon0=65000.0
@@ -114,7 +114,7 @@ def readmeshfiles(mydirectory,myfilebase,myend,eflag='hhl'):
         print currfile
         mydata=mydatareader.readbuffer(currfile)
         mon=mydata.header['count_info']['monitor']
-        
+
         o1=N.array([mydata.header['orient1']['h'],mydata.header['orient1']['k'],mydata.header['orient1']['l']])
         o2=N.array([mydata.header['orient2']['h'],mydata.header['orient2']['k'],mydata.header['orient2']['l']])
         o3=N.cross(o1,o2)
@@ -131,8 +131,8 @@ def readmeshfiles(mydirectory,myfilebase,myend,eflag='hhl'):
             b=sol[1]
             a_arr.append(a)
             b_arr.append(b)
-            
-        
+
+
         if eflag=='weird':
             Qx=N.concatenate((Qx,a_arr))
             Qy=N.concatenate((Qy,b_arr))
@@ -149,7 +149,7 @@ def readmeshfiles(mydirectory,myfilebase,myend,eflag='hhl'):
         xa,ya,za=prep_data2(Qx,Qy,Counts)
     elif eflag=='weird':
         xa,ya,za=prep_data2(Qy,Qx,Counts)
-        
+
     return xa,ya,za
 
 
@@ -165,7 +165,7 @@ if __name__ == '__main__':
     #xf,yf,zf=readmeshfiles(mydirectory,'meshf',myend,eflag='hkk') #0
     #xg,yg,zg=readmeshfiles(mydirectory,'meshg',myend,eflag='hkh') #-1.3
     print 'matplotlib'
-    
+
     if 1:
 
         fig=pylab.figure(figsize=(8,8))
@@ -175,7 +175,7 @@ if __name__ == '__main__':
         #xlabel=r'Q$ \ \ (\AA^{-1}$)'
         fig.subplots_adjust(wspace=0.5)
         fig.subplots_adjust(hspace=0.3)
-        
+
 
 
     if 1:
@@ -190,6 +190,6 @@ if __name__ == '__main__':
         ax.xaxis.set_major_locator(MaxNLocator(4))
         ax.text(.96,.90,'(a)',fontsize=18,horizontalalignment='right',verticalalignment='top',transform=ax.transAxes,color='grey')
         #g.ax.ticks=N.arange(0,100,20)
-        
+
     if 1:
         pylab.show()

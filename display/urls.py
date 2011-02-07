@@ -21,7 +21,7 @@ urlpatterns = patterns('',
     (r'^files/json/evaluate/$', evaluate),
     (r'^files/json/evaluate/save/$', evaluate_and_save),
     (r'^files/json/(\w+)/$', json_file_display),
-    
+
     (r'^files/all/json/$', json_all_files),
 
     (r'^files/all/json_pipelines/$', json_pipelines),
@@ -32,13 +32,13 @@ urlpatterns = patterns('',
     (r'^files/forms/delete/$', delete_file),
     (r'^files/pipeline/$', pipeline),
     (r'^files/fitting/(\w+)/$', fitting_request_action),
-    
+
     (r'^(?i)Alex/angleCalculator/', direct_to_template, {'template': 'angleCalculator.html'}),
-    
+
     (r'^(?i)files/calcUBmatrix/', calculateUB),
     (r'^(?i)files/refineUBmatrix/', refineUB),
     (r'^(?i)files/calcTheta/', runcalcTheta),
-	(r'^(?i)files/omegaZero/', runcalc1),
+        (r'^(?i)files/omegaZero/', runcalc1),
     (r'^(?i)files/scatteringPlane/', runcalc2),
     (r'^(?i)files/phiFixed/', runcalc3),
     (r'^(?i)files/latticeParameters/', getLatticeParameters),

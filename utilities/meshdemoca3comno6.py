@@ -27,7 +27,7 @@ def plot_nodes(tri):
 def plot_data(xa,ya,za,fig,nfig,colorflag=False):
 
     cmap = pylab.cm.jet
-    cmap.set_bad('w', 1.0)   
+    cmap.set_bad('w', 1.0)
     myfilter=N.array([[0.1,0.2,0.1],[0.2,0.8,0.2],[0.1,0.2,0.1]],'d') /2.0
     if smooth:
         zout=convolve2d(za,myfilter,mode='same')
@@ -91,8 +91,8 @@ def prep_data(filename):
         xi=x
         yi=y
         zi=z
-        
-    return xi,yi,zi    
+
+    return xi,yi,zi
 
 
 
@@ -148,7 +148,7 @@ def prep_data2(xt,yt,zorigt):
         #print zi2-zi
         #blah
         print "interpolation off"
-    return xi,yi,zi    
+    return xi,yi,zi
 
 
 
@@ -169,7 +169,7 @@ def readmeshfiles(mydirectory,myfilebase,myend):
         Qy=N.concatenate((Qy,N.array(mydata.data['qy'])))
         Qz=N.concatenate((Qz,N.array(mydata.data['qz'])))
         Counts=N.concatenate((Counts,N.array(mydata.data['counts'])))
-        
+
     #print Qx
     #print Qy
     #print Counts
@@ -221,21 +221,21 @@ if __name__ == '__main__':
         xlim=(xd.min(),xd.max())
         xlabel='(1 0 0)'
         ylabel='(0 0 1)'
-        
-    if 1:    
-        ax,g=plot_data(xd,yd,zd,fig,1,colorflag=True)   
+
+    if 1:
+        ax,g=plot_data(xd,yd,zd,fig,1,colorflag=True)
         ax.set_ylabel(ylabel)
         ax.set_xlabel(xlabel)
-        ax.set_ylim(ylim); ax.set_xlim(xlim)  
-        
+        ax.set_ylim(ylim); ax.set_xlim(xlim)
 
-    
+
+
     if 1:
         #point1=(1.0,1.0)
         #point2=(1.025,1.025)
         point1=(.955,.97)
         point2=(1.045,1.03)
-        xt2,yt2,zorigt2=readmeshfiles(mydirectory,myfilebase,myend) #0        
+        xt2,yt2,zorigt2=readmeshfiles(mydirectory,myfilebase,myend) #0
         #xa2,ya2,za2=readmeshfiles(mydirectory,myfilebase2,myend)
         zorigt2=zorigt2#+za2
 
@@ -243,32 +243,32 @@ if __name__ == '__main__':
         xout,yout,zout=myline.interp(xt2,yt2,zorigt2)
         print 'slope=',myline.slope
         print 'intercept=',myline.intercept
-        line_x=myline.line_x; line_y=myline.line_y 
+        line_x=myline.line_x; line_y=myline.line_y
         pylab.plot(line_x,line_y,'red',linewidth=3.0)
-        ax.set_ylim(ylim); ax.set_xlim(xlim)  
+        ax.set_ylim(ylim); ax.set_xlim(xlim)
         #ax.square()
         ax.set_aspect('equal', 'datalim')
-    
+
     if 0:
         xt,yt,zorigt=readmeshfiles(mydirectory,'dmesh',myend) #0
         xout,yout,zout=myline.interp(xt,yt,zorigt)
-        
-    if 1:    
+
+    if 1:
         print 'gca ', fig.gca()
         for im in fig.gca().get_images():
             print im
             im.set_clim(0.0,400.0)
         #pylab.show()
-        
+
     if 0:
         fig2=pylab.figure(figsize=(8,8))
         pylab.plot(xout,zout,'s')
         #pylab.plot(xi,zi,'red',linewidth=3.0)
         #ax.set_ylim(ylim); ax.set_xlim(xlim)
         pylab.show()
-    
+
     if 1:
-        pylab.show()  
+        pylab.show()
     if 0:
         print 'saving'
         pylab.savefig(r'c:\ca3comno6\feb1_2008\demo.pdf',dpi=150)

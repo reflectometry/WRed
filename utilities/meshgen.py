@@ -30,39 +30,39 @@ def init_scan():
     return scandes
 
 class scangen:
-        def __init__(self,scandes):
-            self.scandes=copy.deepcopy(scandes)
-            return
-        
-        def printarr(self,arr,delimeter='~'):
-            outstr=''
-            for i in range(arr.shape[0]-1):
-               outstr=outstr+str(arr[i])+delimeter 
-            outstr=outstr+str(arr[-1])
-            return outstr
-            
-        def output(self):
-            scanstr='Scan'
-            for key, value in self.scandes.iteritems():
-                if key!='Range':
-                    scanstr=scanstr+':'+key+'='+str(value)
-                else:
-                    for rangetype,rangevalue in value.iteritems():
-                        scanstr=scanstr+':Range='+rangetype+'='
-                        arr=value[rangetype]['initial']
-                        delimeter=''
-                        if rangetype=='Q':
-                            delimeter='~'
-                        scanstr=scanstr+self.printarr(arr,delimeter)
-                        arr=value[rangetype]['final']
-                        scanstr=scanstr+' '
-                        scanstr=scanstr+self.printarr(arr,delimeter)
-                        scanstr=scanstr+' '
-                        scanstr=scanstr+value[rangetype]['type'] 
-            scanstr=scanstr+'\n'
-            return scanstr
-            
-    
+    def __init__(self,scandes):
+        self.scandes=copy.deepcopy(scandes)
+        return
+
+    def printarr(self,arr,delimeter='~'):
+        outstr=''
+        for i in range(arr.shape[0]-1):
+            outstr=outstr+str(arr[i])+delimeter
+        outstr=outstr+str(arr[-1])
+        return outstr
+
+    def output(self):
+        scanstr='Scan'
+        for key, value in self.scandes.iteritems():
+            if key!='Range':
+                scanstr=scanstr+':'+key+'='+str(value)
+            else:
+                for rangetype,rangevalue in value.iteritems():
+                    scanstr=scanstr+':Range='+rangetype+'='
+                    arr=value[rangetype]['initial']
+                    delimeter=''
+                    if rangetype=='Q':
+                        delimeter='~'
+                    scanstr=scanstr+self.printarr(arr,delimeter)
+                    arr=value[rangetype]['final']
+                    scanstr=scanstr+' '
+                    scanstr=scanstr+self.printarr(arr,delimeter)
+                    scanstr=scanstr+' '
+                    scanstr=scanstr+value[rangetype]['type']
+        scanstr=scanstr+'\n'
+        return scanstr
+
+
 class meshgen:
     def __init__(self,field1,field2):
         self.field1=copy.deepcopy(field1)
@@ -88,7 +88,7 @@ class meshgen:
             scandes['Npts']=field1['Npts']
             scandes['Range'][field2['type']]['initial'][field2['idx']]=curr
             scandes['Range'][field2['type']]['final'][field2['idx']]=curr
-            myscan=scangen(scandes=scandes)   
+            myscan=scangen(scandes=scandes)
             scanstr=scanstr+'scan set '+myscan.output()
             scanstr=scanstr+'scan run\n'
             curr=curr+step

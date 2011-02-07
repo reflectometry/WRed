@@ -31,18 +31,18 @@ def plotdensity(h,k,l,fq,xstep=0.01,zstep=0.01):
             cosqr=N.cos(2*pi*1*(h*xi+l*zi));
             #fsum=(Aj*cosqr).sum()
             fsum=(fq*cosqr).sum()
-            #print xi,zi,'sum',fsum 
+            #print xi,zi,'sum',fsum
             #for i=1:n
             #    currf=fq(i);
             #    h=Qs(i,1);%/q(i);
             #    k=Qs(i,2);%/q(i);
             #    l=Qs(i,3);%/q(i);
-            #    Aj=currf*N.sinc(2*pi*delta*h)*sinc(2*pi*delta*k)*sinc(2*pi*delta*l);   
+            #    Aj=currf*N.sinc(2*pi*delta*h)*sinc(2*pi*delta*k)*sinc(2*pi*delta*l);
             #    eiqr=cos(2*pi*1*(h*x(xi)/aa+l*z(zi)/cc));
             #    fsum=fsum+Aj*eiqr;
             #    %fprintf('h=%f k=%f l=%f currf=%f Aj%f
             #    %eiqr=%f\n',h*q(i),k*q(i),l*q(i),currf,Aj,eiqr)
-            #end     
+            #end
             #P[zi,xi]=fsum
             P[xia,zia]=fsum
                 #fprintf(fid,'%3.5g  %3.5g  %3.5g  \n',xi,zi,P(zi,xi));
@@ -70,7 +70,7 @@ def neg_sum(p,h,k,l,fq,fqerr,x,z,cosmat_list):
 def neg_sum_grad(p):
     M=len(p)/2
     return N.hstack((N.zeros(M),N.ones(M)))
- 
+
 
 
 
@@ -93,7 +93,7 @@ def fourier_p(h,k,l,P,x,z,cosqr):
             zi=z[zia]
             #Aj=fq*N.sinc(2*delta*h)*N.sinc(2*delta*k)*N.sinc(2*delta*l)*pi**3
             #cosqr=N.cos(2*pi*1*(h*xi+l*zi));
-            fsum=fsum+P[xia,zia]*cosqr[xia,zia]  
+            fsum=fsum+P[xia,zia]*cosqr[xia,zia]
             #print xi,zi,'sum',fsum,cosqr, P[xia,zia]
             #if abs(P[xia,zia])>0:
             #    print xi,zi,P[xia,zia]
@@ -111,8 +111,8 @@ def transform_p(p,Mx,Mz,M):
     p_up=pup.reshape(Mx,Mz)
     p_down=pdown.reshape(Mx,Mz)
     return p_up,p_down
-     
-     
+
+
 
 def chisq(p,h,k,l,fq,fqerr,x,z,cosmat_list):
     global xstep
@@ -131,9 +131,9 @@ def chisq(p,h,k,l,fq,fqerr,x,z,cosmat_list):
         fmodel=fsum_up[i]-fsum_down[i]
         chi[i]=(fmodel-fq[i])**2/fqerr[i]**2
         #print h[i],k[i],l[i],fq[i],chi[i]
-    
+
     return chi.sum()-2*M
-   
+
 
 
 def chisq_grad(p,h,k,l,fq,fqerr,x,z,cosmat_list):
@@ -146,7 +146,7 @@ def chisq_grad(p,h,k,l,fq,fqerr,x,z,cosmat_list):
     fsum_up=N.zeros(h.shape)
     fsum_down=N.zeros(h.shape)
     fmodel=N.zeros(h.shape)
-    
+
     chi=N.zeros(h.shape)
     P_up,P_down=transform_p(p,Mx,Mz,M)
 
@@ -165,7 +165,7 @@ def chisq_grad(p,h,k,l,fq,fqerr,x,z,cosmat_list):
             zi=z[zia]
             #Aj=fq*N.sinc(2*delta*h)*N.sinc(2*delta*k)*N.sinc(2*delta*l)*pi**3
             #cosqr=N.cos(2*pi*1*(h*xi+l*zi));
-            #fsum=fsum+P[xia,zia]*cosqr  
+            #fsum=fsum+P[xia,zia]*cosqr
             chi=0
             for i in range(len(h)):
                 #fsum_up[i]=fourier_p(h[i],k[i],l[i],P_up)
@@ -175,12 +175,12 @@ def chisq_grad(p,h,k,l,fq,fqerr,x,z,cosmat_list):
                 chi=chi+2*(fmodel[i]-fq[i])/fqerr[i]**2*cosqr
                 #print i
             grad[xia,zia]=chi.sum()
-            
+
     grad_up=grad.flatten()
     grad_down=-grad_up
     grad=N.concatenate((grad_up,grad_down))
         #print h[i],k[i],l[i],fq[i],chi[i]
-    
+
     return grad
 
 
@@ -207,7 +207,7 @@ def S_grad(p,h,k,l,fq,fqerr,x,z,cosmat_list):
     hcols=hrows
     gradient[pos]=N.log(A)-N.log(p[0:M])
     gradient[posm]=N.log(A)-N.log(p[M+1:2*M])
-    #P_up,P_down=transform_p(p,Mx,Mz,M)    
+    #P_up,P_down=transform_p(p,Mx,Mz,M)
     #print 'gradient'
     return -gradient
 
@@ -233,8 +233,8 @@ def S_hessian(p,h,k,l,fq,fqerr,x,z,cosmat_list):
     hcols=hrows
     hessian[pos]=-1./p[0:M]
     hessian[posm]=-1/p[M+1:2*M]
-    #P_up,P_down=transform_p(p,Mx,Mz,M)    
-    
+    #P_up,P_down=transform_p(p,Mx,Mz,M)
+
     return hrows,hcols,hessian
 
 
@@ -278,7 +278,7 @@ def precompute_cos(h,k,l,x,z):
                 cosmat.append(cosqr)
                 cosmat_2d[xia,zia]=cosqr
         coslist.append(N.hstack((cosmat,cosmat)))
-        cosmat_list.append(cosmat_2d)  
+        cosmat_list.append(cosmat_2d)
     return coslist,cosmat_list
 
 def chisq_hessian(p,fqerr,v,coslist,flist):
@@ -292,7 +292,7 @@ def chisq_hessian(p,fqerr,v,coslist,flist):
     vlen=len(v)
     plen=len(p)
     vout=N.zeros(vlen)
-    
+
     xn=len(x)
     zn=len(z)
     print 'sizes'
@@ -325,7 +325,7 @@ def max_wrap(p,coslist,cosmat_list,x,z):
     pos=pos_sum(p,A=1.0)
     neg=neg_sum(p,A=1.0)
     ent=Entropy(p2)
-    f=ent+l1*chisqr+l2*pos+l3*neg    
+    f=ent+l1*chisqr+l2*pos+l3*neg
     return f
 
 if __name__=="__main__":
@@ -351,18 +351,18 @@ if __name__=="__main__":
     #print 'len pu',len(pu)
     #print 'len pd',len(pd)
     #print 'len p',len(p)
-    
+
     x,z=precompute_r()
     X,Z=N.meshgrid(x,z)
     coslist,cosmat_list=precompute_cos(h,k,l,x,z)
     #print 'coslist',coslist[0]
     flist=N.ones(len(p0))
-    
-    
+
+
     flist[M::]=-flist[M::]
     #vout=chisq_hessian(p,fqerr,p,coslist,flist)
     #print 'vout', vout
-    
+
 #    print 'pos',pos_sum(p0)
 #    print 'neg',neg_sum(p0)
     p = NLP(Entropy, p0, maxIter = 1e3, maxFunEvals = 1e5)
@@ -371,8 +371,8 @@ if __name__=="__main__":
 #    p.df = S_grad
 #    p.d2f=S_hessian
 #    p.userProvided.d2f=True
-    
-    
+
+
     # lb<= x <= ub:
     # x4 <= -2.5
     # 3.5 <= x5 <= 4.5
@@ -431,7 +431,7 @@ if __name__=="__main__":
     #print 'maxfun', p.maxfun
     p.maxiter=10
 #    p.maxfun=100
-    
+
 # see also: help(NLP) -> maxTime, maxCPUTime, ftol and xtol
 # that are connected to / used in lincher and some other solvers
 
@@ -455,14 +455,14 @@ if __name__=="__main__":
     print 'solution:', pout
 
     print len(pout)
-    
+
     P_up,P_down=transform_p(pout,Mx,Mz,M)
     P=P_up-P_down
-    
-    
-    
-    
-    
+
+
+
+
+
     if 0:
         chi=chisq(p,h,k,l,fq,fqerr,x,z,cosmat_list,xstep=0.1,zstep=0.1)
         print 'chi',chi
@@ -475,14 +475,14 @@ if __name__=="__main__":
     if 1:
         pylab.pcolor(X,Z,P)
         pylab.show()
-    if 0:    
+    if 0:
         fsum=fourier_p(h[0],k[0],l[0],P)
         fsum=N.zeros(h.shape)
     if 0:
         for i in range(len(h)):
             fsum[i]=fourier_p(h[i],k[i],l[i],P)
             print h[i],k[i],l[i],fq[i],fsum[i],fq[i]/fsum[i]
-    
+
     if 0:
         q=N.sqrt(h**2+l**2)  #Note, 107 is off by a factor of 2!
         pylab.plot(q,fsum,'s')

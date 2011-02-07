@@ -39,10 +39,10 @@ def amplitude(x,y,z):
 @mlab.show
 def test_quiver3d():
     fig=mlab.figure(fgcolor=(0, 0, 0), bgcolor=(1, 1, 1))
-    x, y, z = numpy.mgrid[-2:3, -2:3, -2:3]  
+    x, y, z = numpy.mgrid[-2:3, -2:3, -2:3]
     print 'almost'
     #mlab.quiver3d(x, y, z,f, line_width=3, scale_factor=1,figure=fig)
-    
+
     d=0.2
     x=d*numpy.arange(0,25)
     y=-d*numpy.arange(0,25)
@@ -55,10 +55,10 @@ def test_quiver3d():
     outline=mlab.outline(figure=fig,extent=[-1,1,-1,1,-1,1])
     mlab.orientation_axes(figure=fig,xlabel='a',ylabel='b',zlabel='c')
     print 'done'
-    
 
 
-if __name__=="__main__":   
+
+if __name__=="__main__":
     if 1:
         #pass
         test_quiver3d()
@@ -69,4 +69,3 @@ if __name__=="__main__":
         z=numpy.zeros(len(x))
         u,v,w=spiral(x,y,z)
         print u,v,w
-    

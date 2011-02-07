@@ -13,7 +13,7 @@ from LogFile import *
 from PresetDeviceProperties import *
 
 ScanNone     = 0
-ScanEnergy   = 1 
+ScanEnergy   = 1
 ScanQ        = 2
 ScanAngle    = 5
 ScanFindPeak = 6
@@ -27,9 +27,9 @@ BUFFERDEBUG = 0
 
 class ScanDescription:
     """Scan description class"""
-                
+
     def __init__(self, desc='',geo=None):
-         
+
         # Geometry description; default is Triple Axis geometry
         self.geometry = geo
         if self.geometry==None:
@@ -47,7 +47,7 @@ class ScanDescription:
 
         # Debug info
         self.debug = 1
-        
+
         # Scan type:  0 = None
         #             1 = Energy
         #             2 = Q
@@ -125,7 +125,7 @@ class ScanDescription:
         # Number of points
         self.numPoints=0
 
-        # Device scan ranges  
+        # Device scan ranges
         self.scanRange={}
 
         # Number of points for 2nd scan dimension
@@ -139,19 +139,19 @@ class ScanDescription:
 
         # Placeholder for file name
         self.filename=''
-        
+
         #:Stores information about all device's whose properties must be preset before the scan is run
         self.presetDevicesProperties = PresetDevicesProperties("",None)
-        
-        
+
+
     def __str__(self):
         """Overloads the print operator"""
         out =  "Title            = %s\n" % self.title
         out += "Type             = %i" % self.type
-        
+
         # If this is a scan series, we have enough info
         if self.type==ScanSeries: return out
-        
+
         out += "Comment          = %s\n" % self.comment
         if not self.holdScan==0:
             out += "Hold-Scan        = %f sec\n" % self.holdScan
@@ -189,14 +189,14 @@ class ScanDescription:
             out += "Counting devices = %s\n" % string.join(self.startList)
         out += "Filename         = %s\n" % self.filename
         return out
-    
+
     def version(self):
         version=string.split(__version__)
         return version[2]
-    
+
     def presetDeviceProperties(self):
         self.presetDevicesProperties.preset()
-        
+
     def getToken(self, token):
         # Find the value of an additional token in the
         # scan description.
@@ -205,7 +205,7 @@ class ScanDescription:
                 if str(self.additional[i][0]).upper()==str(token).upper():
                     return self.additional[i][1]
         return None
-    
+
     def getMoving(self):
         # List of all moving devices. Remove those that are constant
         # First dimension
@@ -214,16 +214,16 @@ class ScanDescription:
         for k in l1:
             if len(self.angleList[k])==1: toremove.append(k)
         for k in toremove: l1.remove(k)
-        
+
         # Second dimension
-        l2 = self.secondDev.keys()        
+        l2 = self.secondDev.keys()
         toremove = []
         for k in l2:
             if len(self.secondDev[k])==1: toremove.append(k)
             if k in l1: toremove.append(k)
         for k in toremove: l2.remove(k)
         if len(l2)>0: l1.extend(l2)
-            
+
         # Q and E
         if len(self.eList)>1 or len(self.qList)>1:
             labels = self.geometry.getAllDevices()
@@ -232,21 +232,21 @@ class ScanDescription:
                 if k in l1: toremove.append(k)
             for k in toremove: labels.remove(k)
             if len(labels)>0:l1.extend(labels)
-                
+
         return l1
-    
+
     def scanListInfo(self, desc):
         # Get information for scan list
         self.decode(desc,0)
         npts = self.getNumPoints()
-        if self.numPoints2>0:  
+        if self.numPoints2>0:
             return "Npts=%dx%d %s=%s" % (int(npts/self.numPoints2), self.numPoints2, self.countType, str(self.counts))
         return "Npts=%d  %s=%s" % (npts, self.countType, str(self.counts))
-    
+
     def getNumPoints(self):
         """Get the number of scan points"""
         npts = 0
-        if self.numPoints>0: 
+        if self.numPoints>0:
             npts=self.numPoints
             #~ if self.numPoints2>0: npts *= self.numPoints2
         else:
@@ -257,7 +257,7 @@ class ScanDescription:
                 npts = 1
                 if eLen>1 and (eLen<=qLen or qLen<=1): npts=eLen
                 if qLen>1 and (qLen<=eLen or eLen<=1): npts=qLen
-                
+
             #Increment Scan, Find Peak scan, Bragg Buffer
             elif self.type==5 or self.type==6 or self.type==9:
                 keys   = self.angleList.keys()
@@ -270,10 +270,10 @@ class ScanDescription:
                             npts=len(self.angleList[keys[i]])
                 else: npts=0
                 if npts==MAX_LIST_LEN: npts=1
-                    
+
         # Second dimension
         npts2 = 1
-        if self.numPoints2>0: 
+        if self.numPoints2>0:
             npts2=self.numPoints2
         else:
             keys   = self.secondDev.keys()
@@ -287,32 +287,32 @@ class ScanDescription:
             else: npts2=1
             if npts2==MAX_LIST_LEN: npts2=1
             if npts2>1: self.numPoints2 = npts2
-                
+
         return npts*npts2
         #~ return npts
-    
+
     def getTypeString(self): return str(self.type)
-        
+
     def decode(self,desc,tostates=1):
         """
         Decodes a description from a scan description string
-        
+
         @param desc: A string with a scan description following the standard ICE scan description format.
         @type desc: string
-        
+
         @param tostates: Integer flag indicating whether to translate the scan into instrument states.
         @type tostates: Integer
-        
+
         @return: A string describing the results of the function.
         """
         # Keep track of errors
         nError  = 0
-        
+
         # Flag to tell the function to replace or append new parameters
         AddFlag = 0
 
         self.setPropertyDevices = []
-        
+
         if self.inScan==1:
             print "Cannot change scan while running"
             return "Cannot change scan while running"
@@ -385,7 +385,7 @@ class ScanDescription:
                         Logger("Error", "ScanDescription: 'Prefac' not an integer")
                         nError = nError + 1
                         continue
-                # Detector type    
+                # Detector type
                 elif sublist[0]=="DetectorType":
                     self.detectorType=str(sublist[1])
                 # Count type    [this should be determined from the Counter selection]
@@ -397,7 +397,7 @@ class ScanDescription:
                         self.counts=[float(sublist[1])]
                     except ValueError:
                         # Try to see if we have a list of counts
-                        try: 
+                        try:
                             countItems = string.split(sublist[1])
                             self.counts=[]
                             for icountitem in range(len(countItems)):
@@ -531,7 +531,7 @@ class ScanDescription:
                             self.scanRange[sublist[1]].append("S")
                         elif len(l)>2 and l[2].upper()=="I":
                             self.scanRange[sublist[1]].append("I")
-                    except: 
+                    except:
                         LogAndPrint("Error", "ScanDescription: bad scan range")
                         nError = nError + 1
                         continue
@@ -551,7 +551,7 @@ class ScanDescription:
                             self.scanRange2[sublist[1]].append("S")
                         elif len(l)>2 and l[2].upper()=="I":
                             self.scanRange2[sublist[1]].append("I")
-                    except: 
+                    except:
                         LogAndPrint("Error", "ScanDescription: bad scan range for 2nd dimension")
                         nError = nError + 1
                         continue
@@ -563,14 +563,14 @@ class ScanDescription:
                 elif sublist[0].upper()=="PRESETDEVICESPROPERTIES":
                     self.presetDevicesProperties = PresetDevicesProperties(sublist[1],self.geometry.sequencer)
                 # If we made it here, store the value for later use
-                else: 
+                else:
                     if len(sublist[0])>0:
                         if len(sublist)==1: self.additional.append([sublist[0],''])
                         else: self.additional.append([sublist[0],sublist[1]])
 
         # Skip this if we just want the information
         if tostates==0: return "Scan description parsed"
-          
+
         # Translate the scan description into instrument states, except for scan series
         if not self.type==ScanSeries:
             try:
@@ -578,19 +578,19 @@ class ScanDescription:
             except:
                 raise "Error", "Scan [%s]: State description incomplete\n  %s" % \
                     (self.title,sys.exc_value)
-                
+
             if nError>0:
                 return "%i scan description error(s): Check error log" % nError
 
         return "Scan description parsed"
-        
+
     def getConstDevices(self):
         """ Returns the list of devices that do not vary for the duration of the scan, with their values."""
         eLen = len(self.eList)
         qLen = len(self.qList)
-        
+
         self.constDevicesList = {}
-        
+
         if not (self.type==5 or self.type==6) and eLen==1 and qLen==1:
             # Initial and final energies: Ef = Ei - E
             Einit  = 0
@@ -601,7 +601,7 @@ class ScanDescription:
             elif self.fixedType==1:
                 Einit  = self.fixedE+float(self.eList[0])
                 Efinal = self.fixedE
-                
+
             # Initial Q
             q = string.split(self.qList[0],'~')
 
@@ -612,11 +612,11 @@ class ScanDescription:
             else:
                 values = self.geometry.getDevices(Einit,Efinal,q,self)
                 labels = self.geometry.getAllDevices()
-            
+
             # We fill a dictionary because we want values to appear only once in the list
             for i in range(len(labels)):
                 self.constDevicesList[labels[i].upper()]=values[i]
-            
+
         keys = self.angleList.keys()
         ntot = len(keys)
         if ntot > 0:
@@ -628,9 +628,9 @@ class ScanDescription:
                     #~ self.constDevicesList[keys[i]]=float(self.angleList[keys[i]][0])
                     self.constDevicesList[keys[i].upper()]=self.angleList[keys[i]][0]
                 else:
-                    if keys[i].upper() in self.constDevicesList: 
+                    if keys[i].upper() in self.constDevicesList:
                         del self.constDevicesList[keys[i].upper()]
-                    
+
         # Sort them first
         motorNames = self.constDevicesList.keys()
         motorNames.sort()
@@ -640,18 +640,18 @@ class ScanDescription:
             try: partValue = "%-8g" % partValue
             except: pass
             const += "%s=%s " % (dev, partValue)
-            
+
         return const
-        
+
     def getCount(self, point):
         nCounts = float(self.prefac*self.counts[0])
         ctlen = len(self.counts)
         if ctlen>1 and ctlen>point:
             nCounts = float(self.prefac*self.counts[point])
         return [self.countType, nCounts]
-        
+
     def getPoint(self, pt):
-        """ 
+        """
             Check if point is a good input
             @return: Command string for initiating device moves.  This will be move followed by \
                 several devices ??and values??.  The devices will be in ??key??? order.
@@ -663,20 +663,20 @@ class ScanDescription:
             point = int(pt)
         except:
             LogAndRaise("Error","Buffers.getPoint: bad point parameter")
-        
+
         # Check whether we have a second dimension
         if self.numPoints2>0:
             point2 = int(math.fmod(point, self.numPoints2))
             point = int(point/self.numPoints2)
-        
+
         # Position list
         devList = {}
-        
+
         if BUFFERDEBUG==1:
-                print self.angleList
-                print "E:", self.eList
-                print "Q:",  self.qList
-        
+            print self.angleList
+            print "E:", self.eList
+            print "Q:",  self.qList
+
         # The following condition is to ensure that the old scan description
         # will be executed the same way they were. With the old descriptions
         # Q and E were defined even for increment scans that didn't change
@@ -685,14 +685,14 @@ class ScanDescription:
             # Check whether we have a second dimension first
             eLen = len(self.eList)
             qLen = len(self.qList)
-                
+
             # Initial and final energies: Ef = Ei - E
             if qLen>0 and eLen>0:
-                
-                # Check fixed energy selection
+
+            # Check fixed energy selection
                 if self.fixedType==-1: LogAndRaise("Error","Buffers.getPoint: no fixed energy selected")
                 if self.fixedE==0: LogAndRaise("Error","Buffers.getPoint: no fixed energy value")
-                    
+
                 Einit  = 0
                 Efinal = 0
                 if self.fixedType==0:
@@ -701,10 +701,10 @@ class ScanDescription:
                 elif self.fixedType==1:
                     Einit  = self.fixedE+float(self.eList[0])
                     Efinal = self.fixedE
-                    
+
                 # Initial Q
                 q = string.split(self.qList[0],'~')
-                
+
                 # Energies
                 if eLen>point:
                     if self.fixedType==0:
@@ -713,13 +713,13 @@ class ScanDescription:
                     else:
                         Einit  = self.fixedE+float(self.eList[point])
                         Efinal = self.fixedE
-                        
+
                 # Q
                 if qLen>point:
                     q = string.split(self.qList[point],'~')
                     if not len(q)==3:
                         Logger("Error","Bad Q format: rejecting [%s]" % str(q))
-                        
+
                 # Get the angles
                 if qLen>1 or eLen>1 or (point==0 and (qLen==1 or eLen==1)):
                     labels = []
@@ -731,7 +731,7 @@ class ScanDescription:
                         labels = self.geometry.getAllDevices()
                     for i in range(len(values)):
                         devList[labels[i]] = values[i]
-        
+
                     # Loop through constant devices to make sure they are not changed
                     if pt>0:
                         toRemove = []
@@ -740,11 +740,11 @@ class ScanDescription:
                                 if pdev.upper()==cdev.upper(): toRemove.append(pdev)
                         for ddev in toRemove: del devList[ddev]
 
-        if len(self.angleList)>0: 
+        if len(self.angleList)>0:
             for dev in self.angleList:
                 npts = len(self.angleList[dev])
                 if npts>point: devList[dev.upper()] = self.angleList[dev][point]
-                    
+
         # Second scan dimension
         if self.numPoints2>0:
             for dev in self.secondDev:
@@ -757,8 +757,8 @@ class ScanDescription:
             for cdev in self.constDevicesList:
                 ifound = 0
                 for pdev in devList:
-                        if pdev.upper()==cdev.upper(): ifound = 1
-                if ifound==0: 
+                    if pdev.upper()==cdev.upper(): ifound = 1
+                if ifound==0:
                     LogAndPrint("Error","Buffer.getPoint: pt 0 -> constant device [%s] notmoving" % cdev)
 
         cmdstr = ""
@@ -769,100 +769,100 @@ class ScanDescription:
             keys.sort()
             for dev in keys:
                 cmdstr += " %s %s" % (dev, devList[dev])
-            
+
         if BUFFERDEBUG==1: print cmdstr
         if len(cmdstr.lstrip().rstrip())>0: return [cmdstr]
         return []
 
     def toInstrStates(self):
         """Transforms the scan description into a list of instrument states"""
-        
+
         # Check parameter list
         if hasattr(self.geometry,"checkParams") :
             check = self.geometry.checkParams()
-            if len(check.rstrip().lstrip())>0: 
+            if len(check.rstrip().lstrip())>0:
                 LogAndRaise("Error",check)
-        
+
         #~ if self.counts==[0]:
             #~ LogAndRaise("Error","Scan: No number of counts specified")
-            
-        # Generate device list if enough information is given 
-        if self.numPoints>0 and len(self.scanRange)>0: 
+
+        # Generate device list if enough information is given
+        if self.numPoints>0 and len(self.scanRange)>0:
             self.angleList={}
             # Compute list of points
             devlist=self.scanRange.keys()
             for dev in devlist:
+                if self.angleList.has_key(dev): del self.angleList[dev]
+                if dev=="Q":
                     if self.angleList.has_key(dev): del self.angleList[dev]
-                    if dev=="Q": 
-                        if self.angleList.has_key(dev): del self.angleList[dev]
-                        self.qList=[]
-                        if len(self.scanRange[dev])>=3 and self.scanRange[dev][2]=="S":
-                            qtmp = string.split(self.scanRange[dev][0], '~')
-                            qstart=[float(qtmp[0]),float(qtmp[1]),float(qtmp[2])]
-                            qtmp = string.split(self.scanRange[dev][1], '~')
-                            qstop=[float(qtmp[0]),float(qtmp[1]),float(qtmp[2])]
-                            if self.numPoints>1:
-                                qd = [ (float(qstop[0])-float(qstart[0]))/(self.numPoints-1),\
-                                    (float(qstop[1])-float(qstart[1]))/(self.numPoints-1),\
-                                    (float(qstop[2])-float(qstart[2]))/(self.numPoints-1)]
-                            else:
-                                qd = [ 0, 0, 0 ]
-                        elif len(self.scanRange[dev])>=3 and self.scanRange[dev][2]=="I":
-                            qtmp = string.split(self.scanRange[dev][0], '~')
-                            qstart=[float(qtmp[0]),float(qtmp[1]),float(qtmp[2])]
-                            qtmp = string.split(self.scanRange[dev][1], '~')
-                            qd=[float(qtmp[0]),float(qtmp[1]),float(qtmp[2])]
+                    self.qList=[]
+                    if len(self.scanRange[dev])>=3 and self.scanRange[dev][2]=="S":
+                        qtmp = string.split(self.scanRange[dev][0], '~')
+                        qstart=[float(qtmp[0]),float(qtmp[1]),float(qtmp[2])]
+                        qtmp = string.split(self.scanRange[dev][1], '~')
+                        qstop=[float(qtmp[0]),float(qtmp[1]),float(qtmp[2])]
+                        if self.numPoints>1:
+                            qd = [ (float(qstop[0])-float(qstart[0]))/(self.numPoints-1),\
+                                (float(qstop[1])-float(qstart[1]))/(self.numPoints-1),\
+                                (float(qstop[2])-float(qstart[2]))/(self.numPoints-1)]
                         else:
-                            qcenter = string.split(self.scanRange[dev][0], '~')
-                            qdelta = string.split(self.scanRange[dev][1], '~')
-                            qc = [float(qcenter[0]), float(qcenter[1]), float(qcenter[2])]
-                            qd = [float(qdelta[0]), float(qdelta[1]), float(qdelta[2])]
-                            qstart = [qc[0]-qd[0]*(self.numPoints-1)/2,\
-                                qc[1]-qd[1]*(self.numPoints-1)/2, qc[2]-qd[2]*(self.numPoints-1)/2]
-                        if math.fabs(qd[0])>0 or math.fabs(qd[1])>0 or math.fabs(qd[2])>0:
-                            for j in range(self.numPoints):
-                                h = qstart[0]+qd[0]*j
-                                k = qstart[1]+qd[1]*j
-                                l = qstart[2]+qd[2]*j
-                                q = "%g~%g~%g" % (h, k, l)
-                                self.qList.append(q)
-                        else:
-                            self.qList.append(self.scanRange[dev][0])
+                            qd = [ 0, 0, 0 ]
+                    elif len(self.scanRange[dev])>=3 and self.scanRange[dev][2]=="I":
+                        qtmp = string.split(self.scanRange[dev][0], '~')
+                        qstart=[float(qtmp[0]),float(qtmp[1]),float(qtmp[2])]
+                        qtmp = string.split(self.scanRange[dev][1], '~')
+                        qd=[float(qtmp[0]),float(qtmp[1]),float(qtmp[2])]
                     else:
-                        if len(self.scanRange[dev])>=3 and self.scanRange[dev][2]=="S":
-                            start=float(self.scanRange[dev][0])
-                            stop=float(self.scanRange[dev][1])
-                            center=start
-                            if self.numPoints>1:
-                                delta=(stop-start)/(self.numPoints-1)
+                        qcenter = string.split(self.scanRange[dev][0], '~')
+                        qdelta = string.split(self.scanRange[dev][1], '~')
+                        qc = [float(qcenter[0]), float(qcenter[1]), float(qcenter[2])]
+                        qd = [float(qdelta[0]), float(qdelta[1]), float(qdelta[2])]
+                        qstart = [qc[0]-qd[0]*(self.numPoints-1)/2,\
+                            qc[1]-qd[1]*(self.numPoints-1)/2, qc[2]-qd[2]*(self.numPoints-1)/2]
+                    if math.fabs(qd[0])>0 or math.fabs(qd[1])>0 or math.fabs(qd[2])>0:
+                        for j in range(self.numPoints):
+                            h = qstart[0]+qd[0]*j
+                            k = qstart[1]+qd[1]*j
+                            l = qstart[2]+qd[2]*j
+                            q = "%g~%g~%g" % (h, k, l)
+                            self.qList.append(q)
+                    else:
+                        self.qList.append(self.scanRange[dev][0])
+                else:
+                    if len(self.scanRange[dev])>=3 and self.scanRange[dev][2]=="S":
+                        start=float(self.scanRange[dev][0])
+                        stop=float(self.scanRange[dev][1])
+                        center=start
+                        if self.numPoints>1:
+                            delta=(stop-start)/(self.numPoints-1)
+                        else:
+                            delta=0
+                    elif len(self.scanRange[dev])>=3 and self.scanRange[dev][2]=="I":
+                        start=float(self.scanRange[dev][0])
+                        delta=float(self.scanRange[dev][1])
+                    else:
+                        delta=float(self.scanRange[dev][1])
+                        center=float(self.scanRange[dev][0])
+                        start=center-delta*(self.numPoints-1)/2
+                    if dev=="E": self.eList=[]
+                    else:
+                        if not self.angleList.has_key(dev):
+                            self.angleList[dev] = []
+                    if math.fabs(delta)>0:
+                        for j in range(self.numPoints):
+                            angle = start+delta*j
+                            if dev=="E":
+                                self.eList.append(str(angle))
                             else:
-                                delta=0
-                        elif len(self.scanRange[dev])>=3 and self.scanRange[dev][2]=="I":
-                            start=float(self.scanRange[dev][0])
-                            delta=float(self.scanRange[dev][1])
+                                self.angleList[dev].append(str(angle))
+                    else:
+                        if dev=="E":
+                            self.eList.append(str(start))
                         else:
-                            delta=float(self.scanRange[dev][1])
-                            center=float(self.scanRange[dev][0])
-                            start=center-delta*(self.numPoints-1)/2
-                        if dev=="E": self.eList=[]
-                        else:
-                            if not self.angleList.has_key(dev):
-                                self.angleList[dev] = []
-                        if math.fabs(delta)>0:
-                            for j in range(self.numPoints):
-                                angle = start+delta*j
-                                if dev=="E": 
-                                    self.eList.append(str(angle))
-                                else:
-                                    self.angleList[dev].append(str(angle))
-                        else:
-                            if dev=="E": 
-                                self.eList.append(str(start))
-                            else:
-                                self.angleList[dev].append(str(start))
-                                    
+                            self.angleList[dev].append(str(start))
+
         # Second scan dimension
-        if self.numPoints2>0 and len(self.scanRange2)>0: 
+        if self.numPoints2>0 and len(self.scanRange2)>0:
             self.secondDev={}
             devlist=self.scanRange2.keys()
             for dev in devlist:
@@ -883,7 +883,7 @@ class ScanDescription:
                 for j in range(self.numPoints2):
                     angle = start+delta*j
                     self.secondDev[dev].append(str(angle))
-            
+
     def nextPoint(self,run=0,nPts=0):
         raise "Error","Buffers.nextPoint is no longer supported"
 
@@ -895,10 +895,10 @@ class ScanDescription:
 
     def dryRun(self):
         raise "Error","Buffers.dryRun is no longer supported"
-        
+
     def run(self):
         raise "Error","Buffers.run is no longer supported"
-        
+
     def getDescription(self, xml=None):
         """Returns a string describing the scan.
             Can also write to an XML file.
@@ -909,7 +909,7 @@ class ScanDescription:
             f.closeBlock("ScanDescr")
             f.terminate()
         return self.description
-    
+
     def getProgress(self):
         """Gets the current scan progress"""
         npts = self.getNumPoints()
@@ -940,7 +940,7 @@ class ScanDescription:
         #self.inScan = 1
         self.currentPoint = i-1
         return "Next scan point will be %i: scan paused" % int(self.currentPoint+1)
-        
+
     def addPoint(self, Ei=0.0, Ef=0.0, q=[0.0,0.0,0.0]):
         raise "Error","Buffers.addPoint is no longer supported"
 
@@ -999,7 +999,7 @@ if __name__ == "__main__":
     if b:
         print b
         print b.getDescription()
-        
+
 #
 # $Log$
 # Revision 1.43  2007/11/23 21:13:53  mimartin

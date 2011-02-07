@@ -10,7 +10,7 @@ class DataSet(models.Model):
     metaData = models.CharField(max_length = 500)
     name = models.CharField(max_length = 50)
 """class Point(models.Model):
-    dataSet = models.ForeignKey(DataSet) 
+    dataSet = models.ForeignKey(DataSet)
     QX = models.FloatField()
     QY = models.FloatField()
     QZ = models.FloatField()

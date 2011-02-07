@@ -47,7 +47,7 @@ def findpeak(x,y,npeaks):
     diff_sign=N.hstack(([0],N.diff(value_sign)))
 
 #    wh_cross = find(((diff_sign==2) | (diff_sign==-2)) & yd2<0);
-    wh_cross_table=N.abs(diff_sign)==2 
+    wh_cross_table=N.abs(diff_sign)==2
     yd_table=yd2<0
 
     #print wh_cross_table
@@ -59,15 +59,15 @@ def findpeak(x,y,npeaks):
     n_crossings=len(wh_cross);
 
 
-#    
-#    
-#    
+#
+#
+#
     indices = 0.5*(2*wh_cross-1);
     indices=wh_cross
     print 'indices',indices
-#    
+#
     no_width = 0;
-#    
+#
     if n_crossings > 0:
 #    #% Ok, now which ones of these are peaks?
 
@@ -88,24 +88,24 @@ def findpeak(x,y,npeaks):
             #max_index = find(ymax==this_max);
             if i ==0:
                 best_index = indices[max_index]
-            else:    
+            else:
                 best_index =N.hstack((best_index, indices[max_index]));
             ymax[max_index] = ymin;
         indices = best_index;
 
         print 'indices',indices
         xsupport=range(len(x))
-        xinterpolater=interpolate.interp1d(xsupport,x,fill_value=0.0,kind='linear',copy=True,bounds_error=False)        
+        xinterpolater=interpolate.interp1d(xsupport,x,fill_value=0.0,kind='linear',copy=True,bounds_error=False)
         xpeaks=xinterpolater(indices)
         print 'xpeaks',xpeaks
 
         #xsupport=1:length(x);
         #xpeaks = interp1(xsupport,x,indices);
 #        xpeaks=xpeaks(1:npeaks);
-#    
-#    
-#    
-        for i in range(npeaks):   
+#
+#
+#
+        for i in range(npeaks):
             full_height = y[N.floor(indices[i])]
             half_height = 0.5*full_height;
 #          % Descend down the peak until you get lower than the half height
@@ -155,14 +155,14 @@ def findpeak(x,y,npeaks):
             print 'delta',x[N.floor(indices[i])+increment]
             print 'increment', increment
             print 'no_width', no_width
-#            
-#    
+#
+#
 #     #%     no_width_found:
             if no_width==1:
                 print 'no width found'
                 width = 2.0*(x[ny]-xpeaks[i]);
             else:
-                width = 2.0*(x[N.floor(indices[i])+increment]-xpeaks[i]);             
+                width = 2.0*(x[N.floor(indices[i])+increment]-xpeaks[i]);
             if i == 0:
                 fwhm = width
             else:
@@ -171,7 +171,7 @@ def findpeak(x,y,npeaks):
 #      #     %plot([(xpeaks(i)-fwhm(i)/2) (xpeaks(i)+fwhm(i)/2)],[half_height half_height]); hold on;
 #      end
 #      #%hold off;
-#    
+#
 #      #%b=length(fwhm);
 #      #%fwhm=fwhm(b);
 

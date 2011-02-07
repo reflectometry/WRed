@@ -33,7 +33,7 @@ def readfiles(flist,tol=1e-4):
         mydata.data['counts_err']=N.sqrt(mydata.data['counts'])*mon0/mydata.metadata['count_info']['monitor']
         mydata.data['counts']=N.array(mydata.data['counts'])*mon0/mydata.metadata['count_info']['monitor']
         datalist.append(mydata)
-    
+
     #print qtree.qlist
     return datalist
 

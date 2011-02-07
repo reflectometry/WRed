@@ -132,8 +132,8 @@ def grid(x,y,z):
     print yi
     return xi,yi,zi
 
-    
-    
+
+
 def readfiles(flist,mon0=None):
     mydatareader=readncnr.datareader()
     #Qx=N.array([])
@@ -173,7 +173,7 @@ def readfiles(flist,mon0=None):
         #tth=N.concatenate((tth,N.array(mydata.data['a4'])))
         #Counts=N.concatenate((Counts,N.array(mydata.data['counts'])*mon0/mon))
         #T=N.concatenate((T,N.array(mydata.data['temp'])))
-        
+
         i=i+1
     #xa,ya,za=prep_data2(Qx,Qy,Counts);
     #print 'xa',xa.min(),xa.max()
@@ -190,7 +190,7 @@ def regrid(x,y,z):
     for currx in x:
         currmax=max([currx.max(),currmax])
         currmin=min([currx.min(),currmin])
-    
+
     step=N.abs(x[0][0]-x[0][1])
     print currmin, currmax,step
     proto_x=N.arange(currmin,currmax+step,step)
@@ -212,11 +212,11 @@ def regrid(x,y,z):
             y[i]=copy.deepcopy(newy)
             z[i]=copy.deepcopy(newz)
             #print "min", x[i].min()
-            
-            
-            
-            
-        
+
+
+
+
+
     #sys.exit()
     x=N.array(x).flatten()
     y=N.array(y).flatten()
@@ -234,7 +234,7 @@ def regrid2(x,y,z):
     for currx in x:
         currmax=max([currx.max(),currmax])
         currmin=min([currx.min(),currmin])
-    
+
     step=N.abs(x[0][0]-x[0][1])
     print currmin, currmax,step
     proto_x=N.arange(currmin,currmax+step,step)
@@ -265,11 +265,11 @@ def regrid2(x,y,z):
             newz_mask=N.zeros(newz.shape)
             newz.mask=newz_mask
             z[i]=copy.deepcopy(newz)
-            
-            
-            
-            
-        
+
+
+
+
+
     #sys.exit()
     #x=N.array(x).flatten()
     #y=N.array(y).flatten()
@@ -333,20 +333,20 @@ def fitpeak(x,y,yerr):
             pfit=r.xf
             print 'pfit openopt',pfit
             print 'r dict', r.__dict__
-        if 1: 
+        if 1:
             print 'mpfit'
             p0=pfit
             parbase={'value':0., 'fixed':0, 'limited':[0,0], 'limits':[0.,0.]}
             parinfo=[]
             for i in range(len(p0)):
                 parinfo.append(copy.deepcopy(parbase))
-            for i in range(len(p0)): 
+            for i in range(len(p0)):
                 parinfo[i]['value']=p0[i]
             fa = {'x':x, 'y':y, 'err':yerr}
             #parinfo[1]['fixed']=1
             #parinfo[2]['fixed']=1
             m = mpfit(myfunct_res, p0, parinfo=parinfo,functkw=fa)
-            if (m.status <= 0): 
+            if (m.status <= 0):
                 print 'error message = ', m.errmsg
             params=m.params
             pfit=params
@@ -364,7 +364,7 @@ def fitpeak(x,y,yerr):
             pos_y=N.linspace(minval,maxval,100)
             pos_x=N.ones(pos_y.shape)*p0[0]
             if 0:
-                
+
                 pylab.errorbar(th,counts,counts_err,marker='s',linestyle='None',mfc='black',mec='black',ecolor='black')
                 pylab.plot(width_x,width_y)
                 pylab.plot(pos_x,pos_y)
@@ -385,13 +385,13 @@ def fitpeak(x,y,yerr):
         parinfo=[]
         for i in range(len(p0)):
             parinfo.append(copy.deepcopy(parbase))
-        for i in range(len(p0)): 
+        for i in range(len(p0)):
             parinfo[i]['value']=p0[i]
         fa = {'x':x, 'y':y, 'err':yerr}
         parinfo[1]['fixed']=1
         parinfo[2]['fixed']=1
         m = mpfit(myfunct_res, p0, parinfo=parinfo,functkw=fa)
-        if (m.status <= 0): 
+        if (m.status <= 0):
             print 'error message = ', m.errmsg
         params=m.params
         pfit=params
@@ -409,17 +409,17 @@ def fitpeak(x,y,yerr):
     print 'final answer'
     print 'perror', 'perror'
     #If the fit is unweighted (i.e. no errors were given, or the weights
-    #	were uniformly set to unity), then .perror will probably not represent
+    #   were uniformly set to unity), then .perror will probably not represent
     #the true parameter uncertainties.
 
-    #	*If* you can assume that the true reduced chi-squared value is unity --
-    #	meaning that the fit is implicitly assumed to be of good quality --
-    #	then the estimated parameter uncertainties can be computed by scaling
-    #	.perror by the measured chi-squared value.
+    #   *If* you can assume that the true reduced chi-squared value is unity --
+    #   meaning that the fit is implicitly assumed to be of good quality --
+    #   then the estimated parameter uncertainties can be computed by scaling
+    #   .perror by the measured chi-squared value.
 
-    #	   dof = len(x) - len(mpfit.params) # deg of freedom
-    #	   # scaled uncertainties
-    #	   pcerror = mpfit.perror * sqrt(mpfit.fnorm / dof)
+    #      dof = len(x) - len(mpfit.params) # deg of freedom
+    #      # scaled uncertainties
+    #      pcerror = mpfit.perror * sqrt(mpfit.fnorm / dof)
 
     print 'params', pfit
     print 'chisqr', chisqr  #note that chisqr already is scaled by dof
@@ -427,7 +427,7 @@ def fitpeak(x,y,yerr):
     print 'pcerror', pcerror
 
     integrated_intensity=N.abs(pfit[0])
-    integrated_intensity_err=N.abs(pcerror[0])    
+    integrated_intensity_err=N.abs(pcerror[0])
     ycalc=gauss(pfit,x)
     print 'perror',perror
     if 1:
@@ -473,7 +473,7 @@ def chisq(p,a3,I,Ierr):
     zero_loc=N.where(Ierr==0)[0]
     if len(zero_loc)!=0:
         Ierr_temp[zero_loc]=1.0
-    chi=((I-Icalc)/Ierr_temp)**2    
+    chi=((I-Icalc)/Ierr_temp)**2
     return chi.sum()/(len(I)-len(p))
 
 
@@ -503,7 +503,7 @@ def prep_data2(xt,yt,zorigt,interpolate_on=True):
     xt=N.array(xt).flatten()
     yt=N.array(yt).flatten()
     zorigt=N.array(zorigt).flatten()
-    
+
     x=xt[:,zorigt>0.0]
     y=yt[:,zorigt>0.0]
     z=zorigt[:,zorigt>0.0]
@@ -550,7 +550,7 @@ def prep_data2(xt,yt,zorigt,interpolate_on=True):
         #print zi2-zi
         #blah
         print "interpolation off"
-    return xi,yi,zi    
+    return xi,yi,zi
 
 def prep_data3(xt,yt,zt):
 #    Data=pylab.load(r'c:\resolution_stuff\1p4K.iexy')
@@ -570,7 +570,7 @@ def prep_data3(xt,yt,zt):
 
 
 if __name__=='__main__':
-    
+
 
     if 1:
         myfilebase='ordp10'
@@ -589,7 +589,7 @@ if __name__=='__main__':
         #file_range=(35,51)
         #myfilebase='SrFeA0'
         flist=[]
-        
+
         for i in filerange1:
             currfile=os.path.join(mydirectory,myfilebase+str(0)+str(i)+r"."+myend)
             print 'currfile',currfile
@@ -597,15 +597,15 @@ if __name__=='__main__':
         for i in filerange2:
             currfile=os.path.join(mydirectory,myfilebase+str(i)+r"."+myend)
             print 'currfile',currfile
-            flist.append(currfile) 
-            
-    
+            flist.append(currfile)
+
+
         #flist = SU.ffind(mydirectory, shellglobs=(myfilebaseglob,))
         #SU.printr(flist)
         tth,T,counts,counts_err,mon0=readfiles(flist)
         #wl=2.35916
         #c=2*wl/N.sin(N.deg2rad(N.array(tth))/2)
-        
+
         #p,perror,pcerror,chisq=fitpeak(tth[0],counts[0],counts_err[0])
         #print 'p',p,perror,pcerror, chisq
         #sys.exit()
@@ -637,29 +637,29 @@ if __name__=='__main__':
         pylab.xlabel(r'$2\theta$',fontsize=18)
         pylab.ylabel('T (K) ', fontsize=18)
         pylab.axhline(y=220,color='black',linewidth=3.2)
-        
+
         fontsize=16
         ax = pylab.gca()
         for tick in ax.xaxis.get_major_ticks():
             tick.label1.set_fontsize(fontsize)
         for tick in ax.yaxis.get_major_ticks():
-            tick.label1.set_fontsize(fontsize)      
+            tick.label1.set_fontsize(fontsize)
         mycbar=pylab.colorbar()
         #levs.set_bounds(zmin, zmax)
         #mycontour=pylab.contourf(x,y,z,35,extent=(17,19.6,y.min(),y.max()))#,cmap=pylab.cm.jet)
         #pylab.axis('equal')
-    
+
         #pylab.pcolor(qx,qz,counts)
         #mycontour.set_clim(vmin=160, vmax=500)
         #mycbar=pylab.colorbar()
-        
+
         #mycbar.set_clim(vmin=160, vmax=500)
         #pylab.text(.1,.8,'(a)',fontsize=20,transform=ax.transAxes)
         pylab.xlim((43.55,46.5))
         pylab.ylim((195,250))
         #pylab.show()
         #sys.exit()
-    
+
     if 1:
         #ax2=pylab.subplot(2,1,2)
         ax2 = inset_axes(ax,
@@ -678,7 +678,7 @@ if __name__=='__main__':
             if 0:
                 ax2.errorbar(T,c,yerr=cerr,fmt='s',color='black')
             if 1:
-                ax2.errorbar(T,th,yerr=th_err,fmt='s',color='black')      
+                ax2.errorbar(T,th,yerr=th_err,fmt='s',color='black')
             ax2.xaxis.set_major_locator(MaxNLocator(5))
             #ax2.yaxis.set_major_locator(MaxNLocator(4))
             pylab.xlabel(r'T (K)',fontsize=10)
@@ -686,11 +686,11 @@ if __name__=='__main__':
                 pylab.ylabel(r'c $(\AA)$', fontsize=10)
             if 1:
                 pylab.ylabel(r'$2\theta$',fontsize=10)
-                
+
             pylab.xlim((193,251))
             if 0:
                 pylab.ylim((12.2,12.40))
-            
+
         if 0:
             ax2.errorbar(tth[0],counts[0],yerr=counts_err[0],fmt='s',color='black',label='250 K')
             ax2.xaxis.set_major_locator(MaxNLocator(4))
@@ -700,8 +700,8 @@ if __name__=='__main__':
             ax2.errorbar(tth[34],counts[34],yerr=counts_err[34],fmt='o',color='red',label='200 K')
             pylab.ylabel('Intensity (arb. units)', fontsize=10)
             #ax2.legend(numpoints=1)
-            
-            
+
+
             pylab.xlim((43.55,46.5))
     if 0:
         ax2 = inset_axes(ax,
@@ -714,17 +714,17 @@ if __name__=='__main__':
         pylab.text(.6,.7,'T=200 K',fontsize=10,transform=ax2.transAxes)
         pylab.xlabel(r'$2\theta$',fontsize=10)
         pylab.ylabel('Intensity (arb. units)', fontsize=10)
-        
-        
+
+
         pylab.xlim((43.55,46.5))
-        
+
     if 1:
         #print 'T',T[0],T[-1]
         pylab.savefig(r'c:\srfeas\formfactor_paper\srfe2_fig3t.eps')
         pylab.show()
         #pylab.savefig(r'c:\srfeas\formfactor_paper\srfe2_fig3.png')
-        
-        
+
+
 
     if 0:
         mydirectory=r'C:\srfeas\Feb27_2009'
@@ -740,7 +740,7 @@ if __name__=='__main__':
         #file_range=(35,51)
         #myfilebase='SrFeA0'
         flist=[]
-        
+
         #for i in filerange1:
         #    currfile=os.path.join(mydirectory,myfilebase+str(0)+str(i)+r"."+myend)
         #    print 'currfile',currfile
@@ -748,9 +748,9 @@ if __name__=='__main__':
         for i in filerange2:
             currfile=os.path.join(mydirectory,myfilebase+str(i)+r"."+myend)
             print 'currfile',currfile
-            flist.append(currfile) 
-            
-    
+            flist.append(currfile)
+
+
         #flist = SU.ffind(mydirectory, shellglobs=(myfilebaseglob,))
         #SU.printr(flist)
         tth,T,counts,counts_err,mon0=readfiles(flist,mon0=mon0)
@@ -785,11 +785,11 @@ if __name__=='__main__':
         #levs.set_bounds(zmin, zmax)
         #mycontour=pylab.contourf(x,y,z,35,extent=(17,19.6,y.min(),y.max()))#,cmap=pylab.cm.jet)
         #pylab.axis('equal')
-    
+
         #pylab.pcolor(qx,qz,counts)
         #mycontour.set_clim(vmin=160, vmax=500)
         mycbar=pylab.colorbar()
-        
+
         #mycbar.set_clim(vmin=160, vmax=500)
         ax2.text(.1,.9,'(b)',fontsize=20,transform=ax2.transAxes)
         pylab.xlim((43.5,46.5))
@@ -797,5 +797,3 @@ if __name__=='__main__':
         ax2.yaxis.set_major_formatter(pylab.NullFormatter())
         ax2.yaxis.set_major_locator(pylab.NullLocator())
         pylab.show()
-    
-

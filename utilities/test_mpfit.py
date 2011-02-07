@@ -40,7 +40,7 @@ if __name__=='__main__':
     parinfo[4]['limits'][0]  = 50.
     print 'parinfo',parinfo
     values = [5.7, 2.2, 400., 1.5, 1000.]
-    for i in range(5): 
+    for i in range(5):
         parinfo[i]['value']=p0[i]#values[i]
     fa = {'x':x, 'y':y, 'err':err}
     m = mpfit(myfunct, p0, parinfo=parinfo,functkw=fa)
@@ -50,4 +50,3 @@ if __name__=='__main__':
     print 'perror',m.perror
     print 'chi',m.fnorm
     print 'covar',m.covar
-    

@@ -20,7 +20,7 @@ def plot_data(xi,yi,zi):
 class datareader:
     def __init__(self,myfilestr=None):
         self.myfilestr=myfilestr
-        
+
     def readheader(self,myfile):
     #get first line
         lineStr=myfile.readline()
@@ -33,7 +33,7 @@ class datareader:
         self.header['monitor']=self.header['monitor_base']*self.header['monitor_prefactor']
         self.header['count_type']=tokenized[8]
         self.header['npts']=float(tokenized[9])
-    #skip over names of fields 
+    #skip over names of fields
         lineStr=myfile.readline()
     #comment and filename
         lineStr=myfile.readline()
@@ -60,7 +60,7 @@ class datareader:
         motor2['step']=float(tokenized[2])
         motor2['end']=float(tokenized[3])
         self.header['motor2']=motor2
-        
+
     #motor3
         lineStr=myfile.readline()
         strippedLine=lineStr.rstrip()
@@ -113,7 +113,7 @@ class datareader:
             self.columndict[tokenized[i]]=[]
             self.columndict['columnlist'].append(tokenized[i])
 #        print self.columndict['columnlist']
-        return 
+        return
 
 
 
@@ -133,7 +133,7 @@ class datareader:
 ##        scan2=tokenized[1]
     #    print scan1
     #    print scan2
-    #   prepare to read the data    
+    #   prepare to read the data
         count =  0
 #        scan1arr=[]
 #        scan2arr=[]
@@ -174,7 +174,7 @@ class datareader:
 #        data[scan2]=N.array(scan2arr,'d')
 #        data['intensity']=N.array(intensity,'d')
 #        data['intensity_err']=N.array(intensityerr,'d')
-                  
+
         return mydata
 
 class Data:
@@ -249,7 +249,7 @@ class Data:
             res=start*N.ones((1,self.npts),'d')
         else:
             res=N.arange(start,motor['end'],step)
-        return res        
+        return res
     def gen_motor6_arr(self):
         motor=self.get_motor6()
         step=motor['step']
@@ -259,7 +259,7 @@ class Data:
         else:
             res=N.arange(start,motor['end'],step)
         return res
-    
+
 
 #   self.columndict[field]
     monitor=property(get_monitor)
@@ -271,9 +271,9 @@ class Data:
     motor3=property(get_motor3)
     motor4=property(get_motor4)
     motor5=property(get_motor5)
-    motor6=property(get_motor6)    
+    motor6=property(get_motor6)
     data_fields=property(get_data_fields)
-    
+
 class DataCollection:
     def __init__(self):
         self.data=[]
@@ -298,7 +298,7 @@ class DataCollection:
             a3.append(self.data[i].get_field('A3'))
             counts.append(self.data[i].get_field('COUNTS'))
         return N.ravel(N.array(a3,'d')),N.ravel(N.array(a4,'d')),N.ravel(N.array(counts,'d'))
-    
+
     data=property(get_data,add_datum)
 
 def num2string(num):
@@ -313,7 +313,7 @@ def num2string(num):
 
 if __name__=='__main__':
     myfilestr=r'c:\summerschool2007\\qCdCr014.ng5'
-    mydirectory=r'c:\summerschool2007\\' 
+    mydirectory=r'c:\summerschool2007\\'
     myfilenumbers=range(4,33,1)
     myend='.ng5'
     myfilehead='qCdCr'
@@ -359,9 +359,5 @@ if __name__=='__main__':
     #    zi = Triangulation(x,y).nn_interpolator(z)(xi,yi)
 
     plot_data(xi,yi,zi)
-    
+
 #    mydatareader.readibuffer(myfilestr)
-
-
-
-

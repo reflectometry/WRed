@@ -25,7 +25,7 @@ def readbt7file(myfilestr):
     myfile = open(myfilestr, 'r')
     # Get the header information
     columns=readheader(myfile)
-#   prepare to read the data    
+#   prepare to read the data
     count =  0
     while 1:
         lineStr = myfile.readline()
@@ -69,7 +69,7 @@ def saveresult(columns,fields,outputfile):
 if __name__=="__main__":
     if 0:
         mydirectory=r'c:\bt7calibrate\\'
-        
+
         myfiles=['46625']
         myend='.bt7'
         myfilehead='al2o3nightscan'
@@ -87,20 +87,16 @@ if __name__=="__main__":
             argv[2]='out.txt'
             argv[3]='A4'
             argv[4]='TDC5'
- 	if argv!=None:
-		print argv
-		inmyfilestr=argv[1]
-		outmyfilestr=argv[2]
-		fields=argv[3:len(argv)]
-		columns=readbt7file(inmyfilestr)
-		print fields
-		# to really do error checking, you need to check all the fields
-		if columns.has_key(fields[0]):
-                    outputresult(columns,fields)
-                    saveresult(columns,fields,outmyfilestr)
-                else:
-                    print 'bad field entered'
-		
-
-
-
+        if argv!=None:
+            print argv
+            inmyfilestr=argv[1]
+            outmyfilestr=argv[2]
+            fields=argv[3:len(argv)]
+            columns=readbt7file(inmyfilestr)
+            print fields
+            # to really do error checking, you need to check all the fields
+            if columns.has_key(fields[0]):
+                outputresult(columns,fields)
+                saveresult(columns,fields,outmyfilestr)
+            else:
+                print 'bad field entered'

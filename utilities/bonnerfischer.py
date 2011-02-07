@@ -26,6 +26,3 @@ if __name__=="__main__":
         pylab.plot(T,chi2,marker='s')
         #pylab.plot(T,chi3,marker='s')
         pylab.show()
-    
-    
-    

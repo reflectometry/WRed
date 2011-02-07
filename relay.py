@@ -50,17 +50,17 @@ class RPCServer(Thread):
     def run(self):
         class RequestHandler(SimpleXMLRPCRequestHandler):
             rpc_paths = ('/RPC2',)
-    	#create a server
-    	server = SimpleXMLRPCServer(("localhost",8045),requestHandler = RequestHandler)
+        #create a server
+        server = SimpleXMLRPCServer(("localhost",8045),requestHandler = RequestHandler)
 
         server.register_introspection_functions()
         def transmit_orbited(channel, message):
-           """
-              @param channel: The stomp channel to send to
-              @param message: The message that needs to be transmitted
-           """
-           self.orbited.send_data(channel, message)
-           return ""
+            """
+               @param channel: The stomp channel to send to
+               @param message: The message that needs to be transmitted
+            """
+            self.orbited.send_data(channel, message)
+            return ""
 
         server.register_function(transmit_orbited, 'transmit')
         server.serve_forever()
@@ -71,4 +71,3 @@ rpcthread.start()
 
 reactor.connectTCP('localhost', 61613, orbited_proxy)
 reactor.run()
-

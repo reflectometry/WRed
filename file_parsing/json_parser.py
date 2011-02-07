@@ -13,7 +13,7 @@ def read_standards(filename = 'standards.json'):
             fout += '"'
         else:
             fout += f[i]
-        
+
     f = fout[:]
     fout = ''
     for i in range(len(f)):

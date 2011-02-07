@@ -49,4 +49,3 @@ if __name__=='__main__':
     #pylab.errorbar(temp,I,Ierr,marker='s',linestyle='None',mfc='red',mec='red',ecolor=None)
     pylab.errorbar(tempb,Ib,Ierrb,marker='s',linestyle='None',mfc='blue',mec='blue',ecolor=None)
     pylab.show()
-    

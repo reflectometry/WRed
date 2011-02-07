@@ -23,7 +23,7 @@ class PBdatapt(ctypes.Structure):
             ("Nfree",c_int),
             ("freeS",c_int*4)
             ]
-    
+
 ##typedef struct {
 ##  unsigned long sec[4] ;
 ##  double Y[4], Yesq[4], lambI, lambF ;
@@ -94,7 +94,7 @@ class He3CELLpol(ctypes.Structure):
 
 ##typedef struct {
 ##  double PHe;    /* init He3 polarization */
-##  double PHeErr; 
+##  double PHeErr;
 ##  double hrsBeam; /* beamtime hours logged this exp */
 ##  double T;      /* cell decay time in hours in holding fld */
 ##  double Terr;

@@ -1,4 +1,4 @@
-﻿Sup?
+Sup?
 
 If you are reading this, you probably want to try our the website, see what it looks like at this point (If you're not reading this you probably should be). Let's figure out how to do that.
 1)Make sure you have orbited, twisted, and stompservice installed. (You can get all of them with easy_install)
@@ -37,3 +37,4 @@ Browser receives message, tells page to resend GET request and update the grid a
 
 
 If you have any questions or problems, feel free to email me at pjreddie@gmail.com
+

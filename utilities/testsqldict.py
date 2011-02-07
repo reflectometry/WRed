@@ -25,7 +25,7 @@ def sqlselect(conn,s,splacevalues=None):
     c.close()
     conn.commit()
     return rows
-    
+
 if __name__=="__main__":
     g=N.array([1,2,3],'d')
     mydict={}
@@ -46,11 +46,11 @@ if __name__=="__main__":
     mydatareader=readicp.datareader()
     mydata=mydatareader.readbuffer(myfilestr)
     print mydata.header['filename']
-    
+
     #create our database
     #conn=sqlite3.connect(':memory:')
     conn=sqlite3.connect(mydatbstr)
-    
+
     #create a table with our list of files
     s='create table catalog(file_id integer primary key, file_name varchar(12),sample_id integer)'
     sqlexecute(conn,s)
@@ -68,9 +68,9 @@ if __name__=="__main__":
     print s
     sqlexecute(conn,s)
     print 'measurement table created'
-    
-    
-    
+
+
+
     s='insert into catalog VALUES(NULL,?,NULL)'
     splacevalues=(mydata.header['filename'],)
     file_id=sqlexecute(conn,s,splacevalues)
@@ -86,8 +86,8 @@ if __name__=="__main__":
         #print 'type ',type(tablevalues)
         if isinstance(tablevalues,list):
             for point_num in N.arange(len(tablevalues)):
-                
-                
+
+
                 if tablename=='Counts':
                     s='insert into measurement VALUES (NULL,?,?,?,?,?)'
                     sparams=(file_id,field_id,point_num,tablevalues[point_num],N.sqrt(tablevalues[point_num]))
@@ -98,10 +98,10 @@ if __name__=="__main__":
                 #print sparams
                 sqlexecute(conn,s,sparams)
                 #print 'point inserted!'
-                
-                
 
-   
+
+
+
     s='select file_id,file_name from catalog'
     print s
     rows=sqlselect(conn,s)
@@ -115,6 +115,6 @@ if __name__=="__main__":
     sparam=field_id[0]
     print s
     mypoints=sqlselect(conn,s,sparam)
-    print 'selected'    
+    print 'selected'
     print mypoints
     print "done"

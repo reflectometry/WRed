@@ -34,18 +34,18 @@ def plotdensity(h,k,l,fq,xstep=0.01,zstep=0.01):
             cosqr=N.cos(2*pi*1*(h*xi+l*zi));
             #fsum=(Aj*cosqr).sum()
             fsum=(fq*cosqr).sum()
-            #print xi,zi,'sum',fsum 
+            #print xi,zi,'sum',fsum
             #for i=1:n
             #    currf=fq(i);
             #    h=Qs(i,1);%/q(i);
             #    k=Qs(i,2);%/q(i);
             #    l=Qs(i,3);%/q(i);
-            #    Aj=currf*N.sinc(2*pi*delta*h)*sinc(2*pi*delta*k)*sinc(2*pi*delta*l);   
+            #    Aj=currf*N.sinc(2*pi*delta*h)*sinc(2*pi*delta*k)*sinc(2*pi*delta*l);
             #    eiqr=cos(2*pi*1*(h*x(xi)/aa+l*z(zi)/cc));
             #    fsum=fsum+Aj*eiqr;
             #    %fprintf('h=%f k=%f l=%f currf=%f Aj%f
             #    %eiqr=%f\n',h*q(i),k*q(i),l*q(i),currf,Aj,eiqr)
-            #end     
+            #end
             #P[zi,xi]=fsum
             P[xia,zia]=fsum
                 #fprintf(fid,'%3.5g  %3.5g  %3.5g  \n',xi,zi,P(zi,xi));
@@ -73,7 +73,7 @@ def neg_sum(p,h,k,l,fq,fqerr,x,z,cosmat_list,coslist,flist):
 def neg_sum_grad(p,h,k,l,fq,fqerr,x,z,cosmat_list,coslist,flist):
     M=len(p)/2
     return N.hstack((N.zeros(M),N.ones(M)))
- 
+
 
 
 
@@ -96,7 +96,7 @@ def fourier_p(h,k,l,P,x,z,cosqr):
             zi=z[zia]
             #Aj=fq*N.sinc(2*delta*h)*N.sinc(2*delta*k)*N.sinc(2*delta*l)*pi**3
             #cosqr=N.cos(2*pi*1*(h*xi+l*zi));
-            fsum=fsum+P[xia,zia]*cosqr[xia,zia]  
+            fsum=fsum+P[xia,zia]*cosqr[xia,zia]
             #print xi,zi,'sum',fsum,cosqr, P[xia,zia]
             #if abs(P[xia,zia])>0:
             #    print xi,zi,P[xia,zia]
@@ -114,8 +114,8 @@ def transform_p(p,Mx,Mz,M):
     p_up=pup.reshape(Mx,Mz)
     p_down=pdown.reshape(Mx,Mz)
     return p_up,p_down
-     
-     
+
+
 
 def chisq(p,h,k,l,fq,fqerr,x,z,cosmat_list,coslist,flist):
     global xstep
@@ -135,7 +135,7 @@ def chisq(p,h,k,l,fq,fqerr,x,z,cosmat_list,coslist,flist):
         chi[i]=(fmodel-fq[i])**2/fqerr[i]**2
         #print h[i],k[i],l[i],fq[i],chi[i]
     return (chi.sum()-(M/4-len(fq)-2))
-   
+
 
 
 def chisq_grad(p,h,k,l,fq,fqerr,x,z,cosmat_list,coslist,flist):
@@ -148,7 +148,7 @@ def chisq_grad(p,h,k,l,fq,fqerr,x,z,cosmat_list,coslist,flist):
     fsum_up=N.zeros(h.shape)
     fsum_down=N.zeros(h.shape)
     fmodel=N.zeros(h.shape)
-    
+
     chi=N.zeros(h.shape)
     P_up,P_down=transform_p(p,Mx,Mz,M)
 
@@ -161,10 +161,10 @@ def chisq_grad(p,h,k,l,fq,fqerr,x,z,cosmat_list,coslist,flist):
         fsum_up[i]=fourier_p(h[i],k[i],l[i],P_up,x,z,cosmat_list[i])
         fsum_down[i]=fourier_p(h[i],k[i],l[i],P_down,x,z,cosmat_list[i])
         fmodel[i]=fsum_up[i]-fsum_down[i]
-        
+
     for i in range(2*M):
         for j in range(len(h)):
-            grad[i]=grad[i]+flist[i]*coslist[j][i]*(fmodel[j]-fq[j])/fqerr[j]**2    
+            grad[i]=grad[i]+flist[i]*coslist[j][i]*(fmodel[j]-fq[j])/fqerr[j]**2
     grad=4/M*grad
     return grad
 
@@ -192,7 +192,7 @@ def S_grad(p,h,k,l,fq,fqerr,x,z,cosmat_list,coslist,flist):
     hcols=hrows
     gradient[pos]=N.log(A)-N.log(p[0:M])
     gradient[posm]=N.log(A)-N.log(p[M+1:2*M])
-    #P_up,P_down=transform_p(p,Mx,Mz,M)    
+    #P_up,P_down=transform_p(p,Mx,Mz,M)
     #print 'gradient'
     return -gradient
 
@@ -218,8 +218,8 @@ def S_hessian(p,h,k,l,fq,fqerr,x,z,cosmat_list):
     hcols=hrows
     hessian[pos]=-1./p[0:M]
     hessian[posm]=-1/p[M+1:2*M]
-    #P_up,P_down=transform_p(p,Mx,Mz,M)    
-    
+    #P_up,P_down=transform_p(p,Mx,Mz,M)
+
     return hrows,hcols,hessian
 
 
@@ -263,7 +263,7 @@ def precompute_cos(h,k,l,x,z):
                 cosmat.append(cosqr)
                 cosmat_2d[xia,zia]=cosqr
         coslist.append(N.hstack((cosmat,cosmat)))
-        cosmat_list.append(cosmat_2d)  
+        cosmat_list.append(cosmat_2d)
     return coslist,cosmat_list
 
 def chisq_hessian(p,fqerr,v,coslist,flist):
@@ -277,7 +277,7 @@ def chisq_hessian(p,fqerr,v,coslist,flist):
     vlen=len(v)
     plen=len(p)
     vout=N.zeros(vlen)
-    
+
     xn=len(x)
     zn=len(z)
     print 'sizes'
@@ -311,7 +311,7 @@ def max_wrap(p,h,k,l,fq,fqerr,x,z,cosmat_list,coslist,flist):
     posc=pos_sum(p2,h,k,l,fq,fqerr,x,z,cosmat_list,coslist,flist)
     negc=neg_sum(p2,h,k,l,fq,fqerr,x,z,cosmat_list,coslist,flist)
     ent=Entropy(p2,h,k,l,fq,fqerr,x,z,cosmat_list,coslist,flist)
-    f=ent+l1*chisqr+l2*posc+l3*negc    
+    f=ent+l1*chisqr+l2*posc+l3*negc
     return f
 
 def silly_iter(p,h,k,l,fq,fqerr,x,z,cosmat_list,coslist,flist,lam=10.0,maxiter=31):
@@ -319,22 +319,22 @@ def silly_iter(p,h,k,l,fq,fqerr,x,z,cosmat_list,coslist,flist,lam=10.0,maxiter=3
         dchisqr=chisq_grad(p,h,k,l,fq,fqerr,x,z,cosmat_list,coslist,flist)
         p=p*N.exp(-lam*dchisqr)
         print 'i',i,'dchi',dchisqr
-        
+
     return p
 
 def gen_as():
     xas=0.36
-    aspos=N.array([[0.0000,   0.0000,1-xas],   
-                   [0.0000,   0.0000,xas],    
-                   [0.0000,   0.5000,.5-xas],    
-                   [0.0000,   0.5000,.5+xas],       
-                   [0.5000,   0.0000,.5-xas],  
-                   [0.5000,   0.0000,.5+xas],    
-                   [0.5000,   0.5000,1-xas],   
+    aspos=N.array([[0.0000,   0.0000,1-xas],
+                   [0.0000,   0.0000,xas],
+                   [0.0000,   0.5000,.5-xas],
+                   [0.0000,   0.5000,.5+xas],
+                   [0.5000,   0.0000,.5-xas],
+                   [0.5000,   0.0000,.5+xas],
+                   [0.5000,   0.5000,1-xas],
                    [0.5000,   0.5000,xas],
-                   [1.0000,   0.0000,1-xas],   
-                   [1.0000,   0.0000,xas],  
-                   [1.0000,   0.5000,.5-xas],    
+                   [1.0000,   0.0000,1-xas],
+                   [1.0000,   0.0000,xas],
+                   [1.0000,   0.5000,.5-xas],
                    [1.0000,   0.5000,.5+xas]
                    ],'Float64')
     return aspos
@@ -345,13 +345,13 @@ def plot_as(ax,fig):
     zn=aspos[N.where(aspos[:,1]==0)[0],2]
     xp=aspos[N.where(aspos[:,1]==0.5)[0],0]
     zp=aspos[N.where(aspos[:,1]==0.5)[0],2]
-    
+
     for x,z in zip(xn,zn):
         #print x,z
         x1=N.array([x])
         y1=N.array([z])
         ax.plot(x1,y1,'bo',markersize=20,markerfacecolor='blue',markeredgecolor='blue')
-      
+
     for x,z in zip(xp,zp):
         #print x,z
         x1=N.array([x])
@@ -381,18 +381,18 @@ if __name__=="__main__":
     #print 'len pu',len(pu)
     #print 'len pd',len(pd)
     #print 'len p',len(p)
-    
+
     x,z=precompute_r()
     X,Z=N.meshgrid(x,z)
     coslist,cosmat_list=precompute_cos(h,k,l,x,z)
     #print 'coslist',coslist[0]
     flist=N.ones(len(p0))
-    
-    
+
+
     flist[M::]=-flist[M::]
     #vout=chisq_hessian(p,fqerr,p,coslist,flist)
     #print 'vout', vout
-    
+
 #    print 'pos',pos_sum(p0)
 #    print 'neg',neg_sum(p0)
 
@@ -411,8 +411,8 @@ if __name__=="__main__":
 
     if 0:
         p = NLP(chisq, p0, maxIter = 1e3, maxFunEvals = 1e5)
-        
-        
+
+
     if 0:
         p = NLP(max_wrap, p0, maxIter = 1e3, maxFunEvals = 1e5)
     if 1:
@@ -422,7 +422,7 @@ if __name__=="__main__":
         p.plot = 0
         p.iprint = 1
         p.contol = 1e-5#3 # required constraints tolerance, default for NLP is 1e-6
-    
+
     # for ALGENCAN solver gradtol is the only one stop criterium connected to openopt
     # (except maxfun, maxiter)
     # Note that in ALGENCAN gradtol means norm of projected gradient of  the Augmented Lagrangian
@@ -432,11 +432,11 @@ if __name__=="__main__":
         #print 'maxfun', p.maxfun
         p.maxIter=50
     #    p.maxfun=100
-  
+
         #p.df_iter = 50
         p.maxTime = 4000
         h_args=(h,k,l,fq,fqerr,x,z,cosmat_list,coslist,flist)
-        
+
         if 0:
             #p.h=[pos_sum,neg_sum]
             p.h=[pos_sum,neg_sum]
@@ -447,7 +447,7 @@ if __name__=="__main__":
             p.dh=[pos_sum_grad,neg_sum_grad]
             p.df=chisq_grad
         if 1:
-            
+
             #p.h=[pos_sum,neg_sum,chisq]
             p.c=[chisq]
             p.h=[pos_sum,neg_sum]
@@ -457,7 +457,7 @@ if __name__=="__main__":
             p.dc=chisq_grad
             #p.dh=[pos_sum_grad,neg_sum_grad,neg_sum_grad]
             p.df = S_grad
-            
+
         if 0:
             print 'checking'
             p.checkdf()
@@ -468,23 +468,23 @@ if __name__=="__main__":
             p.checkdc()
             sys.exit()
         print 'solving'
-        if 0:    
+        if 0:
             #r=p.solve('scipy_cobyla')
             #r=p.solve('scipy_lbfgsb')
             r = p.solve('algencan')
             #r = p.solve('ralg')
             print 'done'
             pout=r.xf
-            
 
-        
+
+
         if 0:
             scipy.optimize.optimize.fmin_l_bfgs_b(max_wrap, p0, fprime = None, args=h_args, approx_grad = 0, \
                           bounds = None, m = 10, factr = 10000000.0, \
                           pgtol = 1.0000000000000001e-05, epsilon = 1e-08, iprint = -Const(1), maxfun = 15)
         if 0:
             print 'fmin'
-            
+
             pout=scipy.optimize.optimize.fmin(max_wrap,p0,maxiter = 5, maxfun = 100,disp=1,args=h_args)
         if 0:
             print 'annealing'
@@ -493,13 +493,13 @@ if __name__=="__main__":
             pout,jmin=anneal(max_wrap,p0,args=h_args,\
                           schedule=myschedule,lower=lowerm,upper=upperm,\
                           maxeval=100, maxaccept=None,dwell=20,maxiter=20,feps=1e-1,full_output = 0)
-        
-        if 0:    
+
+        if 0:
             multipliers=pout[0:3]
             print 'multipliers',multipliers
             pout=pout[3::]
-                
-        
+
+
 
     if 1:
         pout=silly_iter(p0,h,k,l,fq,fqerr,x,z,cosmat_list,coslist,flist)  # This is the small density
@@ -510,8 +510,8 @@ if __name__=="__main__":
     #    p.df = S_grad
     #    p.d2f=S_hessian
     #    p.userProvided.d2f=True
-        
-        
+
+
         # lb<= x <= ub:
         # x4 <= -2.5
         # 3.5 <= x5 <= 4.5
@@ -520,12 +520,12 @@ if __name__=="__main__":
         p.ub = N.ones(p.n)
         #p.ub[4] = -2.5
         #p.lb[5], p.ub[5] = 3.5, 4.5
-    
+
     # non-linear inequality constraints c(x) <= 0
     # 2*x0^4 <= 1/32
     # x1^2+x2^2 <= 1/8
     # x25^2 +x25*x35 + x35^2<= 2.5
-    
+
     #p.c = lambda x: [2* x[0] **4-1./32, x[1]**2+x[2]**2 - 1./8, x[25]**2 + x[35]**2 + x[25]*x[35] -2.5]
     # other valid c:
     # p.c = [lambda x: c1(x), lambda x : c2(x), lambda x : c3(x)]
@@ -534,9 +534,9 @@ if __name__=="__main__":
     # def c(x):
     #      return c1(x), c2(x), c3(x)
     # p.c = c
-    
-    
-    
+
+
+
     # non-linear equality constraints h(x) = 0
     # 1e6*(x[last]-1)**4 = 0
     # (x[last-1]-1.5)**4 = 0
@@ -560,7 +560,7 @@ if __name__=="__main__":
     #p.dh = DH
     #    p.dh=[chisq_grad,pos_sum_grad,]
         p.contol = 1e-2#3 # required constraints tolerance, default for NLP is 1e-6
-    
+
     # for ALGENCAN solver gradtol is the only one stop criterium connected to openopt
     # (except maxfun, maxiter)
     # Note that in ALGENCAN gradtol means norm of projected gradient of  the Augmented Lagrangian
@@ -570,19 +570,19 @@ if __name__=="__main__":
         #print 'maxfun', p.maxfun
         p.maxIter=10
     #    p.maxfun=100
-        
+
     # see also: help(NLP) -> maxTime, maxCPUTime, ftol and xtol
     # that are connected to / used in lincher and some other solvers
-    
+
         # optional: check of user-supplied derivatives
         #p.checkdf()
         #p.checkdc()
         #p.checkdh()
-    
+
     # last but not least:
     # please don't forget,
     # Python indexing starts from ZERO!!
-    
+
         p.plot = 0
         p.iprint = 1
         #p.df_iter = 50
@@ -592,20 +592,20 @@ if __name__=="__main__":
         print 'done'
         pout=r.xf
         #p.goal='max'
-    
+
     print 'solution:', pout
     print 'chiq', chisq(pout,h,k,l,fq,fqerr,x,z,cosmat_list,coslist,flist)
-    print 'pos_sum',pos_sum(pout,h,k,l,fq,fqerr,x,z,cosmat_list,coslist,flist), 
+    print 'pos_sum',pos_sum(pout,h,k,l,fq,fqerr,x,z,cosmat_list,coslist,flist),
     print 'neg_sum', neg_sum(pout,h,k,l,fq,fqerr,x,z,cosmat_list,coslist,flist)
     print 'elements',len(pout)
-    
+
     P_up,P_down=transform_p(pout,Mx,Mz,M)
     P=P_up-P_down
-    
-    
-    
-    
-    
+
+
+
+
+
     if 0:
         chi=chisq(p,h,k,l,fq,fqerr,x,z,cosmat_list,xstep=0.1,zstep=0.1)
         print 'chi',chi
@@ -615,11 +615,11 @@ if __name__=="__main__":
         print 'S_grad', s_grad
         srows,scols,s_hess=S_hessian(p,h,k,l,fq,fqerr)
         print 'S_hessian',s_hess
-        
+
     if 1:
         fig=pylab.figure(figsize=(8,8))
-        
-        
+
+
     if 1:
         myfilestr=r'c:\structfactors_density.dat'
         x,y,z=N.loadtxt(myfilestr).T
@@ -627,7 +627,7 @@ if __name__=="__main__":
         P2=P2/P2.max()
         ax=fig.add_subplot(1,2,1)
         pc=ax.pcolor(X,Z,P2)
-        
+
         plot_as(ax,fig)
         ax.set_xlabel('x')
         ax.set_ylabel('z')
@@ -642,8 +642,8 @@ if __name__=="__main__":
         #cb.ax.xaxis.set_major_locator(MaxNLocator(4))
         #pylab.axis('equal')
         #pylab.axis('scaled')
-        
-        
+
+
     if 1:
         N.savetxt(r'c:\maxden.txt',P.flatten())
         N.save(r'c:\maxdenP.np',P)
@@ -653,7 +653,7 @@ if __name__=="__main__":
         ax=fig.add_subplot(1,2,2)
         pc=ax.pcolor(X,Z,P.T)
         #fig.colorbar()
-        
+
         plot_as(ax,fig)
         ax.set_xlabel('x')
         ax.set_ylabel('z')
@@ -666,17 +666,17 @@ if __name__=="__main__":
         cb=pylab.colorbar(pc,orientation='horizontal',ticks=N.arange(pmin,pmax+.5,.5))
         #cb.ax.xaxis.set_major_locator(MaxNLocator(4))
         #cb.ax.set_aspect(1./cb.ax.get_data_ratio())
-        
+
     if 1:
         pylab.show()
-    if 0:    
+    if 0:
         fsum=fourier_p(h[0],k[0],l[0],P)
         fsum=N.zeros(h.shape)
     if 0:
         for i in range(len(h)):
             fsum[i]=fourier_p(h[i],k[i],l[i],P)
             print h[i],k[i],l[i],fq[i],fsum[i],fq[i]/fsum[i]
-    
+
     if 0:
         q=N.sqrt(h**2+l**2)  #Note, 107 is off by a factor of 2!
         pylab.plot(q,fsum,'s')

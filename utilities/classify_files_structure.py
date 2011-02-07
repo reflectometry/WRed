@@ -109,7 +109,7 @@ class Qtree(object):
                     qnode.place_data(mydata)
                     #print 'placed'
                     #print qnode.th
-                    inlist=True 
+                    inlist=True
             if inlist==False:
                 #print 'NOT in list'
                 newnode=Qnode(qcenter,data=mydata)
@@ -174,7 +174,7 @@ class Qtree(object):
         coll1=mydata.metadata['collimations']['coll1']
         coll2=mydata.metadata['collimations']['coll2']
         coll3=mydata.metadata['collimations']['coll3']
-        coll4=mydata.metadata['collimations']['coll4']	
+        coll4=mydata.metadata['collimations']['coll4']
         EXP['hcol']=N.array([coll1,coll2,coll3,coll4],dtype='float64')
         EXP['vcol']=N.array([120, 120, 120, 240],dtype='float64')
 
@@ -262,8 +262,8 @@ class Qtree(object):
         print qnode.th_condensed['counts'].min()
         if 0:
             pylab.errorbar(a3_out,counts_out,counts_err_out,marker='s',linestyle='None',mfc='black',mec='black',ecolor='black')
-            pylab.show()       
-        return 
+            pylab.show()
+        return
 
     def condense_nodes(self):
         for index in range(len(self.qlist)):
@@ -350,20 +350,20 @@ class Qtree(object):
                 myoutput=myodr.run()
                 myoutput.pprint()
                 pfit=myoutput.beta
-            if 1: 
+            if 1:
                 print 'mpfit'
                 p0=pfit
                 parbase={'value':0., 'fixed':0, 'limited':[0,0], 'limits':[0.,0.]}
                 parinfo=[]
                 for i in range(len(p0)):
                     parinfo.append(copy.deepcopy(parbase))
-                for i in range(len(p0)): 
+                for i in range(len(p0)):
                     parinfo[i]['value']=p0[i]
                 fa = {'x':th, 'y':counts, 'err':counts_err}
                 #parinfo[1]['fixed']=1
                 #parinfo[2]['fixed']=1
                 m = mpfit(myfunct_res, p0, parinfo=parinfo,functkw=fa)
-                if (m.status <= 0): 
+                if (m.status <= 0):
                     print 'error message = ', m.errmsg
                 params=m.params
                 pfit=params
@@ -401,13 +401,13 @@ class Qtree(object):
             parinfo=[]
             for i in range(len(p0)):
                 parinfo.append(copy.deepcopy(parbase))
-            for i in range(len(p0)): 
+            for i in range(len(p0)):
                 parinfo[i]['value']=p0[i]
             fa = {'x':th, 'y':counts, 'err':counts_err}
             parinfo[1]['fixed']=1
             parinfo[2]['fixed']=1
             m = mpfit(myfunct_res, p0, parinfo=parinfo,functkw=fa)
-            if (m.status <= 0): 
+            if (m.status <= 0):
                 print 'error message = ', m.errmsg
             params=m.params
             pfit=params
@@ -425,17 +425,17 @@ class Qtree(object):
         print 'final answer'
         print 'perror', 'perror'
         #If the fit is unweighted (i.e. no errors were given, or the weights
-        #	were uniformly set to unity), then .perror will probably not represent
+        #       were uniformly set to unity), then .perror will probably not represent
         #the true parameter uncertainties.
 
-        #	*If* you can assume that the true reduced chi-squared value is unity --
-        #	meaning that the fit is implicitly assumed to be of good quality --
-        #	then the estimated parameter uncertainties can be computed by scaling
-        #	.perror by the measured chi-squared value.
+        #       *If* you can assume that the true reduced chi-squared value is unity --
+        #       meaning that the fit is implicitly assumed to be of good quality --
+        #       then the estimated parameter uncertainties can be computed by scaling
+        #       .perror by the measured chi-squared value.
 
-        #	   dof = len(x) - len(mpfit.params) # deg of freedom
-        #	   # scaled uncertainties
-        #	   pcerror = mpfit.perror * sqrt(mpfit.fnorm / dof)
+        #          dof = len(x) - len(mpfit.params) # deg of freedom
+        #          # scaled uncertainties
+        #          pcerror = mpfit.perror * sqrt(mpfit.fnorm / dof)
 
         print 'params', pfit
         print 'chisqr', chisqr  #note that chisqr already is scaled by dof
@@ -443,7 +443,7 @@ class Qtree(object):
         print 'pcerror', pcerror
 
         self.qlist[index].th_integrated_intensity=N.abs(pfit[0])
-        self.qlist[index].th_integrated_intensity_err=N.abs(pcerror[0])    
+        self.qlist[index].th_integrated_intensity_err=N.abs(pcerror[0])
         Icalc=gauss(pfit,th)
         print 'perror',perror
         if 0:
@@ -500,7 +500,7 @@ def chisq(p,a3,I,Ierr):
     zero_loc=N.where(Ierr==0)[0]
     if len(zero_loc)!=0:
         Ierr_temp[zero_loc]=1.0
-    chi=((I-Icalc)/Ierr_temp)**2    
+    chi=((I-Icalc)/Ierr_temp)**2
     return chi.sum()/(len(I)-len(p))
 
 

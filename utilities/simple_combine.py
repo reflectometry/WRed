@@ -108,9 +108,9 @@ def simple_combine(xlist,ylist,yerrlist,monlist,monitor=None,method=None,eps=Non
             curr_x=x_in[i]
             if i+1<xlen:
                 if (x_in[i+1]-x_in[i])<eps:
-                        curr_yerrsq=curr_yerrsq+yerr_in[i+1]*yerr_in[i+1]
-                        curr_y=curr_y+y_in[i+1]
-                        count=count+1.0
+                    curr_yerrsq=curr_yerrsq+yerr_in[i+1]*yerr_in[i+1]
+                    curr_y=curr_y+y_in[i+1]
+                    count=count+1.0
                 else:
                     x_out.append(curr_x) #ok, we've reached the end of a run
                     y_out.append(curr_y/count)

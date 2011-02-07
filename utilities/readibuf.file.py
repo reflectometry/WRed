@@ -2,16 +2,16 @@ import numpy as N
 import  pylab
 
 def get_tokenized_line(myfile):
-        lineStr=myfile.readline()
-        strippedLine=lineStr.rstrip()
-        tokenized=strippedLine.split()
-        return tokenized
+    lineStr=myfile.readline()
+    strippedLine=lineStr.rstrip()
+    tokenized=strippedLine.split()
+    return tokenized
 
 
 class datareader:
     def __init__(self,myfilestr=None):
         self.myfilestr=myfilestr
-        
+
     def readimotors(self,myfile):
     #motor1
         tokenized=get_tokenized_line(myfile)
@@ -28,7 +28,7 @@ class datareader:
         motor2['step']=float(tokenized[2])
         motor2['end']=float(tokenized[3])
         self.header['motor2']=motor2
-        
+
     #motor3
         tokenized=get_tokenized_line(myfile)
     #    print tokenized
@@ -63,7 +63,7 @@ class datareader:
         #skip line describing Motor Start Step End
         lineStr = myfile.readline()
         return
-    
+
     def readiheader(self,myfile):
     #experiment info
         tokenized=get_tokenized_line(myfile)
@@ -174,7 +174,7 @@ class datareader:
             self.columndict[tokenized[i]]=[]
             self.columndict['columnlist'].append(tokenized[i])
 #        print self.columndict['columnlist']
-        return 
+        return
 
     def determinefiletype(self,myfile):
     #get first line
@@ -194,7 +194,7 @@ class datareader:
         timestamp['year']=tokenized[3].strip("\'")
         timestamp['time']=tokenized[4].strip("\'")
         self.header['timestamp']=timestamp
-        #skip over names of fields 
+        #skip over names of fields
         lineStr=myfile.readline()
         #comment and filename
         self.header['comment']=myfile.readline().rstrip()
@@ -203,7 +203,7 @@ class datareader:
     def readcolumns(self,myfile):
         self.get_columnheaders(myfile)
         # get the names of the fields
-    #   prepare to read the data    
+    #   prepare to read the data
         count =  0
         while 1:
             lineStr = myfile.readline()
@@ -233,13 +233,13 @@ class datareader:
         if self.header['scantype']=='Q':
             print "calling readqbuffer"
             self.readqheader(myfile)
-        
+
         #read columns
         self.readcolumns(myfile)
         myfile.close()
         mydata=Data(self.header,self.columndict)
         print self.header
-        print self.columndict['columnlist']        
+        print self.columndict['columnlist']
         return mydata
 
 
@@ -247,8 +247,8 @@ class Data:
     def __init__(self,header,data):
         self.header=header
         self.data=data
-        
-    
+
+
     def get_monitor(self):
         return self.header['monitor']
     #@property
@@ -322,7 +322,7 @@ class Data:
             res=start*N.ones((1,self.npts),'d')
         else:
             res=N.arange(start,motor['end'],step)
-        return res        
+        return res
     def gen_motor6_arr(self):
         motor=self.get_motor6()
         step=motor['step']
@@ -332,10 +332,10 @@ class Data:
         else:
             res=N.arange(start,motor['end'],step)
         return res
-    
+
 
 #   self.columndict[field]
-    
+
     count_type=property(get_count_type)
     #filetype=property(get_filetype)
     npts=property(get_npts)
@@ -344,10 +344,10 @@ class Data:
     motor3=property(get_motor3)
     motor4=property(get_motor4)
     motor5=property(get_motor5)
-    motor6=property(get_motor6)    
+    motor6=property(get_motor6)
     data_fields=property(get_data_fields)
     monitor=property(get_monitor)
-    
+
 class DataCollection:
     def __init__(self):
         self.data=[]
@@ -372,7 +372,7 @@ class DataCollection:
             a3.append(self.data[i].get_field('A3'))
             counts.append(self.data[i].get_field('COUNTS'))
         return N.ravel(N.array(a3,'d')),N.ravel(N.array(a4,'d')),N.ravel(N.array(counts,'d'))
-    
+
     data=property(get_data,add_datum)
 
 def num2string(num):
@@ -390,7 +390,7 @@ if __name__=='__main__':
     if 0:
         #ibuff
         myfilestr=r'c:\summerschool2007\\qCdCr014.ng5'
-        mydirectory=r'c:\summerschool2007\\' 
+        mydirectory=r'c:\summerschool2007\\'
         myfilenumbers=range(4,33,1)
         myend='.ng5'
         myfilehead='qCdCr'
@@ -421,7 +421,3 @@ if __name__=='__main__':
         print a3.shape
         print a4.shape
         print counts.shape
-
-
-
-

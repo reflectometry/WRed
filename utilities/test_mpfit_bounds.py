@@ -59,17 +59,17 @@ if __name__=="__main__":
     yerr=N.sqrt(y)+1
     p0=[0,0,0.7,.4,400] #center,fwhm,height
     if 1:
-            parbase={'value':0., 'fixed':0, 'limited':[0,0], 'limits':[0.,0.]}
-            parinfo=[]
-            for i in range(len(p0)):
-                parinfo.append(copy.deepcopy(parbase))
-            for i in range(len(p0)): 
-                parinfo[i]['value']=p0[i]
-            fa = {'x':x, 'y':y, 'err':yerr}
-            parinfo[4]['limited']=[1,1]
-            parinfo[4]['limits']=[400,499]
-            m = mpfit(myfunctlin, p0, parinfo=parinfo,functkw=fa) 
-            print 'status = ', m.status
-            print 'params = ', m.params
-            p1=m.params
-            covariance=m.covar
+        parbase={'value':0., 'fixed':0, 'limited':[0,0], 'limits':[0.,0.]}
+        parinfo=[]
+        for i in range(len(p0)):
+            parinfo.append(copy.deepcopy(parbase))
+        for i in range(len(p0)):
+            parinfo[i]['value']=p0[i]
+        fa = {'x':x, 'y':y, 'err':yerr}
+        parinfo[4]['limited']=[1,1]
+        parinfo[4]['limits']=[400,499]
+        m = mpfit(myfunctlin, p0, parinfo=parinfo,functkw=fa)
+        print 'status = ', m.status
+        print 'params = ', m.params
+        p1=m.params
+        covariance=m.covar

@@ -122,8 +122,8 @@ def grid(x,y,z):
     zi = griddata(x,y,z,xi,yi)
     return xi,yi,zi
 
-    
-    
+
+
 def readfiles(flist):
     mydatareader=readncnr.datareader()
     Qx=N.array([])
@@ -149,7 +149,7 @@ def readfiles(flist):
 
 
 def findpeaks(qx,qz,q,counts):
-    
+
     qlist=N.linspace(q.min(),q.max(),100)
     counts_out=[]
     for l in range(len(qlist)):
@@ -157,20 +157,20 @@ def findpeaks(qx,qz,q,counts):
         q_spaced=qlist[l]
         num_counted=0
         for i in range(len(q)):
-                if l>0:
-                    if q[i]<=q_spaced and q[i]>qlist[l-1]:
-                        qsum=qsum+counts[i]
-                        num_counted=num_counted+1
-                else:
-                    if q[i]<=q_spaced and q[i]>0:
-                        qsum=qsum+counts[i]
-                        num_counted=num_counted+1
+            if l>0:
+                if q[i]<=q_spaced and q[i]>qlist[l-1]:
+                    qsum=qsum+counts[i]
+                    num_counted=num_counted+1
+            else:
+                if q[i]<=q_spaced and q[i]>0:
+                    qsum=qsum+counts[i]
+                    num_counted=num_counted+1
         if num_counted>0:
             counts_out.append(qsum/num_counted)
         else:
             print 'qsum',qsum
             counts_out.append(0)
-            
+
     return qlist,counts_out
 
 
@@ -180,7 +180,7 @@ if __name__=='__main__':
     myend='bt9'
     myfilebaseglob=myfilebase+'*.'+myend
     file_range=(43,69)
-    
+
     #mydirectory=r'C:\srfeas\SrFeAsNi\Ni0p08\2009-04-diffraction'
     #file_range=(35,51)
     #myfilebase='SrFeA0'
@@ -203,15 +203,15 @@ if __name__=='__main__':
         #QX,QZ=N.meshgrid(qx,qz)
         pylab.contourf(x,y,z,35)#,cmap=pylab.cm.jet)
         pylab.axis('equal')
-    
+
         #pylab.pcolor(qx,qz,counts)
         pylab.colorbar()
         #pylab.show()
-    
+
     if 1:
         axes = pylab.gca()
         # Full ring
-        
+
         #103
         if 0:
             a=5.542
@@ -222,35 +222,35 @@ if __name__=='__main__':
         if 1:
             a=3.6379; c=5.9834
             h=1;k=0;l=0
-            
+
         r=N.sqrt((2*pi/a*h)**2+(2*pi/c*l)**2)
         print 'r',r
         delta=.02
         axes.add_patch(Ring(center=(0,0),r1=r-delta, r2=r+delta,theta1=40,theta2=65,
                         fill=True,fc='pink',ec='darkblue',alpha=0.3))
-        
+
         h=1.0;k=0.0;l=1.0
-            
+
         r=N.sqrt((2*pi/a*h)**2+(2*pi/c*l)**2)
         print 'r',r
         delta=.02
         axes.add_patch(Ring(center=(0,0),r1=r-delta, r2=r+delta,theta1=40,theta2=65,
                         fill=True,fc='pink',ec='darkblue',alpha=0.3))
-        
-        
+
+
   #Feas
         if 0:
             a=5.4420; b=6.0278; c=3.3727
             h=2;k=0;l=0
             h=1;k=0;l=1
             h=0;k=1;l=1
-            
+
             r=N.sqrt((2*pi/a*h)**2+(2*pi/b*k)**2+(2*pi/c*l)**2)
             print 'r',r
             delta=.02
             axes.add_patch(Ring(center=(0,0),r1=r-delta, r2=r+delta,theta1=40,theta2=65,
-                        fill=True,fc='grey',ec='darkblue',alpha=0.3))      
-        
+                        fill=True,fc='grey',ec='darkblue',alpha=0.3))
+
  #Al
         if 1:
             a=4.0592; b=a; c=a
@@ -259,12 +259,12 @@ if __name__=='__main__':
             #h=2;k=0;l=0
             #h=1.0/2;k=1.0/2;l=1.0/2
             #h=2;k=2;l=2
-            
+
             r=N.sqrt((2*pi/a*h)**2+(2*pi/b*k)**2+(2*pi/c*l)**2)
             print 'r',r
             delta=.02
             axes.add_patch(Ring(center=(0,0),r1=r-delta, r2=r+delta,theta1=40,theta2=65,
-                        fill=True,fc='grey',ec='darkblue',alpha=0.3))      
+                        fill=True,fc='grey',ec='darkblue',alpha=0.3))
 
  #FeAs2
         if 1:
@@ -272,21 +272,21 @@ if __name__=='__main__':
             h=1.0/2;k=1./2;l=1./2
             h=1.0;k=1.0;l=0
             #h=2;k=2;l=2
-            
+
             r=N.sqrt((2*pi/a*h)**2+(2*pi/b*k)**2+(2*pi/c*l)**2)
             print 'r',r
             delta=.02
             axes.add_patch(Ring(center=(0,0),r1=r-delta, r2=r+delta,theta1=40,theta2=65,
-                        fill=True,fc='orange',ec='darkblue',alpha=0.5))      
+                        fill=True,fc='orange',ec='darkblue',alpha=0.5))
 
  #SrFe2As2 Ni
         if 1:
             a=5.542; b=5.495; c=12.231
             h=0.0;k=.0;l=3.1 #about right
-            #h=0.0;k=.0;l=3.4 #good 
+            #h=0.0;k=.0;l=3.4 #good
             #h=0.0;k=.0;l=3.6 #good
             #h=0.0;k=.0;l=3.9 # good
-            
+
             #h=1./2;k=1.0/2;l=1.0/2
             #h=2;k=2;l=2
             h=0.0; k=0.0; l=4.0
@@ -294,15 +294,13 @@ if __name__=='__main__':
             print 'r',r
             delta=.02
             axes.add_patch(Ring(center=(0,0),r1=r-delta, r2=r+delta,theta1=40,theta2=65,
-                        fill=True,fc='purple',ec='darkblue',alpha=0.3))      
-        
-        
-        
+                        fill=True,fc='purple',ec='darkblue',alpha=0.3))
+
+
+
         pylab.xlim((0.7,1.8))
         pylab.ylim((0.7,1.8))
         #pylab.axis('equal')
-        
+
     if 1:
         pylab.show()
-
-        

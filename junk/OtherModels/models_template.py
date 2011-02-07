@@ -10,4 +10,3 @@ class DataSet(models.Model):
     metaData = models.CharField(max_length = 500)
     name = models.CharField(max_length = 50)
 #END
-
