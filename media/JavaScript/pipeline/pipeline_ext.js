@@ -4,6 +4,7 @@
 since I think you're more interested in the other aspects, I'm going to leave out comments
 until it is further along...*/
 
+BASEURL="/WRed/files/"
 // Constants for pipeline canvas elements
 var TEXTHEIGHT = 8;
 var PADDING = 4;
@@ -111,7 +112,7 @@ function onReadyFunction() {
             handler: function () {
                 if (fp.getForm().isValid()) {
                     fp.getForm().submit({
-                        url: '../forms/upload/',
+                        url: BASE_URL + 'forms/upload/',
                         waitMsg: 'Uploading your file...',
                         success: function (fp, o) {}
                     });
@@ -190,7 +191,7 @@ function onReadyFunction() {
             ids = [store.getAt(rowRightClicked).get('id')];
         }
             conn.request({
-                url: '../forms/delete/',
+                url: BASE_URL + 'forms/delete/',
                 method: 'POST',
                 params: {
                     'ids': Ext.encode(ids),
@@ -353,7 +354,7 @@ function onReadyFunction() {
                 handler: function () {
                     console.log(clone_boxes());
                     conn.request({
-                        url: '../forms/save_pipeline/',
+                        url: BASE_URL + 'forms/save_pipeline/',
                         method: 'POST',
                         params: {
                             'pipeline': Ext.encode(clone_boxes()),
@@ -414,7 +415,7 @@ function onReadyFunction() {
                 handler: function () {
                     console.log(form.getForm().getFieldValues());
                     conn.request({
-                        url: '../json/evaluate/save/',
+                        url: BASE_URL + 'json/evaluate/save/',
                         method: 'GET',
                         params: {
                             'equation': toSave.get_equation(),
@@ -696,7 +697,7 @@ anytime there is new data, and initially to populate the table.*/
 
     function update() {
         conn.request({
-            url: '../all/json_pipelines/',
+            url: BASE_URL + 'all/json_pipelines/',
             method: 'GET',
             params: {},
             success: function (responseObject) {
@@ -725,7 +726,7 @@ anytime there is new data, and initially to populate the table.*/
             }
         });
         conn.request({
-            url: '../all/json/',
+            url: BASE_URL + 'all/json/',
             method: 'GET',
             params: {},
             success: function (responseObject) {
@@ -1323,7 +1324,7 @@ whenever any message comes through (whenever files are added, removed, or change
         cstores = [];
         for (var i = 0; i < ids.length; ++i) {
             conn.request({
-                url: '../json/' + ids[i] + '/',
+                url: BASE_URL + 'json/' + ids[i] + '/',
                 method: 'GET',
                 params: {},
                 success: function (responseObject) {

@@ -4,6 +4,7 @@
 /* This is where the fun begins, now we have a Tab panel where you can see both the actual data
 displayed in an GridPanel, and the chart of the data, rendered with flot */
 
+var BASEURL='/WRed/files/';
 var globalPlots = { plot: [], residplot: [] };
 var globalDataSeries = { plot: [], residplot: [] };
 var globalFunctionSeries = { plot: [], residplot: [] };
@@ -854,7 +855,7 @@ function onReadyFunction () {
 
     function makeFittingRequest (params, successFunction) {
         conn.request({
-            url: 'fitting/' + idNum + '/',
+            url: BASEURL + 'fitting/' + idNum + '/',
             method: 'POST',
             params: params,
             success: successFunction,
@@ -1059,7 +1060,7 @@ function onReadyFunction () {
     /* Retrieve data in json format via a GET request to the server. This is used anytime there is new data, and initially to populate the table. */
     function update() {
         conn.request({
-            url: 'json/' + idNum + '/',
+            url: BASEURL + 'json/' + idNum + '/',
             method: 'GET',
             params: {},
             success: function (responseObject) {

@@ -1,3 +1,4 @@
+var BASE_URL = '/WRed/files/';
 
 var conn = new Ext.data.Connection();
 
@@ -23,7 +24,7 @@ function PlusBox(x, y, width, height) {
     this.chart = function () {
         if (this.dataset()) {
             conn.request({
-                url: '../json/evaluate/',
+                url: BASE_URL + 'json/evaluate/',
                 method: 'GET',
                 params: {
                     'equation': this.get_equation(),
@@ -89,7 +90,7 @@ function MinusBox(x, y, width, height) {
     this.chart = function () {
         if (this.dataset()) {
             conn.request({
-                url: '../json/evaluate/',
+                url: BASE_URL + 'json/evaluate/',
                 method: 'GET',
                 params: {
                     'equation': this.get_equation(),
@@ -158,7 +159,7 @@ function TextBox(file) {
     this.height = TEXTHEIGHT;
     this.chart = function () {
         conn.request({
-            url: '../json/' + this.file['id'] + '/',
+            url: BASE_URL + 'json/' + this.file['id'] + '/',
             method: 'GET',
             params: {},
             success: function (responseObject) {
@@ -232,7 +233,7 @@ function FileBox(x, y) {
             }
         } else {
             conn.request({
-                url: '../json/evaluate/',
+                url: BASE_URL + 'json/evaluate/',
                 method: 'GET',
                 params: {
                     'equation': this.get_equation(),
@@ -372,7 +373,7 @@ function OutputBox(input, parent) {
     };
     this.chart = function () {
         conn.request({
-            url: '../json/evaluate/',
+            url: BASE_URL + 'json/evaluate/',
             method: 'GET',
             params: {
                 'equation': this.get_equation(),

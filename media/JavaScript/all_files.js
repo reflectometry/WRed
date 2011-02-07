@@ -1,6 +1,7 @@
 //Author: Joe Redmon
 //all_files.js
 
+var BASEURL='/WRed/files/';
 
 Ext.onReady(function() {
     var maxvals = [];
@@ -68,7 +69,7 @@ Ext.onReady(function() {
             handler: function(){
                 if (fp.getForm().isValid()) {
 	                fp.getForm().submit({
-	                    url: '../forms/upload/',
+	                    url: BASEURL+'forms/upload/',
 	                    waitMsg: 'Uploading your file...',
 	                    success: function(fp, o) {
 	                    }
@@ -99,7 +100,7 @@ Ext.onReady(function() {
         bbar: [],
     });
     grid.on('rowdblclick', function(grid, rowIndex, e) {
-         window.location = '../' + (store.getAt(rowIndex).get('id'));
+         window.location = BASEURL + (store.getAt(rowIndex).get('id'));
     });
 
 /*Menu that shows up on right click to delete a file from the database*/
@@ -142,7 +143,7 @@ Ext.onReady(function() {
             ids = [store.getAt(rowRightClicked).get('id')];
         }
             conn.request({
-                url: '../forms/delete/',
+                url: BASEURL+'forms/delete/',
                 method: 'POST',
                 params: {
                     'ids': Ext.encode(ids),
@@ -206,7 +207,7 @@ anytime there is new data, and initially to populate the table.*/
     function update() {
     var conn = new Ext.data.Connection();
         conn.request({
-            url: 'json/',
+            url: BASEURL+'all/json/',
             method: 'GET',
             params: {},
             success: function(responseObject) {
