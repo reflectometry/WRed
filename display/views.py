@@ -195,7 +195,7 @@ def download_file_angleCalc(request):
 
 
 #Handles POST requests to upload static files (cannot be update or changed later)
-@login_required
+#@login_required
 def upload_file(request):
     json = {
         'errors': {},

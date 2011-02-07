@@ -2,7 +2,7 @@
 #urls.py
 
 import sys
-sys.path.append('/home/alex/Desktop/WRed')
+#sys.path.append('/home/alex/Desktop/WRed')
 from django.conf.urls.defaults import *
 from django.views.generic.simple import direct_to_template
 from WRed.display.views import *

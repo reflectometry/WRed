@@ -11,7 +11,7 @@ import sys
 #myfile=open(myfilestr,'w')
 #myfile.write('mypath',sys.path')
 #myfile.close()
-sys.path.append('/home/alex/Desktop/WRed/')
+#sys.path.append('/home/alex/Desktop/WRed/')
 
 DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
@@ -35,7 +35,7 @@ DATABASE_NAME = os.path.join(SITE_ROOT, 'db') + '/file.db'
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'America/New_York'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html

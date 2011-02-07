@@ -11,7 +11,7 @@ import sys
 #myfile=open(myfilestr,'w')
 #myfile.write('mypath',sys.path')
 #myfile.close()
-sys.path.append('/home/alex/Desktop/WRed/')
+#sys.path.append('/home/alex/Desktop/WRed/')
 
 DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
@@ -22,12 +22,12 @@ TEMPLATE_DEBUG = False  #was DEBUG, turned off for deployment
 ADMINS = (
     # ('Your Name', 'your_email@domain.com'),
     #The following people/emails recieve the ERROR ALERTS:
-    ('Alex Yee', 'yeealex93@gmail.com'),
+    #('Alex Yee', 'yeealex93@gmail.com'),
 )
 
 MANAGERS = (
     #The following people/emails recieve the BROKEN LINK ALERTS:
-    ('Alex Yee', 'yeealex93@gmail.com'),
+    #('Alex Yee', 'yeealex93@gmail.com'),
 )
 
 DATABASE_ENGINE = 'sqlite3'
@@ -40,7 +40,7 @@ DATABASE_NAME = os.path.join(SITE_ROOT, 'db') + '/file.db'
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'America/New_York'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
